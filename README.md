@@ -33,7 +33,7 @@ git clone https://github.com/vincentdoba/spark-hands-on.git
 * Go at root of the cloned repository
 * Build the project
 ```
-sbt compile
+sbt clean package
 ```
 
 
