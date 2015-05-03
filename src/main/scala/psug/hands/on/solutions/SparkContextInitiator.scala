@@ -1,6 +1,6 @@
 package psug.hands.on.solutions
 
-import org.apache.spark.{SparkContext, SparkConf}
+import org.apache.spark.{SparkConf, SparkContext}
 
 trait SparkContextInitiator {
 

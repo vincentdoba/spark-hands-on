@@ -1,7 +1,6 @@
 package psug.hands.on.solutions.exercise1
 
-import org.apache.spark.sql.{Row, SQLContext}
-import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.Row
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
