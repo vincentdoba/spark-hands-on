@@ -12,7 +12,7 @@ import psug.hands.on.solutions.exercise04.DensestDepartments._
  */
 object DepartmentsCounter extends App {
 
-  val inputFile = args(0)
+  val inputFile = "data/departements.txt"
 
   val sparkContext = initContext("densestDepartment")
 

@@ -14,7 +14,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  */
 object TotalPopulation extends App with SparkContextInitiator {
 
-  val inputFile = args(0)
+  val inputFile = "data/demographie_par_commune.json"
 
   val sparkContext = initContext("totalPopulation")
   val sqlContext = new SQLContext(sparkContext)

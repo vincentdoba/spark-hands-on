@@ -5,8 +5,8 @@ import psug.hands.on.solutions.SparkContextInitiator
 
 object DensestDepartments extends App with SparkContextInitiator {
 
-  val dataFile = args(0)
-  val departmentsFile = args(1)
+  val dataFile = "data/demographie_par_commune.json"
+  val departmentsFile = "data/departements.txt"
 
   val sparkContext = initContext("densestDepartment")
   val sqlContext = new SQLContext(sparkContext)
