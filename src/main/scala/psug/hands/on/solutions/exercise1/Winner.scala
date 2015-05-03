@@ -15,7 +15,7 @@ object Winner extends App {
 
   val inputFile = args(0)
 
-  val conf = new SparkConf().setAppName("Winner")
+  val conf = new SparkConf().setMaster("local").setAppName("Winner")
   val sc = new SparkContext(conf)
   val sqlContext = new SQLContext(sc)
 
