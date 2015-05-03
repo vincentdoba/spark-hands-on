@@ -1,4 +1,4 @@
-package psug.hands.on.solutions.exercise02
+package psug.hands.on.solutions.exercise03
 
 import org.apache.spark.sql.SQLContext
 import psug.hands.on.solutions.SparkContextInitiator

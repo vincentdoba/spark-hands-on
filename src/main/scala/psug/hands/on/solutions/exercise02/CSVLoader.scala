@@ -1,7 +1,7 @@
-package psug.hands.on.solutions.exercise01
+package psug.hands.on.solutions.exercise02
 
 import org.apache.spark.sql.SQLContext
-import psug.hands.on.solutions.exercise01.Winner._
+import psug.hands.on.solutions.exercise02.ElectionWinner._
 
 trait CSVLoader {
 

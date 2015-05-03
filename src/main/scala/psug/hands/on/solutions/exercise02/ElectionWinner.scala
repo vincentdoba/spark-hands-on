@@ -1,4 +1,4 @@
-package psug.hands.on.solutions.exercise01
+package psug.hands.on.solutions.exercise02
 
 import org.apache.spark.sql.Row
 import psug.hands.on.solutions.SparkContextInitiator
@@ -12,7 +12,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  * Fichier : data/resultat_presidentielles_par_commune_2012.csv
  *
  */
-object Winner extends App with CSVLoader with SparkContextInitiator {
+object ElectionWinner extends App with CSVLoader with SparkContextInitiator {
 
   val sparkContext = initContext("Winner")
   val dataFrame = getCSV(args(0))

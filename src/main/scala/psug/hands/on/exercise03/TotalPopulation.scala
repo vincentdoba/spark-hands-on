@@ -1,4 +1,4 @@
-package psug.hands.on.exercise02
+package psug.hands.on.exercise03
 
 /**
  * Determine the total population in France

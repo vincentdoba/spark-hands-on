@@ -1,4 +1,4 @@
-package psug.hands.on.exercise03
+package psug.hands.on.exercise04
 
 object DensestDepartments extends App {
 
