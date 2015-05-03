@@ -6,6 +6,7 @@ package psug.hands.on.exercise1
  * Déterminer qui est le gagnant de l'élection présidentielle de 2012
  *
  * File : data/resultat_presidentielles_par_commune_2012.csv
+ * Fichier : data/resultat_presidentielles_par_commune_2012.csv
  *
  */
 object Winner extends App {

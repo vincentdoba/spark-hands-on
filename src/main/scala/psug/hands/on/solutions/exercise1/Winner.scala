@@ -1,7 +1,8 @@
 package psug.hands.on.solutions.exercise1
 
-import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.{Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
+import psug.hands.on.solutions.SparkContextInitiator
 
 /**
  * Determine who is the winner of the 2012 French presidential election
@@ -9,19 +10,27 @@ import org.apache.spark.{SparkConf, SparkContext}
  * Déterminer qui est le gagnant de l'élection présidentielle de 2012
  *
  * File : data/resultat_presidentielles_par_commune_2012.csv
+ * Fichier : data/resultat_presidentielles_par_commune_2012.csv
  *
  */
-object Winner extends App {
+object Winner extends App with CSVLoader with SparkContextInitiator {
 
-  val inputFile = args(0)
+  val sparkContext = initContext("Winner")
+  val dataFrame = getCSV(args(0))
 
-  val conf = new SparkConf().setMaster("local").setAppName("Winner")
-  val sc = new SparkContext(conf)
-  val sqlContext = new SQLContext(sc)
+  def getFirstCandidateResult(row: Row): (String, Integer) = getResults(row, 15, 17)
+  def getSecondCandidateResult(row: Row): (String, Integer) = getResults(row, 20, 22)
 
-  val df = sqlContext.load("com.databricks.spark.csv", Map("path" -> inputFile, "header" -> "true"))
-  println(df.columns)
+  def getResults(row: Row, nameColumnIndex: Int, votesColumnIndex: Int) = (row.getString(nameColumnIndex), Integer.valueOf(row.getString(votesColumnIndex)))
 
+  val winner = dataFrame
+    .flatMap(row => Array(getFirstCandidateResult(row), getSecondCandidateResult(row)))
+    .reduceByKey((a, b) => a + b)
+    .sortBy(_._2, false)
+    .first()
 
+  println(winner._1)
+
+  sparkContext.stop()
 
 }
