@@ -3,10 +3,18 @@ package psug.hands.on.solutions.exercise04
 import org.apache.spark.sql.SQLContext
 import psug.hands.on.solutions.SparkContextInitiator
 
+/**
+ * How are the densest department ?
+ *
+ * Quels sont les départements les plus peuplés ?
+ *
+ * file : data/departements.txt, data/demographie_par_commune.json
+ * fichier : data/departements.txt, data/demographie_par_commune.json
+ */
 object DensestDepartments extends App with SparkContextInitiator {
 
-  val dataFile = "data/demographie_par_commune.json"
   val departmentsFile = "data/departements.txt"
+  val dataFile = "data/demographie_par_commune.json"
 
   val sparkContext = initContext("densestDepartment")
   val sqlContext = new SQLContext(sparkContext)

@@ -8,6 +8,9 @@ package psug.hands.on.exercise02
  * File : data/resultat_presidentielles_par_commune_2012.csv
  * Fichier : data/resultat_presidentielles_par_commune_2012.csv
  *
+ * command : sbt "run-main psug.hands.on.exercise02.ElectionWinner"
+ * commande : sbt "run-main psug.hands.on.exercise02.ElectionWinner"
+ *
  */
 object ElectionWinner extends App {
 

@@ -7,6 +7,9 @@ package psug.hands.on.exercise01
  *
  * file : data/departements.txt
  * fichier : data/departements.txt
+ *
+ * command : sbt "run-main psug.hands.on.exercise01.DepartmentsCounter"
+ * commande : sbt "run-main psug.hands.on.exercise01.DepartmentsCounter"
  */
 object DepartmentsCounter extends App {
 

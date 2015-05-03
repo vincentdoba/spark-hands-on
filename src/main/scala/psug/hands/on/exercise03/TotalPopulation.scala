@@ -8,6 +8,8 @@ package psug.hands.on.exercise03
  * file : data/demographie_par_commune.json
  * fichier : data/demographie_par_commune.json
  *
+ * command : sbt "run-main psug.hands.on.exercise03.TotalPopulation"
+ * commande : sbt "run-main psug.hands.on.exercise03.TotalPopulation"
  */
 object TotalPopulation extends App {
 
