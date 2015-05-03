@@ -16,14 +16,6 @@
 * SBT 13 or higher
 * Your favorite scala IDE (For instance IntelliJ with Scala/SBT plugin)
 
-### Spark
-
-* [Download Spark distribution](http://www.apache.org/dyn/closer.cgi/spark/spark-1.3.1/spark-1.3.1-bin-hadoop2.6.tgz)
-* Extract it 
-```
-tar -xvf spark-1.3.1-bin-hadoop2.6.tgz
-```
-
 ### Project
 
 * Clone this repository
@@ -31,9 +23,9 @@ tar -xvf spark-1.3.1-bin-hadoop2.6.tgz
 git clone https://github.com/vincentdoba/spark-hands-on.git
 ```
 * Go at root of the cloned repository
-* Build the project
+* Run word count on this README file 
 ```
-sbt clean package
+sbt "run-main psug.hands.on.prerequisite.WordCount README.md"  
 ```
 
 

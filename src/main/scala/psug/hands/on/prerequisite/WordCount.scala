@@ -6,11 +6,11 @@ object WordCount extends App {
 
   val inputFile = args(0)
 
-  val conf = new SparkConf().setAppName("wordCount")
-  val sc = new SparkContext(conf)
+  val conf = new SparkConf().setMaster("local").setAppName("wordCount")
+  val sparkContext = new SparkContext(conf)
 
   // Load our input data.
-  val input =  sc.textFile(inputFile)
+  val input =  sparkContext.textFile(inputFile)
   // Split it up into words.
   val words = input.flatMap(line => line.split(" "))
   // Transform into pairs and count.
@@ -19,4 +19,6 @@ object WordCount extends App {
   val topTen: Array[(String, Int)] = counts.sortBy(_._2, false).take(10)
   // Print result
   topTen.map(println)
+  
+  sparkContext.stop()
 }
