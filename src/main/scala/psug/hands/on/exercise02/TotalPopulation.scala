@@ -1,4 +1,4 @@
-package psug.hands.on.exercise2
+package psug.hands.on.exercise02
 
 /**
  * Determine the total population in France
@@ -10,6 +10,10 @@ package psug.hands.on.exercise2
  *
  */
 object TotalPopulation extends App {
+
+  val population = ???
+
+  println("La France compte " + population + " habitants")
 
 
 

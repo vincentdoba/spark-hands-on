@@ -1,4 +1,4 @@
-package psug.hands.on.exercise1
+package psug.hands.on.exercise01
 
 /**
  * Determine who is the winner of the 2012 French presidential election
@@ -10,6 +10,10 @@ package psug.hands.on.exercise1
  *
  */
 object Winner extends App {
+
+  val winner = ???
+
+  println("le vainqueur de l'élection présidentielle de 2012 est " + winner)
 
 
 }

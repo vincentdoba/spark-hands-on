@@ -1,4 +1,4 @@
-package psug.hands.on.solutions.exercise1
+package psug.hands.on.solutions.exercise01
 
 import org.apache.spark.sql.Row
 import psug.hands.on.solutions.SparkContextInitiator
@@ -26,9 +26,9 @@ object Winner extends App with CSVLoader with SparkContextInitiator {
     .flatMap(row => Array(getFirstCandidateResult(row), getSecondCandidateResult(row)))
     .reduceByKey((a, b) => a + b)
     .sortBy(_._2, false)
-    .first()
+    .first()._1
 
-  println(winner._1)
+  println("le vainqueur de l'élection présidentielle de 2012 est " + winner)
 
   sparkContext.stop()
 

@@ -1,7 +1,7 @@
-package psug.hands.on.solutions.exercise3
+package psug.hands.on.solutions.exercise03
 
 import org.apache.spark.sql.SQLContext
-import psug.hands.on.solutions.exercise2.TotalPopulation._
+import psug.hands.on.solutions.exercise02.TotalPopulation._
 
 object DensestDepartments extends App {
 
