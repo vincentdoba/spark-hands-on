@@ -15,7 +15,7 @@ import psug.hands.on.solutions.SparkContextInitiator
 object ElectionWinner extends App with CSVLoader with SparkContextInitiator {
 
   val sparkContext = initContext("Winner")
-  val dataFrame = getCSV("data/resultat_presidentielles_par_commune_2012.csv")
+  val dataFrame = getCSV("data/resultat_presidentielles_par_commune_2012.csv") // TODO not use dataframe yet...
 
   def getFirstCandidateResult(row: Row): (String, Integer) = getResults(row, 15, 17)
   def getSecondCandidateResult(row: Row): (String, Integer) = getResults(row, 20, 22)

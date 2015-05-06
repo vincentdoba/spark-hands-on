@@ -21,7 +21,8 @@ object TotalPopulation extends App with SparkContextInitiator {
 
   val input = sqlContext.jsonFile(inputFile)
 
-  val population = input.filter("Population > 0").select("Population").map( row => row.getLong(0)).reduce((a,b) => a + b)
+  import org.apache.spark.sql.functions._
+  val population = input.filter("Population > 0").agg(sum("Population")).first().getLong(0)
 
   println("La France compte " + population + " habitants")
 
