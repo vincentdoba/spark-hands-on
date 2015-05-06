@@ -3,7 +3,7 @@ package psug.hands.on.solutions.exercise07
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.mllib.linalg.Vectors
-import org.apache.spark.sql.{Row, SQLContext}
+import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
 
 object MachineLearning extends App with SparkContextInitiator {
@@ -40,10 +40,19 @@ object MachineLearning extends App with SparkContextInitiator {
 
   predictions.registerTempTable("predictions")
 
-  val result: MachineLearningStats = sqlContext
+  val results = sqlContext
     .sql("SELECT predictions.name, category, prediction FROM predictions JOIN dataset ON dataset.name = predictions.name")
+    .cache()
+
+  val resultStats: MachineLearningStats = results
     .map(extractStats)
     .reduce((a, b) => a.aggregate(b))
+
+  val misLabeledCitiesExamples = results
+    .filter(results("category") !== results("prediction"))
+    .select("name", "category", "prediction")
+    .map(stringifyResultRow)
+    .take(10)
 
   def extractStats(row: Row) = {
     val total = 1
@@ -52,7 +61,14 @@ object MachineLearning extends App with SparkContextInitiator {
     MachineLearningStats(total, right, wrong)
   }
 
-  println("Accuracy is " + (result.right * 100 / result.total) + "%")
+  def stringifyResultRow(row:Row) = (row.getDouble(1), row.getDouble(2)) match {
+    case (1, 0) => row.getString(0) + " (actual >5000, labeled <5000)"
+    case (0, 1) => row.getString(0) + " (actual <5000, labeled >5000)"
+    case _ => "error, " + row.getString(0) + " is well labeled"
+  }
+
+  println("Accuracy is " + (resultStats.right * 100 / resultStats.total) + "%")
+  println("Examples of cities mislabeled : " + misLabeledCitiesExamples.mkString(", "))
 
   sparkContext.stop()
 
