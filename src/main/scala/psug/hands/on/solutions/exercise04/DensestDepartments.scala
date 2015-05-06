@@ -1,6 +1,7 @@
 package psug.hands.on.solutions.exercise04
 
 import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.types.{DoubleType, LongType}
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
@@ -21,13 +22,17 @@ object DensestDepartments extends App with SparkContextInitiator {
 
   val data = sqlContext.jsonFile(dataFile)
 
+  import sqlContext.implicits._
+  import org.apache.spark.sql.functions._
+
   val densestDepartmentsCodes = data
     .filter("Population > 0")
     .filter("Superficie > 0")
     .select("Departement", "Population", "Superficie")
-    .map(row => (row.getString(0),(row.getLong(1), row.getLong(2))))
-    .reduceByKey((a,b) => (a._1 + b._1, a._2 + b._2))
-    .map(tuple => (tuple._1, tuple._2._1 / tuple._2._2))
+    .groupBy("Departement")
+    .agg($"Departement", sum("Population").as("Population"), sum("Superficie").as("Superficie"))
+    .select($"Departement", ($"Population" / $"Superficie").cast(DoubleType))
+    .map(row => (row.getString(0), row.getDouble(1)))
   
   val departments = sparkContext.textFile(departmentsFile)
 
@@ -38,7 +43,8 @@ object DensestDepartments extends App with SparkContextInitiator {
   val densestDepartmentsNames = densestDepartmentsCodes
     .join(departmentsNamesByCode)
     .sortBy(_._2._1, false)
-    .map(_._2._2)
+    .values
+    .map(_._2)
     .take(10)
 
   println("Les départements les plus densément peuplés sont " + densestDepartmentsNames.mkString(", "))

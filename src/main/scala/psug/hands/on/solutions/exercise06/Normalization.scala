@@ -44,12 +44,10 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
     .map(_.features)
     .aggregate(List.fill[Extremes](featuresSize)(None))(aggregationReducer, aggregationMerger)
 
-  val normalizedData = populationData.map(normalize(minMaxList))
+  import sqlContext.implicits._
+  val normalizedData = populationData.map(normalize(minMaxList)).toDF()
 
-  val mapper = new ObjectMapper()
-  mapper.registerModule(DefaultScalaModule)
-
-  normalizedData.map(mapper.writeValueAsString(_)).saveAsTextFile(temporaryFile)
+  normalizedData.toJSON.saveAsTextFile(temporaryFile)
 
   merge(temporaryFile, normalizedValuesFile)
 
