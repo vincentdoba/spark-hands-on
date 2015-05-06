@@ -8,7 +8,7 @@ object DensestCityDemography extends App with SparkContextInitiator with Densest
 
   val populationDataFile = "data/demographie_par_commune.json"
 
-  val sparkContext = initContext("dataSetJoiner")
+  val sparkContext = initContext("densestCityDemography")
   val sqlContext = new SQLContext(sparkContext)
 
   val rawData = sqlContext.jsonFile(populationDataFile)

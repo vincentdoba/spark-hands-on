@@ -15,14 +15,13 @@ dist
 /.project
 /RUNNING_PID
 /.settings
-test-result
-test-results.xml
-/test/angular-test/*.xml
 *.DS_Store
 *.pyc
 *.class
 *.iml
 *.ipr
 /node_modules
-fac-stemi/
 play.data
+
+data/.normalized_features.json.crc
+data/normalized_features.json

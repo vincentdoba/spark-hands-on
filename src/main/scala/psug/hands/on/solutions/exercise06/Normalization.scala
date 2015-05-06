@@ -1,24 +1,32 @@
 package psug.hands.on.solutions.exercise06
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.spark.sql.SQLContext
 import psug.hands.on.exercise05.City
+import psug.hands.on.exercise06.DataSaver
 import psug.hands.on.solutions.SparkContextInitiator
 import psug.hands.on.solutions.exercise05.CityDemographyExtractor
 
 /**
- * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them
+ * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them and save it in
+ * a file
  *
  * file : data/demographie_par_commune.json
+ * output file : data/normalized_features.json
  *
  * command : sbt "run-main psug.hands.on.exercise06.Normalization"
  *
  */
-object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with Normalizer {
+object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with Normalizer with DataSaver {
 
   val populationDataFile = "data/demographie_par_commune.json"
+  val normalizedValuesFile = "data/normalized_features.json"
 
-  val sparkContext = initContext("dataSetJoiner")
+  val sparkContext = initContext("normalizer")
   val sqlContext = new SQLContext(sparkContext)
+
+  init(normalizedValuesFile)
 
   val rawData = sqlContext.jsonFile(populationDataFile)
 
@@ -38,9 +46,12 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
 
   val normalizedData = populationData.map(normalize(minMaxList))
 
-  val densestCityNormalized = normalizedData.sortBy(_.features.head, false).first()
+  val mapper = new ObjectMapper()
+  mapper.registerModule(DefaultScalaModule)
 
-  println(densestCityNormalized.features.mkString(", "))
+  normalizedData.map(mapper.writeValueAsString(_)).saveAsTextFile(temporaryFile)
+
+  merge(temporaryFile, normalizedValuesFile)
 
   sparkContext.stop()
 
