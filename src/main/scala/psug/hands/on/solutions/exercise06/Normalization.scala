@@ -32,7 +32,7 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
 
   val populationData = rawData
     .select("Commune","Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
-    .where(rawData("Superficie") > 0 && rawData("Population") > 500)
+    .where(rawData("Superficie") > 0 && rawData("Population") > 2000)
     .na
     .drop()
     .map(extractDemographicData)
