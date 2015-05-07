@@ -23,7 +23,7 @@ object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 
   val inputFile = "data/normalized_features.json"
 
-  val sparkContext = initContext("machineLearning")
+  val sparkContext = initContext("machineLearningMLLib")
   val sqlContext = new SQLContext(sparkContext)
 
   import org.apache.spark.sql.functions._
@@ -38,9 +38,9 @@ object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 
   val testData = sqlContext.sql("SELECT name, category, features FROM dataset EXCEPT SELECT name, category, features FROM training")
 
-  val model = LogisticRegressionWithSGD.train(trainingData.map(row => LabeledPoint(row.getDouble(1), Vectors.dense(row.getSeq[Double](2).toArray))), 10, 0.01)
+  val model = LogisticRegressionWithSGD.train(trainingData.map(row => LabeledPoint(row.getDouble(1), Vectors.dense(row.getSeq[Double](2).toArray))), 500, 0.01)
 
-  val results = trainingData.map(row => {
+  val results = testData.map(row => {
     val prediction = model.predict(Vectors.dense(row.getSeq[Double](2).toArray))
     (row.getString(0), row.getDouble(1), prediction)
   }).cache()

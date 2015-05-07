@@ -23,7 +23,7 @@ object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 
   val inputFile = "data/normalized_features.json"
 
-  val sparkContext = initContext("machineLearning")
+  val sparkContext = initContext("machineLearningSparkML")
   val sqlContext = new SQLContext(sparkContext)
 
   import org.apache.spark.sql.functions._
