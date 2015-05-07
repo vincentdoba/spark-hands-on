@@ -30,19 +30,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 ## Exercises
 
-### Exercise 1
-
-#### Description
-
-Count the number of departments in France, given a file containing the list of department
-
-#### Notions
-
-* Create a SparkContext
-* Load a simple text file
-* First action : count
-
-### TODO Exercise 2
+### TODO Exercise 1
 
 #### Description
 
@@ -52,6 +40,20 @@ Count the number of departments in France, given a file containing the list of d
 
 * Discover actions
 * Discover transformation
+
+### Exercise 2
+
+#### Description
+
+Display the departments whose name contains one of the four major rivers in France, by river's name, given a file containing the list of department
+
+#### Notions
+
+* Create a SparkContext
+* Load a simple text file
+* Create a Key/Value RDD
+* Transformation on Key/Value 
+* Action : collect
 
 ### Exercise 3
 
