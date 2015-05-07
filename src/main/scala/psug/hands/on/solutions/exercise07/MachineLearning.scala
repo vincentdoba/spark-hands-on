@@ -3,7 +3,7 @@ package psug.hands.on.solutions.exercise07
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.mllib.linalg.Vectors
-import org.apache.spark.sql.{DataFrame, Row, SQLContext}
+import org.apache.spark.sql.{Row, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
 
 object MachineLearning extends App with SparkContextInitiator {
