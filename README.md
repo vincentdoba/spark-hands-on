@@ -34,10 +34,11 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 #### Description
 
-?
+Determine, given the list of numbers from 1 to 75, the list of numbers from 25 to 100 and the list of prime numbers under 100, the sum of squares of numbers under 100 that are not primes.
 
 #### Notions
 
+* Create RDD from List
 * Discover actions
 * Discover transformation
 
