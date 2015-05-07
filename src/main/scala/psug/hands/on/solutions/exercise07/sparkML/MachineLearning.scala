@@ -3,9 +3,9 @@ package psug.hands.on.solutions.exercise07.sparkML
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
-import org.apache.spark.sql.{DataFrame, Row, SQLContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
-import psug.hands.on.solutions.exercise07.{MachineLearningStats, MLHelpers}
+import psug.hands.on.solutions.exercise07.{MLHelpers, MachineLearningStats}
 
 /**
  * Apply a Linear Regression model trained using 500 cities picked randomly among the list of cities having more than
@@ -17,7 +17,7 @@ import psug.hands.on.solutions.exercise07.{MachineLearningStats, MLHelpers}
  *
  * file : normalized_features.json
  *
- * command : sbt "run-main psug.hands.on.solutions.exercise07.MachineLearning"
+ * command : sbt "run-main psug.hands.on.solutions.exercise07.sparkML.MachineLearning"
  */
 object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 
