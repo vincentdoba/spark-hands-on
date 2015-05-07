@@ -4,6 +4,23 @@ import org.apache.spark.sql.{Row, SQLContext}
 import psug.hands.on.exercise05.{City, DensestCityDisplayer}
 import psug.hands.on.solutions.SparkContextInitiator
 
+/**
+ * Find the densest city in France, and display the following information :
+ * <ul>
+ *   <li>City name</li>
+ *   <li>City density</li>
+ *   <li>If the city has more than 5000 inhabitants</li>
+ *   <li>Percentage of executives</li>
+ *   <li>Percentage of employees</li>
+ *   <li>Percentage of workers</li>
+ *   <li>Percentage of farmers</li>
+ * </ul>
+ *
+ * file : data/demographie_par_commune.json
+ *
+ * command : sbt "run-main psug.hands.on.solutions.exercise05.DensestCityDemography"
+ *
+ */
 object DensestCityDemography extends App with SparkContextInitiator with DensestCityDisplayer with CityDemographyExtractor {
 
   val populationDataFile = "data/demographie_par_commune.json"

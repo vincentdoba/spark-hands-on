@@ -15,7 +15,7 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  * file : data/demographie_par_commune.json
  * output file : data/normalized_features.json
  *
- * command : sbt "run-main psug.hands.on.exercise06.Normalization"
+ * command : sbt "run-main psug.hands.on.solutions.exercise06.Normalization"
  *
  */
 object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with Normalizer with DataSaver {

@@ -11,6 +11,9 @@ import psug.hands.on.solutions.SparkContextInitiator
  * file : data/demographie_par_commune.json
  * fichier : data/demographie_par_commune.json
  *
+ * command : sbt "run-main psug.hands.on.solutions.exercise03.TotalPopulation"
+ * commande : sbt "run-main psug.hands.on.solutions.exercise03.TotalPopulation"
+ *
  */
 object TotalPopulation extends App with SparkContextInitiator {
 
