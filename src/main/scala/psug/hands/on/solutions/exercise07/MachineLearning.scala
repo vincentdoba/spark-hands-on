@@ -25,14 +25,14 @@ object MachineLearning extends App with SparkContextInitiator {
 
   val testData = sqlContext.sql("SELECT name, features FROM dataset EXCEPT SELECT name, features FROM training")
 
-  val lr = new LogisticRegression()
+  val logisticRegression = new LogisticRegression()
     .setMaxIter(10)
     .setRegParam(0.01)
     .setFeaturesCol("features")
     .setLabelCol("category")
 
   val pipeline = new Pipeline()
-    .setStages(Array(lr))
+    .setStages(Array(logisticRegression))
 
   val model = pipeline.fit(trainingData.select(trainingData("name"), toVector(trainingData("features")).as("features"), trainingData("category")))
 
