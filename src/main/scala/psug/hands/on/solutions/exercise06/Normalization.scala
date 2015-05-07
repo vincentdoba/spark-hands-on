@@ -20,15 +20,15 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  */
 object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with Normalizer with DataSaver {
 
-  val populationDataFile = "data/demographie_par_commune.json"
-  val normalizedValuesFile = "data/normalized_features.json"
+  val inputFile = "data/demographie_par_commune.json"
+  val outputFile = "data/normalized_features.json"
 
   val sparkContext = initContext("normalizer")
   val sqlContext = new SQLContext(sparkContext)
 
-  init(normalizedValuesFile)
+  init(outputFile)
 
-  val rawData = sqlContext.jsonFile(populationDataFile)
+  val rawData = sqlContext.jsonFile(inputFile)
 
   val populationData = rawData
     .select("Commune","Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
@@ -49,7 +49,7 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
 
   normalizedData.toJSON.saveAsTextFile(temporaryFile)
 
-  merge(temporaryFile, normalizedValuesFile)
+  merge(temporaryFile, outputFile)
 
   sparkContext.stop()
 

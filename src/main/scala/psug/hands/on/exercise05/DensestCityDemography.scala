@@ -19,7 +19,9 @@ package psug.hands.on.exercise05
  */
 object DensestCityDemography extends App  with DensestCityDisplayer {
 
-  val densestCity:City = ???
+  val inputFile = "data/demographie_par_commune.json"
+
+  val densestCity:City = ??? // TODO extract densest city in France and its characteristics (name, has more than 5000 inhabitants...)
 
   displayDensestCity(densestCity)
   

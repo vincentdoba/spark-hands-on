@@ -4,6 +4,7 @@ import java.io.File
 
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs._
+import psug.hands.on.solutions.exercise06.Normalization._
 
 /**
  * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them
@@ -14,6 +15,13 @@ import org.apache.hadoop.fs._
  *
  */
 object Normalization extends App with DataSaver {
+
+  val inputFile = "data/demographie_par_commune.json"
+  val outputFile = "data/normalized_features.json"
+
+  // TODO populate temporary file with rows such as a row is a json representing a City object whose features have been normalized
+
+  merge(temporaryFile, outputFile)
 
 }
 

@@ -13,7 +13,9 @@ package psug.hands.on.exercise03
  */
 object TotalPopulation extends App {
 
-  val population = ???
+  val inputFile = "data/demographie_par_commune.json"
+
+  val population:Long = ??? // TODO extract total population in France in 2010
 
   println("La France compte " + population + " habitants")
 

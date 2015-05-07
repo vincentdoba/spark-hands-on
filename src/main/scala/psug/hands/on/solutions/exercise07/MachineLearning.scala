@@ -3,7 +3,7 @@ package psug.hands.on.solutions.exercise07
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.mllib.linalg.Vectors
-import org.apache.spark.sql.{Row, SQLContext}
+import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
@@ -20,7 +20,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  */
 object MachineLearning extends App with SparkContextInitiator {
 
-  val normalizedFeaturesFile = "data/normalized_features.json"
+  val inputFile = "data/normalized_features.json"
 
   val sparkContext = initContext("machineLearning")
   val sqlContext = new SQLContext(sparkContext)
@@ -29,10 +29,10 @@ object MachineLearning extends App with SparkContextInitiator {
 
   val toVector = udf[org.apache.spark.mllib.linalg.Vector, Seq[Double]](seq => Vectors.dense(seq.toArray))
 
-  val normalizedFeatures = sqlContext.jsonFile(normalizedFeaturesFile)
+  val normalizedFeatures = sqlContext.jsonFile(inputFile)
   normalizedFeatures.registerTempTable("dataset")
 
-  val trainingData = normalizedFeatures.sample(false, 0.1)
+  val trainingData:DataFrame = normalizedFeatures.sample(false, 0.1)
   trainingData.registerTempTable("training")
 
   val testData = sqlContext.sql("SELECT name, features FROM dataset EXCEPT SELECT name, features FROM training")
@@ -68,9 +68,11 @@ object MachineLearning extends App with SparkContextInitiator {
 
   def extractStats(row: Row) = {
     val total = 1
-    val right = if (row.getDouble(1) == row.getDouble(2)) 1 else 0
-    val wrong = 1 - right
-    MachineLearningStats(total, right, wrong)
+    val correctlyLabeled = if (row.getDouble(1) == row.getDouble(2)) 1 else 0
+    val positive = if (row.getDouble(1) == 1) 1 else 0
+    val positiveCorrectlyLabeled = if (row.getDouble(1) == 1 && row.getDouble(2) == 1) 1 else 0
+    val positiveLabeled = if (row.getDouble(2) == 1) 1 else 0
+    MachineLearningStats(total, correctlyLabeled, positive, positiveCorrectlyLabeled, positiveLabeled)
   }
 
   def stringifyResultRow(row:Row) = (row.getDouble(1), row.getDouble(2)) match {
@@ -79,16 +81,29 @@ object MachineLearning extends App with SparkContextInitiator {
     case _ => "error, " + row.getString(0) + " is well labeled"
   }
 
-  println("Accuracy is " + (resultStats.right * 100 / resultStats.total) + "%")
+  val accuracy:Long = resultStats.correctlyLabeled * 100 / resultStats.total
+  val precision:Long = resultStats.positiveCorrectlyLabeled * 100 / resultStats.positive
+  val recall:Long = resultStats.positiveCorrectlyLabeled * 100 / resultStats.positiveLabeled
+
+  println("Total well labeled cities percentage is " + accuracy  + "%")
+  println("Precision percentage for >5000 cities category is " + precision  + "%")
+  println("Recall percentage for >5000 cities category is " + recall  + "%")
+  println("F-Score for >5000 cities is " + (2*recall*precision/(precision+recall)) + " %")
   println("Examples of cities mislabeled : " + misLabeledCitiesExamples.mkString(", "))
 
   sparkContext.stop()
 
 }
 
-case class MachineLearningStats(total: Int, right: Int, wrong: Int) {
+case class MachineLearningStats(total: Int, correctlyLabeled: Int, positive: Int, positiveCorrectlyLabeled: Int, positiveLabeled:Int) {
 
-  def aggregate(that: MachineLearningStats) = MachineLearningStats(this.total + that.total, this.right + that.right, this.wrong + that.wrong)
+  def aggregate(that: MachineLearningStats) = MachineLearningStats(
+    this.total + that.total, 
+    this.correctlyLabeled + that.correctlyLabeled,
+    this.positive + that.positive, 
+    this.positiveCorrectlyLabeled + that.positiveCorrectlyLabeled,
+    this.positiveLabeled + that.positiveLabeled
+  )
 
 }
 

@@ -23,12 +23,12 @@ import psug.hands.on.solutions.SparkContextInitiator
  */
 object DensestCityDemography extends App with SparkContextInitiator with DensestCityDisplayer with CityDemographyExtractor {
 
-  val populationDataFile = "data/demographie_par_commune.json"
+  val inputFile = "data/demographie_par_commune.json"
 
   val sparkContext = initContext("densestCityDemography")
   val sqlContext = new SQLContext(sparkContext)
 
-  val rawData = sqlContext.jsonFile(populationDataFile)
+  val rawData = sqlContext.jsonFile(inputFile)
 
   val populationData = rawData
     .select("Commune","Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")

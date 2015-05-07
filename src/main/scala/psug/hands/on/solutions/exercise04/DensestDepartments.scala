@@ -18,12 +18,12 @@ import psug.hands.on.solutions.SparkContextInitiator
 object DensestDepartments extends App with SparkContextInitiator {
 
   val departmentsFile = "data/departements.txt"
-  val dataFile = "data/demographie_par_commune.json"
+  val inputFile = "data/demographie_par_commune.json"
 
   val sparkContext = initContext("densestDepartment")
   val sqlContext = new SQLContext(sparkContext)
 
-  val data = sqlContext.jsonFile(dataFile)
+  val data = sqlContext.jsonFile(inputFile)
 
   import sqlContext.implicits._
   import org.apache.spark.sql.functions._
@@ -43,14 +43,14 @@ object DensestDepartments extends App with SparkContextInitiator {
     .map(line => line.split(","))
     .map(a => (a(1), a(0)))
 
-  val densestDepartmentsNames = densestDepartmentsCodes
+  val densestDepartments:Iterable[String] = densestDepartmentsCodes
     .join(departmentsNamesByCode)
     .sortBy(_._2._1, false)
     .values
     .map(_._2)
     .take(10)
 
-  println("Les départements les plus densément peuplés sont " + densestDepartmentsNames.mkString(", "))
+  println("Les départements les plus densément peuplés sont " + densestDepartments.mkString(", "))
 
   sparkContext.stop()
 
