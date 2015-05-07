@@ -3,10 +3,7 @@
 ## Summary
 
 1. Prerequisite
-2. Load Datasets
-3. Small exercices on datasets
-4. Machine Learning
-
+2. Exercices
 
 ## Prerequisite
 
@@ -30,7 +27,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 ## Exercises
 
-### TODO Exercise 1
+### Exercise 1
 
 #### Description
 
