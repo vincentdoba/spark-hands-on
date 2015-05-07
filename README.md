@@ -109,7 +109,7 @@ in total population, percentage of workers, percentage of employees and percenta
 
 #### Notions
 
-* New Spark Machine Learning Library
+* Spark Machine Learning Library (MLLib)
 
 ### TODO : Exercise 8
 
