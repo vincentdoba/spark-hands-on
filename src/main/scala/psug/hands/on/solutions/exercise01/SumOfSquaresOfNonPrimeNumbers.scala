@@ -7,7 +7,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  *
  * For instance, the same sum but for numbers that are under 10 is 1² + 4² + 6² + 8² + 9² + 10² = 308
  *
- * command : sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
+ * command : sbt "run-main psug.hands.on.solutions.exercise01.SumOfSquaresOfNonPrimeNumbers"
  *
  */
 object SumOfSquaresOfNonPrimeNumbers extends App with SparkContextInitiator {
