@@ -42,7 +42,7 @@ Count the number of departments in France, given a file containing the list of d
 * Load a simple text file
 * First action : count
 
-### Exercise 2
+### TODO Exercise 2
 
 #### Description
 
@@ -53,67 +53,67 @@ Count the number of departments in France, given a file containing the list of d
 * Discover actions
 * Discover transformation
 
-#### Exercise 3
+### Exercise 3
 
-##### Description
+#### Description
 
 How many inhabitants has France ?
 
-##### Notions
+#### Notions
 
 * Create Spark SQL context
 * Load a JSON file
 * First actions and transformations on DataFrames
 
-#### Exercise 4
+### Exercise 4
 
-##### Description
+#### Description
 
 What are the ten densest departments in France ?
 
-##### Notions
+#### Notions
 
 * DataFrames actions and transformations
 * Join
 
-#### Exercise 5
+### Exercise 5
 
-##### Description
+#### Description
 
 What are the characteristics of the densest city in France ? Preparation of features for Machine Learning Algorithms
 
-##### Notions
+#### Notions
 
 * Some transformations on DataFrames
 
-#### Exercise 6
+### Exercise 6
 
-##### Description
+#### Description
 
 Normalize data for a Machine Learning algorithm
 
-##### Notions
+#### Notions
 
 * Aggregate function
 * Save to a JSON file
 
-#### Exercise 7
+### Exercise 7
 
-##### Description
+#### Description
 
 Guess which cities in France have more than 5000 inhabitants given some features such as Density, percentage of executives
 in total population, percentage of workers, percentage of employees and percentage of farmers
 
-##### Notions
+#### Notions
 
 * New Spark Machine Learning Library
 
-#### TODO : Exercise 8
+### TODO : Exercise 8
 
-##### Description
+#### Description
 
 Run spark script on a spark cluster
 
-##### Notions
+#### Notions
 
 * Spark deployment and usage
