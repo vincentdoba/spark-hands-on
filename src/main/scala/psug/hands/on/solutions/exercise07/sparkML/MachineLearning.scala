@@ -1,10 +1,11 @@
-package psug.hands.on.solutions.exercise07
+package psug.hands.on.solutions.exercise07.sparkML
 
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
-import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.sql.{DataFrame, Row, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
+import psug.hands.on.solutions.exercise07.{MachineLearningStats, MLHelpers}
 
 /**
  * Apply a Linear Regression model trained using 500 cities picked randomly among the list of cities having more than
@@ -18,7 +19,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise07.MachineLearning"
  */
-object MachineLearning extends App with SparkContextInitiator {
+object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 
   val inputFile = "data/normalized_features.json"
 
@@ -27,7 +28,7 @@ object MachineLearning extends App with SparkContextInitiator {
 
   import org.apache.spark.sql.functions._
 
-  val toVector = udf[org.apache.spark.mllib.linalg.Vector, Seq[Double]](seq => Vectors.dense(seq.toArray))
+  val toVector = udf[Vector, Seq[Double]](seq => Vectors.dense(seq.toArray))
 
   val normalizedFeatures = sqlContext.jsonFile(inputFile)
   normalizedFeatures.registerTempTable("dataset")
@@ -66,44 +67,13 @@ object MachineLearning extends App with SparkContextInitiator {
     .map(stringifyResultRow)
     .take(10)
 
-  def extractStats(row: Row) = {
-    val total = 1
-    val correctlyLabeled = if (row.getDouble(1) == row.getDouble(2)) 1 else 0
-    val positive = if (row.getDouble(1) == 1) 1 else 0
-    val positiveCorrectlyLabeled = if (row.getDouble(1) == 1 && row.getDouble(2) == 1) 1 else 0
-    val positiveLabeled = if (row.getDouble(2) == 1) 1 else 0
-    MachineLearningStats(total, correctlyLabeled, positive, positiveCorrectlyLabeled, positiveLabeled)
-  }
+  displayResults(resultStats, misLabeledCitiesExamples)
 
-  def stringifyResultRow(row:Row) = (row.getDouble(1), row.getDouble(2)) match {
-    case (1, 0) => row.getString(0) + " (actual >5000, labeled <5000)"
-    case (0, 1) => row.getString(0) + " (actual <5000, labeled >5000)"
-    case _ => "error, " + row.getString(0) + " is well labeled"
-  }
 
-  val accuracy:Long = resultStats.correctlyLabeled * 100 / resultStats.total
-  val precision:Long = resultStats.positiveCorrectlyLabeled * 100 / resultStats.positive
-  val recall:Long = resultStats.positiveCorrectlyLabeled * 100 / resultStats.positiveLabeled
 
-  println("Total well labeled cities percentage is " + accuracy  + "%")
-  println("Precision percentage for >5000 cities category is " + precision  + "%")
-  println("Recall percentage for >5000 cities category is " + recall  + "%")
-  println("F-Score for >5000 cities is " + (2*recall*precision/(precision+recall)) + " %")
-  println("Examples of cities mislabeled : " + misLabeledCitiesExamples.mkString(", "))
 
   sparkContext.stop()
 
 }
 
-case class MachineLearningStats(total: Int, correctlyLabeled: Int, positive: Int, positiveCorrectlyLabeled: Int, positiveLabeled:Int) {
-
-  def aggregate(that: MachineLearningStats) = MachineLearningStats(
-    this.total + that.total, 
-    this.correctlyLabeled + that.correctlyLabeled,
-    this.positive + that.positive, 
-    this.positiveCorrectlyLabeled + that.positiveCorrectlyLabeled,
-    this.positiveLabeled + that.positiveLabeled
-  )
-
-}
 
