@@ -528,9 +528,9 @@ val sqlContext = new SQLContext(sparkContext)
 val input:DataFrame = sqlContext.jsonFile(filePath)
   \end{lstlisting}
 
-  \begin{lstlisting}[label=SpecialSQLFunction, caption=Special SQL Function, language=scala, style=code]
+  \begin{lstlisting}[label=AggregationByFunction, caption=Aggregation by a SQL Function, language=scala, style=code]
 import org.apache.spark.sql.functions._
-val resultColumn:Column = sum("columnName")
+val newDataFrame:DataFrame = oldDataFrame.agg(sum("ColumnName"))
   \end{lstlisting}
 
 \end{frame}
@@ -631,6 +631,77 @@ Hautes-Alpes,05
     \end{verbatim}
   \end{block}
 
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions}
+
+  \begin{lstlisting}[label=ExtractValueFromARow, caption=Extract value from a Row, language=scala, style=code]
+def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.getDouble(columnIndex2)))
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=DataFrameToRDD, caption=Transform a Data Frame to RDD, language=scala, style=code]
+val rdd = dataFrame.map(row => f(row))
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=changeNameSelectedColumn, caption=Change name of a column, language=scala, style=code]
+val newDataFrame = oldDataFrame.select(oldDataFrame("columnName").as("newColumnName"))
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{New Data Frame Transformations}
+
+  \begin{block}{Transformations}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{select} & \textit{df1.select("column1", "column2", "column3")} & Transform data frame to a new data frame with columns specified as argument \\ \hline
+        \textbf{groupBy} & \textit{df1.groupBy(\newline"columnName"\newline)} & Similar to GroupByKey, group by elements of column columnName \\ \hline
+        \textbf{join} & \textit{rdd1[(K,V1)]\newline  .join(rdd2[(K,V2)])} & Join the two RDD to one RDD, new value is the tuple of the two old values \\ \hline
+        \textbf{sortBy} & \textit{rdd1[T]\newline  .sortBy(f: (T) =\textgreater\xspace K )} & Sort by the function f \\ \hline
+        \textbf{values} & \textit{rdd1.values()} & Transform a Key/Value RDD to a RDD containing only values \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{New RDD Action}
+
+  \begin{block}{Actions}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{take} & \textit{rdd1.take(n:Int)} & return n elements of RDD (in case of Data Frame, return n rows) \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Command}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise04.DensestDepartments"
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] Les departements les plus densement peuples sont Paris, Hauts-de-Seine, Seine-Saint-Denis, Val-de-Marne, Val-d'Oise, Essonne, Yvelines, Rhone, Nord, Bouches-du-Rhone
+[success] Total time: 17 s, completed 9 mai 2015 01:17:31
+    \end{lstlisting}
+  \end{block}
 
 \end{frame}
 
