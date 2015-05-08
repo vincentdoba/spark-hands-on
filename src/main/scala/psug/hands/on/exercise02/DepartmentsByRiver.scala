@@ -1,7 +1,7 @@
 package psug.hands.on.exercise02
 
 /**
- * How are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
+ * Which are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
  *
  * Quels sont les départements dont le nom contient Seine ? Loire ? Garonne ? Rhône ?
  *

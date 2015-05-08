@@ -15,7 +15,7 @@
 \usepackage{pinyin}
 \usepackage{algorithm,algorithmic}
 \usepackage{hyperref}
-\usepackage{listings}
+\usepackage{listingsutf8}
 \usepackage{caption}
 \usepackage{xspace}
 
@@ -30,34 +30,35 @@
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
 
 \lstset{
-         basicstyle=\footnotesize\ttfamily,
-         numberstyle=\tiny,          
-         numbersep=5pt,              
-         tabsize=2,                  
-         extendedchars=true,         
-         breaklines=true,            
-         keywordstyle=\color{red},
-         showspaces=false,           
-         showtabs=false,             
-         xleftmargin=17pt,
-         xrightmargin=17pt,
-         framexleftmargin=5pt,
-         framexrightmargin=5pt,
-         framexbottommargin=4pt,
-         showstringspaces=false      
+   basicstyle=\footnotesize\ttfamily,
+   numberstyle=\tiny,          
+   numbersep=5pt,              
+   tabsize=2,                  
+   extendedchars=true,         
+   breaklines=true,            
+   keywordstyle=\color{red},
+   showspaces=false,           
+   showtabs=false,             
+   xleftmargin=17pt,
+   xrightmargin=17pt,
+   framexleftmargin=5pt,
+   framexrightmargin=5pt,
+   framexbottommargin=4pt,
+   showstringspaces=false,
+   inputencoding=utf8/latin1      
  }
 
 \lstdefinestyle{terminal}
 {
-    backgroundcolor=\color{black},
-    basicstyle=\scriptsize\color{white}\ttfamily
+  backgroundcolor=\color{black},
+  basicstyle=\scriptsize\color{white}\ttfamily
 }
 
 \lstdefinestyle{code}
 {
-    frame=b,
-    numbers=left,
-    morecomment=[is]{/\*}{\*/}
+  frame=b,
+  numbers=left,
+  morecomment=[is]{/\*}{\*/}
 }
 
 % "define" Scala
@@ -231,7 +232,9 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
   \frametitle{New Notions (1)}
 
   \begin{lstlisting}[label=InitSparkContext, caption=Init Spark Context, language=scala, style=code]
-val conf = new SparkConf().setMaster("local").setAppName("applicationName")
+val conf = new SparkConf()
+  .setMaster("local")
+  .setAppName("applicationName")
 val sparkContext = new SparkContext(conf)
   \end{lstlisting}
 
@@ -264,7 +267,7 @@ sparkContext.stop()
 
   \begin{block}{Transformations}
     \begin{center}
-      \begin{tabular}{|p{2.1cm}|p{3.5cm}|p{5cm}|}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
         \textbf{union} & \textit{rdd1.union(rdd2)} & merge the two rdds \\ \hline
@@ -277,7 +280,7 @@ sparkContext.stop()
 
   \begin{block}{Actions}
     \begin{center}
-      \begin{tabular}{|p{2.1cm}|p{3.5cm}|p{5cm}|}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
         \textbf{sum} & \textit{rdd1.sum()} & sum the elements of RDD \\ \hline
@@ -306,6 +309,95 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 \end{frame}
 
 \section{Exercise 2 : Key/Values RDD, File Loading}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We dispose of a data file containing the list of French departments. Which are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Load a file using a Spark Context
+      \item New Actions and Transformations
+      \item How to transform an RDD to a Key/Value RDD
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise1,caption=/src/main/scala/psug/hands/on/exercise02/DepartmentsByRiver.scala]{../src/main/scala/psug/hands/on/exercise02/DepartmentsByRiver.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions}
+
+  \begin{lstlisting}[label=LoadTextFile, caption=Load Text File, language=scala, style=code]
+val rdd:RDD[String] = sparkContext.textFile("filePath")
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=TransformToKeyValue, caption=Transform RDD to a Key/Value RDD, language=scala, style=code]
+val keyValueRdd1:RDD[(K,V)] = oldRdd[T].map(f: (T) => (K,V))
+val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
+  .flatMap(f: (T) => TraversableOnce[(K,V)])
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{New Transformations and Actions}
+
+  \begin{block}{Transformations}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{flatMap} & \textit{rdd1.flatMap(f: (T) =\textgreater\xspace TraversableOnce[U])} & apply function f and flatten \\ \hline
+        \textbf{groupByKey} & \textit{rdd1[(K,V)].groupByKey()} & create an RDD containing tuples (K, Seq(V)) \\ \hline
+        \textbf{sortByKey} & \textit{rdd1[(K,V)].sortByKey()} & sort rdd1 by key \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+  \begin{block}{Actions}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{collect} & \textit{rdd1.collect()} & retrieve all elements of RDD as Array \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Command}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] Les departements dont le nom contient Garonne sont Haute-Garonne, Lot-et-Garonne, Tarn-et-Garonne
+[info] Les departements dont le nom contient Loire sont Indre-et-Loire, Loire, Haute-Loire, Loire-Atlantique, Loiret, Maine-et-Loire, Saone-et-Loire
+[info] Les departements dont le nom contient Rhone sont Bouches-du-Rhone, Rhone
+[info] Les departements dont le nom contient Seine sont Seine-Maritime, Seine-et-Marne, Hauts-de-Seine, Seine-Saint-Denis
+[success] Total time: 8 s, completed 8 mai 2015 22:03:26
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
+
 \section{Exercise 3 : Spark SQL Context, JSON Loading, DataFrames}
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
 \section{Exercise 5 : Transformations/Actions on DataFrames}
