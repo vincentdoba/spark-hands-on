@@ -25,3 +25,11 @@ play.data
 
 data/.normalized_features.json.crc
 data/normalized_features.json
+
+/presentation/*.log
+/presentation/*.aux
+/presentation/*.nav
+/presentation/*.out
+/presentation/*.pdf
+/presentation/*.toc
+/presentation/*.snm
