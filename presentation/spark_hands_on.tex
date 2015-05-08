@@ -207,7 +207,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
   \frametitle{Presentation of Exercise}
 
   \begin{block}{Statement}
-    We dispose of three lists : first list contains the integers from 1 to 75, second list contains the integers from 25 to 100, and the third list contains primes under 100. We want to obtain the sum of square of integers that are under 100 and are not prime.
+    We have three lists : first list contains the integers from 1 to 75, second list contains the integers from 25 to 100, and the third list contains primes under 100. We want to obtain the sum of square of integers that are under 100 and are not prime.
   \end{block}
 
   \begin{block}{What you will learn}
@@ -314,7 +314,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
   \frametitle{Presentation of Exercise}
 
   \begin{block}{Statement}
-    We dispose of a data file containing the list of French departments. Which are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
+    We have a text file containing the list of French departments. Which are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
   \end{block}
 
   \begin{block}{What you will learn}
@@ -330,7 +330,33 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 \begin{frame}
   \frametitle{Exercise Code}
 
-  \lstinputlisting[language=scala, style=code, label=Exercise1,caption=/src/main/scala/psug/hands/on/exercise02/DepartmentsByRiver.scala]{../src/main/scala/psug/hands/on/exercise02/DepartmentsByRiver.scala}
+  \lstinputlisting[language=scala, style=code, label=Exercise2,caption=/src/main/scala/psug/hands/on/exercise02/DepartmentsByRiver.scala]{../src/main/scala/psug/hands/on/exercise02/DepartmentsByRiver.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{departements.txt File}
+
+  \begin{verbatim}
+Ain,01
+Aisne,02
+Allier,03
+Alpes-de-Haute-Provence,04
+Hautes-Alpes,05
+Alpes-Maritimes,06
+Ardèche,07
+Ardennes,08
+Ariège,09
+Aube,10
+Aude,11
+Aveyron,12
+Bouches-du-Rhône,13
+Calvados,14
+Cantal,15
+Charente,16
+Charente-Maritime,17
+...
+  \end{verbatim}
 
 \end{frame}
 
@@ -358,6 +384,7 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{filter} & \textit{rdd1.filter(f: (T) =\textgreater\xspace boolean)} & filter by function f \\ \hline
         \textbf{flatMap} & \textit{rdd1.flatMap(f: (T) =\textgreater\xspace TraversableOnce[U])} & apply function f and flatten \\ \hline
         \textbf{groupByKey} & \textit{rdd1[(K,V)].groupByKey()} & create an RDD containing tuples (K, Seq(V)) \\ \hline
         \textbf{sortByKey} & \textit{rdd1[(K,V)].sortByKey()} & sort rdd1 by key \\ \hline
@@ -399,6 +426,56 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 \end{frame}
 
 \section{Exercise 3 : Spark SQL Context, JSON Loading, DataFrames}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We have a JSON file containing the list of French cities with population. What is the total population of France ?
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Initialize Spark SQL Context
+      \item Load DataFrames from JSON File with a Spark SQL Context
+      \item First Actions and Transformations on DataFrames
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise3,caption=/src/main/scala/psug/hands/on/exercise03/TotalPopulation.scala]{../src/main/scala/psug/hands/on/exercise03/TotalPopulation.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{demographie\_par\_commune.json File}
+
+  \begin{verbatim}
+{"CodeInsee":"01001",[...],"Population":784,[...]}
+{"CodeInsee":"01002",[...],"Population":221,[...]}
+{"CodeInsee":"01004",[...],"Population":13835,[...]}
+{"CodeInsee":"01005",[...],"Population":1616,[...]}
+{"CodeInsee":"01006",[...],"Population":116,[...]}
+{"CodeInsee":"01007",[...],"Population":2362,[...]}
+{"CodeInsee":"01008",[...],"Population":729,[...]}
+{"CodeInsee":"01009",[...],"Population":340,[...]}
+{"CodeInsee":"01010",[...],"Population":994,[...]}
+{"CodeInsee":"01011",[...],"Population":363,[...]}
+{"CodeInsee":"01012",[...],"Population":302,[...]}
+{"CodeInsee":"01013",[...],"Population":163,[...]}
+{"CodeInsee":"01014",[...],"Population":3476,[...]}
+{"CodeInsee":"01015",[...],"Population":480,[...]}
+{"CodeInsee":"01016",[...],"Population":399,[...]}
+{"CodeInsee":"01017",[...],"Population":421,[...]}
+{"CodeInsee":"01019",[...],"Population":20,[...]}
+...
+  \end{verbatim}
+\end{frame}
+
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
 \section{Exercise 5 : Transformations/Actions on DataFrames}
 \section{Exercise 6 : Saving JSON file}
