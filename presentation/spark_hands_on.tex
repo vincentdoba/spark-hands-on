@@ -160,6 +160,44 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+\begin{frame}
+  \frametitle{Important Notions}
+
+  \begin{block}{Vocabulary}
+    \begin{itemize}
+      \item \textbf{Spark Conf} Configuration of the Spark Context, here contains application name and master to call
+      \item \textbf{Spark Context} Main entry point, represents the connection to a Spark Cluster, used to create RDDs/Load file
+      \item \textbf{Resilient Distribued Dataset} Spark Dataset on which we can apply actions and transformations
+      \item \textbf{Transformations} functions that transform RDD to another RDD
+      \item \textbf{Actions} functions that transform an RDD to output data
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Important Notions}
+
+  \begin{block}{Spark Scripting How To}
+    \begin{itemize}
+      \item Initiate a Spark Context
+      \item Load a dataset and transform it to RDD thanks to the Spark Context
+      \item Register Transformations on RDD
+      \item Apply an Action to transformed RDD
+      \item Do whatever you want with data obtained after 
+      \item Stop Spark Context
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{SBT Configuration}
+
+  \lstinputlisting[language=scala, style=code, label=WordCount,caption=/build.sbt]{../build.sbt}
+
+\end{frame}
+
 \section{Exercise 1 : Spark basis (SparkContext, RDD, Transformation, Action)}
 \section{Exercise 2 : Key/Values RDD, File Loading}
 \section{Exercise 3 : Spark SQL Context, JSON Loading, DataFrames}

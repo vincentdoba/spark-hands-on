@@ -31,4 +31,6 @@ object SumOfSquaresOfNonPrimeNumbers extends App with SparkContextInitiator {
 
   println(s"The sum of square of numbers that are not prime and are under 100 is $sumOfSquareOfNonPrimeNumbers")
 
+  sparkContext.stop()
+
 }
