@@ -16,6 +16,7 @@
 \usepackage{algorithm,algorithmic}
 \usepackage{hyperref}
 \usepackage{listings}
+\usepackage{caption}
 
 \usetheme{JuanLesPins}
 \useoutertheme{infolines}
@@ -23,36 +24,57 @@
 %\usetheme{Boadilla}
 \setbeamerfont{structure}{size*={11}{11}}
 
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
 \lstset{
-         basicstyle=\footnotesize\ttfamily, % Standardschrift
-         %numbers=left,               % Ort der Zeilennummern
-         numberstyle=\tiny,          % Stil der Zeilennummern
-         %stepnumber=2,               % Abstand zwischen den Zeilennummern
-         numbersep=5pt,              % Abstand der Nummern zum Text
-         tabsize=2,                  % Groesse von Tabs
-         extendedchars=true,         %
-         breaklines=true,            % Zeilen werden Umgebrochen
+         basicstyle=\footnotesize\ttfamily,
+         numberstyle=\tiny,          
+         numbersep=5pt,              
+         tabsize=2,                  
+         extendedchars=true,         
+         breaklines=true,            
          keywordstyle=\color{red},
- %           frame=b,         
- %        keywordstyle=[1]\textbf,    % Stil der Keywords
- %        keywordstyle=[2]\textbf,    %
- %        keywordstyle=[3]\textbf,    %
- %        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
- %        stringstyle=\color{white}\ttfamily, % Farbe der String
-         showspaces=false,           % Leerzeichen anzeigen ?
-         showtabs=false,             % Tabs anzeigen ?
+         showspaces=false,           
+         showtabs=false,             
          xleftmargin=17pt,
          xrightmargin=17pt,
          framexleftmargin=5pt,
          framexrightmargin=5pt,
          framexbottommargin=4pt,
-         showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+         showstringspaces=false      
  }
 
 \lstdefinestyle{terminal}
 {
     backgroundcolor=\color{black},
     basicstyle=\scriptsize\color{white}\ttfamily
+}
+
+\lstdefinestyle{code}
+{
+    frame=b,
+    numbers=left
+    %numberstyle=\tiny\color{mygray}
+}
+
+% "define" Scala
+\lstdefinelanguage{scala}{
+  morekeywords={abstract,case,catch,class,def,%
+    do,else,extends,false,final,finally,%
+    for,if,implicit,import,match,mixin,%
+    new,null,object,override,package,%
+    private,protected,requires,return,sealed,%
+    super,this,throw,trait,true,try,%
+    type,val,var,while,with,yield},
+  otherkeywords={=>,<-,<\%,<:,>:,\#,@},
+  sensitive=true,
+  morecomment=[l]{//},
+  morecomment=[n]{/*}{*/},
+  morestring=[b]",
+  morestring=[b]',
+  morestring=[b]"""
 }
 
 \begin{document}
@@ -128,6 +150,13 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 [success] Total time: 25 s, completed 8 mai 2015 17:37:39
     \end{lstlisting}
   \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Words Count Script}
+
+  \lstinputlisting[language=scala, style=code, label=WordCount,caption=/src/main/scala/psug/hands/on/prerequisite/WordCount.scala]{../src/main/scala/psug/hands/on/prerequisite/WordCount.scala}
 
 \end{frame}
 
