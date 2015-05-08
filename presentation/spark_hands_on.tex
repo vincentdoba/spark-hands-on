@@ -486,6 +486,100 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
   \end{verbatim}
 \end{frame}
 
+\begin{frame}
+  \frametitle{New Notions (1)}
+
+  \begin{block}{Data Frame}
+    \begin{itemize}
+      \item Equivalent of RDD for structured data, DataFrame class extends RDD Api
+      \item Can be see as a SQL Table (columns and set of rows)
+      \item Has specific Transformations/Actions
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Row}
+    \begin{itemize}
+      \item Element of a Data Frame.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Column}
+    \begin{itemize}
+      \item Part of the structure of a Data Frame.
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{SQL Context}
+    \begin{itemize}
+      \item Equivalent for Data Frame of Spark Context for RDD
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (2)}
+
+  \begin{lstlisting}[label=SqlContextInitialization, caption=Init Spark SQL Context, language=scala, style=code]
+val sqlContext = new SQLContext(sparkContext)
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=JsonFileLoading, caption=Load a Data Frame from JSON file, language=scala, style=code]
+val input:DataFrame = sqlContext.jsonFile(filePath)
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=SpecialSQLFunction, caption=Special SQL Function, language=scala, style=code]
+import org.apache.spark.sql.functions._
+val resultColumn:Column = sum("columnName")
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Data Frame Transformations and Actions}
+
+  \begin{block}{Transformations}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{filter} & \textit{df1.filter( \newline  "SQLConditionStatement" \newline )} & filter by applying SQL statement \\ \hline
+        \textbf{agg} & \textit{df1.agg(f("columnName"))} & aggregate depending of f function. f can be sum, avg, max, min, count\\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+  \begin{block}{Actions}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{first} & \textit{rdd1.first()} & return the first element of RDD (in case of Data Frame, return first row) \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Command}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise03.TotalPopulation"
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] La France compte 64612939 habitants
+[success] Total time: 9 s, completed 8 mai 2015 23:27:30
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
+
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
 \section{Exercise 5 : Transformations/Actions on DataFrames}
 \section{Exercise 6 : Saving JSON file}
