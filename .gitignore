@@ -33,3 +33,4 @@ data/normalized_features.json
 /presentation/*.pdf
 /presentation/*.toc
 /presentation/*.snm
+/presentation/*.vrb
