@@ -55,8 +55,8 @@
 \lstdefinestyle{code}
 {
     frame=b,
-    numbers=left
-    %numberstyle=\tiny\color{mygray}
+    numbers=left,
+    morecomment=[is]{/\*}{\*/}
 }
 
 % "define" Scala
@@ -79,7 +79,6 @@
 
 \begin{document}
 \begin{CJK}{UTF8}{gbsn}
-
 
 %--- Page de titre ---
 \title{Spark Hands On}
@@ -199,6 +198,71 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 \end{frame}
 
 \section{Exercise 1 : Spark basis (SparkContext, RDD, Transformation, Action)}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We dispose of three lists : first list contains the integers from 1 to 75, second list contains the integers from 25 to 100, and the third list contains primes under 100. We want to obtain the sum of square of integers that are under 100 and are not prime.
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Initialization of Spark Context
+      \item Transform Scala lists to Spark RDDs
+      \item Discover some transformations on RDDs
+      \item Discover first action : sum
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise1,caption=/src/main/scala/psug/hands/on/exercise01/SumOfSquareOfNonPrimeNumbers.scala]{../src/main/scala/psug/hands/on/exercise01/SumOfSquareOfNonPrimeNumbers.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (1)}
+
+  \begin{lstlisting}[label=InitSparkContext, caption=Init Spark Context, language=scala, style=code]
+val conf = new SparkConf().setMaster("local").setAppName("applicationName")
+val sparkContext = new SparkContext(conf)
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=ListToRdd, caption=Load List as RDD, language=scala, style=code]
+val rdd:RDD[Int] = sparkContext.makeRDD(scalaList)
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (2)}
+
+  \begin{lstlisting}[label=RDDTransformation, caption=Apply transformation to RDD, language=scala, style=code]
+val newRdd:RDD[Int] = oldRdd.map(x => x)
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=RDDAction, caption=Apply action to RDD, language=scala, style=code]
+val result:Int = rdd.sum()
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=StopSparkContext, caption=Stop Spark Context, language=scala, style=code]
+sparkContext.stop()
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{New Transformations}
+
+  
+
+\end{frame}
+
 \section{Exercise 2 : Key/Values RDD, File Loading}
 \section{Exercise 3 : Spark SQL Context, JSON Loading, DataFrames}
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}

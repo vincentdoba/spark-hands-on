@@ -3,7 +3,7 @@ package psug.hands.on.exercise01
 /**
  * Compute the sum of squares of numbers that are under 100 and that are not prime.
  *
- * For instance, the same sum but for numbers that are under 10 is 1² + 4² + 6² + 8² + 9² + 10² = 308
+ * For instance, the same sum but for numbers that are under 10 is 1^2 + 4^2 + 6^2 + 8^2 + 9^2 + 10^2 = 308
  *
  * command : sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
  *
