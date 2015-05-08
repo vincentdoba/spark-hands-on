@@ -82,6 +82,18 @@
 \begin{document}
 \begin{CJK}{UTF8}{gbsn}
 
+\AtBeginSection{\frame{\sectionpage}}
+
+\defbeamertemplate{section page}{mine}[1][]{%
+  \begin{centering}
+    \begin{beamercolorbox}[sep=12pt,center]{part title}
+      \usebeamerfont{section title}\insertsection\par
+    \end{beamercolorbox}
+  \end{centering}
+}
+
+\setbeamertemplate{section page}[mine]
+
 %--- Page de titre ---
 \title{Spark Hands On}
 %\subtitle{Creation of a multi-features Named Entity Disambiguation System}
@@ -96,8 +108,6 @@
   \frametitle{Content}
   \tableofcontents[hideallsubsections]
 \end{frame}
-
-\AtBeginSection{\frame{\sectionpage}}
 
 \section{Prerequisite}
 
