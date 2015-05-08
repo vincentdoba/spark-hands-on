@@ -581,6 +581,33 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 \end{frame}
 
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We have a JSON file containing the list of French cities with population, superficie and department code and a text file containing departement code and name. We want the name of the ten densest French department, ordered by density.
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Joining two RDDs
+      \item Transform Data Frame to RDD
+      \item New Actions and Transformations on DataFrames
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise4,caption=/src/main/scala/psug/hands/on/exercise04/DensestDepartments.scala]{../src/main/scala/psug/hands/on/exercise04/DensestDepartments.scala}
+
+\end{frame}
+
+
+
 \section{Exercise 5 : Transformations/Actions on DataFrames}
 \section{Exercise 6 : Saving JSON file}
 \section{Exercise 7 : Machine Learning}
