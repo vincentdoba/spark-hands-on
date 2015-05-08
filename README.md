@@ -35,6 +35,7 @@ Determine, given the list of numbers from 1 to 75, the list of numbers from 25 t
 
 #### Notions
 
+* Create a SparkContext
 * Create RDD from List
 * Discover actions
 * Discover transformation
@@ -47,7 +48,6 @@ Display the departments whose name contains one of the four major rivers in Fran
 
 #### Notions
 
-* Create a SparkContext
 * Load a simple text file
 * Create a Key/Value RDD
 * Transformation on Key/Value 
