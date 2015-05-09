@@ -797,12 +797,11 @@ case class City(name:String, category:Double, features: List[Double]) extends Se
 
   \begin{block}{data/cities.json}
     \begin{verbatim}
-[...]
 {"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
 {"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
 {"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
 {"name":"City4","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
-[...]
+...
     \end{verbatim}
   \end{block}
 
@@ -904,23 +903,21 @@ Once the cities have their features normalized and rounded to two decimal digits
   
   \begin{block}{Input : data/cities.json}
     \begin{verbatim}
-[...]
 {"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
 {"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
 {"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
 {"name":"City4","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
-[...]
+...
     \end{verbatim}
   \end{block}
 
-  \begin{block}{Output : data/cities\_normalized.json}
+  \begin{block}{Output : data/normalized\_cities.json}
     \begin{verbatim}
-[...]
-{"name":"City1","category":1.0,"features":[1.97,16.0,34.09,31.03,0.0]}
-{"name":"City2","category":1.0,"features":[0.47,0.0,29.55,37.93,25.0]}
-{"name":"City3","category":0.0,"features":[0.51,0.0,29.55,51.72,0.0]}
-{"name":"City4","category":1.0,"features":[0.84,8.0,29.55,31.03,0.0]}
-[...]
+{"name":"City1","category":1.0,"features":[0.01,0.16,0.34,0.31,0.0]}
+{"name":"City2","category":1.0,"features":[0.0,0.0,0.29,0.37,0.25]}
+{"name":"City3","category":0.0,"features":[0.0,0.0,0.29,0.51,0.0]}
+{"name":"City4","category":1.0,"features":[0.0,0.08,0.29,0.31,0.0]}
+...
     \end{verbatim}
   \end{block}
 
@@ -973,7 +970,68 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 
 \end{frame}
 
-\section{Exercise 7 : Machine Learning}
+\section{Exercise 7 : SQL requests on temporary tables, sampling}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We want to split our normalized cities (in normalized\_cities.json file generated during previous exercise) into two data sets : 
+    \begin{itemize}
+      \item a training data set, containing 10\% of normalized cities randomly chosen
+      \item a test data set, containing all other normalized cities. 
+    \end{itemize}
+    
+    These two data sets will be saved in respectively training\_cities.json and test\_cities.json.
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Sampling over a data set
+      \item Register temporary tables and perform SQL statement over it
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise7,caption=/src/main/scala/psug/hands/on/exercise07/DataSetSplitter.scala]{../src/main/scala/psug/hands/on/exercise07/DataSetSplitter.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Input and Output}
+  
+  \begin{block}{Input : data/normalized\_cities.json}
+    \begin{verbatim}
+{"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
+{"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
+{"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
+...
+    \end{verbatim}
+  \end{block}
+
+  \begin{block}{Output 1 : data/training\_cities.json}
+    \begin{verbatim}
+{"name":"City2","category":1.0,"features":[0.0,0.0,0.29,0.37,0.25]}
+...
+    \end{verbatim}
+  \end{block}
+
+  \begin{block}{Output 2 : data/test\_cities.json}
+    \begin{verbatim}
+{"name":"City1","category":1.0,"features":[0.01,0.16,0.34,0.31,0.0]}
+{"name":"City3","category":0.0,"features":[0.0,0.0,0.29,0.51,0.0]}
+...
+    \end{verbatim}
+  \end{block}
+
+\end{frame}
+
+\section{Exercise 8 : Machine Learning}
 
 
 \end{CJK}
