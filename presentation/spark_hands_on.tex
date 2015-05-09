@@ -180,7 +180,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
     \begin{itemize}
       \item \textbf{Spark Conf} Configuration of the Spark Context, here contains application name and master to call
       \item \textbf{Spark Context} Main entry point, represents the connection to a Spark Cluster, used to create RDDs/Load file
-      \item \textbf{Resilient Distribued Dataset} Spark Dataset on which we can apply actions and transformations
+      \item \textbf{Resilient Distribued Dataset (RDD)} Spark Dataset on which we can apply actions and transformations
       \item \textbf{Transformations} functions that transform RDD to another RDD
       \item \textbf{Actions} functions that transform an RDD to output data
     \end{itemize}
@@ -194,7 +194,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
   \begin{block}{Spark Scripting How To}
     \begin{itemize}
       \item Initiate a Spark Context
-      \item Load a dataset and transform it to RDD thanks to the Spark Context
+      \item Load a dataset into a RDD thanks to the Spark Context
       \item Register Transformations on RDD
       \item Apply an Action to transformed RDD
       \item Do whatever you want with data obtained after 
@@ -249,7 +249,8 @@ val sparkContext = new SparkContext(conf)
   \end{lstlisting}
 
   \begin{lstlisting}[label=ListToRdd, caption=Load List as RDD, language=scala, style=code]
-val rdd:RDD[Int] = sparkContext.makeRDD(scalaList)
+val scalaList:List[T] = List(...)
+val rdd:RDD[T] = sparkContext.makeRDD(scalaList)
   \end{lstlisting}
 
 \end{frame}
@@ -258,11 +259,11 @@ val rdd:RDD[Int] = sparkContext.makeRDD(scalaList)
   \frametitle{New Notions (2)}
 
   \begin{lstlisting}[label=RDDTransformation, caption=Apply transformation to RDD, language=scala, style=code]
-val newRdd:RDD[Int] = oldRdd.map(x => x)
+val newRdd:RDD[T] = oldRdd.map(x => x)
   \end{lstlisting}
 
   \begin{lstlisting}[label=RDDAction, caption=Apply action to RDD, language=scala, style=code]
-val result:Int = rdd.sum()
+val result:Int = rdd[Int].sum()
   \end{lstlisting}
 
   \begin{lstlisting}[label=StopSparkContext, caption=Stop Spark Context, language=scala, style=code]
@@ -586,7 +587,7 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
   \frametitle{Presentation of Exercise}
 
   \begin{block}{Statement}
-    We have a JSON file containing the list of French cities with population, superficie and department code and a text file containing departement code and name. We want the name of the ten densest French department, ordered by density.
+    We have a JSON file containing the list of French cities with population, surface and department code and a text file containing departement code and name. We want the name of the ten densest French department, ordered by density.
   \end{block}
 
   \begin{block}{What you will learn}
@@ -705,9 +706,132 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 
 \end{frame}
 
+\section{Exercise 5 : Filter Transformations on DataFrames}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We have a JSON file containing the list of French cities with city name, population, surface, number of executives, number of farmers, number of workers, number of employees. We want the name, the density, the percentage of executives, the percentage of farmers, the percentage of workers and the percentage of employees of the densest city in France and also if this city has more than 5000 inhabitants or not.
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item New Transformations
+      \item Treat rows that contains null values
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise5,caption=/src/main/scala/psug/hands/on/exercise05/DensestCityDemography.scala]{../src/main/scala/psug/hands/on/exercise05/DensestCityDemography.scala}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{demographie\_par\_commune.json File Data Structure}
+
+  \begin{block}{Interesting Columns}
+    \begin{tabular}{|l|l|l|l|}
+          \hline 
+          \rowcolor{gray} \textbf{Column Name} & \textbf{Type} & \textbf{Description} & \textbf{Example} \\ \hline
+          \textbf{Commune} & \textit{String} & City's name & "Ambronay" \\ \hline
+          \textbf{Population} & \textit{Double} & Number of inhabitants & 116 \\ \hline
+          \textbf{Superficie} & \textit{Double} & Surface ($km^{2}$) & 9 \\ \hline
+          \textbf{Agriculteurs} & \textit{Double} & Number of farmers & 16 \\ \hline
+          \textbf{Cadresetprofessionssupérieurs} & \textit{Double} & Number of executives & 80 \\ \hline
+          \textbf{Employés} & \textit{Double} & Number of employees & 117 \\ \hline
+          \textbf{Ouvriers} & \textit{Double} & Number of workers & 92 \\ \hline
+    \end{tabular}
+  \end{block}
+
+\begin{block}{Why Double instead of Long ?}
+Long values (such as number of inhabitants) are treated as Double in order to be processed in a machine learning Spark integrated algorithm.
+\end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{City class structure}
+
+  \begin{lstlisting}[label=CityClassOverview, caption=psug.hands.on.exercise05.City class overview, language=scala, style=code]
+case class City(name:String, category:Double, features: List[Double]) extends Serializable
+  \end{lstlisting}
+
+  \begin{block}{Category}
+    Contains 1 if the City has more than 5000 inhabitants, else 0
+  \end{block}
+
+  \begin{block}{Features}
+    \begin{center}
+      \begin{tabular}{|l|l|l|l|}
+            \hline 
+            \rowcolor{gray} \textbf{Position} & \textbf{Name} \\ \hline
+            \textbf{features(0)} & Density \\ \hline
+            \textbf{features(1)} & Percentage of executives \\ \hline
+            \textbf{features(2)} & Percentage of employee \\ \hline
+            \textbf{features(3)} & Percentage of workers \\ \hline
+            \textbf{features(4)} & Percentage of farmers \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions}
+
+  \begin{lstlisting}[label=DropNullValue, caption=Drop row containing null values, language=scala, style=code]
+val newDataFrame = oldDataFrame.na.drop()
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=FillNullValue, caption=Fill row containing null values, language=scala, style=code]
+val newDataFrame = oldDataFrame.na.fill(value)
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{New Data Frame Transformations}
+
+  \begin{block}{Transformations}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \textbf{where} & \textit{df1.where( \newline  "SQLConditionStatement" \newline )} & Equivalent to filter, filter by applying SQL statement \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Command}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise05.DensestCityDemography"
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] La ville la plus densement peuplee de France est Levallois-Perret avec une densite de 32126.0 habitants par km2, 
+[info] elle a plus de 5000 habitants, 
+[info] et est constituee a 25.0 % de cadres, 10.0 % d'employes, 3.0 % d'ouvriers et 0.0 % de fermiers
+[success] Total time: 18 s, completed 9 mai 2015 02:37:52
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
 
 
-\section{Exercise 5 : Transformations/Actions on DataFrames}
 \section{Exercise 6 : Saving JSON file}
 \section{Exercise 7 : Machine Learning}
 

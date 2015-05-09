@@ -6,15 +6,15 @@ import psug.hands.on.solutions.SparkContextInitiator
 
 /**
  * Find the densest city in France, and display the following information :
- * <ul>
- *   <li>City name</li>
- *   <li>City density</li>
- *   <li>If the city has more than 5000 inhabitants</li>
- *   <li>Percentage of executives</li>
- *   <li>Percentage of employees</li>
- *   <li>Percentage of workers</li>
- *   <li>Percentage of farmers</li>
- * </ul>
+ * 
+ * - City name
+ * - City density
+ * - If the city has more than 5000 inhabitants
+ * - Percentage of executives
+ * - Percentage of employees
+ * - Percentage of workers
+ * - Percentage of farmers
+ * 
  *
  * file : data/demographie_par_commune.json
  *
@@ -38,8 +38,6 @@ object DensestCityDemography extends App with SparkContextInitiator with Densest
     .map(extractDemographicData)
 
   val densestCity = populationData.sortBy(a => a.features.head, false).first()
-
-
 
   displayDensestCity(densestCity)
 
