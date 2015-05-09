@@ -3,7 +3,7 @@ package psug.hands.on.exercise05
 import java.io.File
 
 import org.apache.hadoop.conf.Configuration
-import org.apache.hadoop.fs.{Path, FileSystem, FileUtil}
+import org.apache.hadoop.fs.{FileSystem, FileUtil, Path}
 
 trait DataSaver {
 

@@ -1,7 +1,7 @@
 package psug.hands.on.solutions.exercise04
 
 import org.apache.spark.sql.SQLContext
-import org.apache.spark.sql.types.{DoubleType, LongType}
+import org.apache.spark.sql.types.DoubleType
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
@@ -25,8 +25,8 @@ object DensestDepartments extends App with SparkContextInitiator {
 
   val data = sqlContext.jsonFile(inputFile)
 
-  import sqlContext.implicits._
   import org.apache.spark.sql.functions._
+  import sqlContext.implicits._
 
   val densestDepartmentsCodes = data
     .filter("Population > 0")

@@ -1,7 +1,7 @@
 package psug.hands.on.solutions.exercise05
 
 import org.apache.spark.sql.{Row, SQLContext}
-import psug.hands.on.exercise05.{DataSaver, City}
+import psug.hands.on.exercise05.{City, DataSaver}
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
