@@ -707,19 +707,21 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 
 \end{frame}
 
-\section{Exercise 5 : Filter Transformations on DataFrames}
+\section{Exercise 5 : Save JSON, Filter transformations}
 
 \begin{frame}
   \frametitle{Presentation of Exercise}
 
   \begin{block}{Statement}
-    We have a JSON file containing the list of French cities with city name, population, surface, number of executives, number of farmers, number of workers, number of employees. We want the name, the density, the percentage of executives, the percentage of farmers, the percentage of workers and the percentage of employees of the densest city in France and also if this city has more than 5000 inhabitants or not.
+    We have a JSON file containing the list of French cities with city name, population, surface, number of executives, number of farmers, number of workers, number of employees. 
+    \\ \medskip
+    For each city having more than 2000 inhabitants, we want to save its name, if its has more than 5000 inhabitants or not, its density, its percentage of executives, its percentage of farmers, its percentage of workers and its percentage of employees.
   \end{block}
 
   \begin{block}{What you will learn}
     \begin{itemize}
-      \item New Transformations
-      \item Treat rows that contains null values
+      \item Saving a JSON File
+      \item Treat rows that contain null values
     \end{itemize}
   \end{block}
 
@@ -728,7 +730,7 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 \begin{frame}
   \frametitle{Exercise Code}
 
-  \lstinputlisting[language=scala, style=code, label=Exercise5,caption=/src/main/scala/psug/hands/on/exercise05/DensestCityDemography.scala]{../src/main/scala/psug/hands/on/exercise05/DensestCityDemography.scala}
+  \lstinputlisting[language=scala, style=code, label=Exercise5,caption=/src/main/scala/psug/hands/on/exercise05/RetrieveFeatures.scala]{../src/main/scala/psug/hands/on/exercise05/RetrieveFeatures.scala}
 
 \end{frame}
 
@@ -750,9 +752,9 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
     \end{tabular}
   \end{block}
 
-\begin{block}{Why Double instead of Long ?}
-Long values (such as number of inhabitants) are treated as Double in order to be processed in a machine learning Spark integrated algorithm.
-\end{block}
+  \begin{block}{Why Double instead of Long ?}
+    Long values (such as number of inhabitants) are treated as Double in order to be processed in a machine learning Spark integrated algorithm.
+  \end{block}
 
 \end{frame}
 
@@ -785,27 +787,54 @@ case class City(name:String, category:Double, features: List[Double]) extends Se
 \end{frame}
 
 \begin{frame}[fragile]
+
+  \frametitle{Output Description}
+  
+  \begin{block}{Saving in a temporary directory (tmp/spark\_temp\_files)}
+    This temporary file will be transformed to file data/cities.json
+  \end{block}
+
+
+  \begin{block}{data/cities.json}
+    \begin{verbatim}
+[...]
+{"name":"LeLamentin","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
+{"name":"LeLorrain","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
+{"name":"LeMarigot","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
+{"name":"LeMarin","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
+[...]
+    \end{verbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
   \frametitle{New Notions}
 
-  \begin{lstlisting}[label=DropNullValue, caption=Drop row containing null values, language=scala, style=code]
+  \begin{lstlisting}[label=DropNullValue, caption=Drop rows containing null values, language=scala, style=code]
 val newDataFrame = oldDataFrame.na.drop()
   \end{lstlisting}
 
-  \begin{lstlisting}[label=FillNullValue, caption=Fill row containing null values, language=scala, style=code]
-val newDataFrame = oldDataFrame.na.fill(value)
+  \begin{lstlisting}[label=SaveJsonFile, caption=Save RDD to JSON File, language=scala, style=code]
+import sqlContext.implicits._
+rdd
+  .toDF()
+  .toJSON
+  .saveAsTextFile(filePath)
   \end{lstlisting}
 
 \end{frame}
 
 \begin{frame}
 
-  \frametitle{New Data Frame Transformations}
+  \frametitle{New Transformations}
 
   \begin{block}{Transformations}
     \begin{center}
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \textbf{where} & \textit{df1.where( \newline  "SQLConditionStatement" \newline )} & Equivalent to filter, filter by applying SQL statement \\ \hline
+        \textbf{cache} & \textit{rdd.cache()} & Cache RDD in memory, usefull if you want to reuse same RDD several times \\ \hline
       \end{tabular}
     \end{center}
   \end{block}
@@ -817,16 +846,24 @@ val newDataFrame = oldDataFrame.na.fill(value)
 
   \begin{block}{Command}
     \begin{lstlisting}[language=bash, style=terminal]
-sbt "run-main psug.hands.on.exercise05.DensestCityDemography"
+sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
     \end{lstlisting}
   \end{block}
 
   \begin{block}{Result}
     \begin{lstlisting}[language=bash, style=terminal]
-[info] La ville la plus densement peuplee de France est Levallois-Perret avec une densite de 32126.0 habitants par km2, 
-[info] elle a plus de 5000 habitants, 
-[info] et est constituee a 25.0 % de cadres, 10.0 % d'employes, 3.0 % d'ouvriers et 0.0 % de fermiers
-[success] Total time: 18 s, completed 9 mai 2015 02:37:52
+[info] Some lines of data/cities.json : 
+[info] {"name":"Amberieu-en-Bugey","category":1.0,"features":[553.0,4.0,13.0,14.0,0.0]}
+[info] {"name":"Ambronay","category":0.0,"features":[69.0,7.0,10.0,13.0,0.0]}
+[info] {"name":"Arbent","category":0.0,"features":[151.0,4.0,9.0,21.0,0.0]}
+[info] {"name":"Attignat","category":0.0,"features":[154.0,4.0,15.0,14.0,0.0]}
+[info] {"name":"Bage-la-Ville","category":0.0,"features":[76.0,4.0,15.0,15.0,2.0]}
+[info] {"name":"Balan","category":0.0,"features":[130.0,5.0,40.0,11.0,0.0]}
+[info] {"name":"Bellignat","category":0.0,"features":[442.0,4.0,14.0,18.0,0.0]}
+[info] {"name":"Beligneux","category":0.0,"features":[223.0,5.0,20.0,9.0,0.0]}
+[info] {"name":"Bellegarde-sur-Valserine","category":1.0,"features":[786.0,3.0,12.0,18.0,0.0]}
+[info] {"name":"Belley","category":1.0,"features":[397.0,3.0,13.0,13.0,0.0]}
+[success] Total time: 13 s, completed 9 mai 2015 12:52:29
     \end{lstlisting}
   \end{block}
 

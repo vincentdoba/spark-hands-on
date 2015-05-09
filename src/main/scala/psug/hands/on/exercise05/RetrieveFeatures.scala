@@ -1,11 +1,13 @@
 package psug.hands.on.exercise05
 
+import org.apache.spark.rdd.RDD
+
 /**
- * Save the following information in a JSON and display the following information :
+ * Save the following information in a JSON file :
  *
  * - City name
- * - City density
  * - If the city has more than 5000 inhabitants
+ * - City density
  * - Percentage of executives
  * - Percentage of employees
  * - Percentage of workers
@@ -25,8 +27,13 @@ object RetrieveFeatures extends App  with DataSaver {
 
   init()
 
-  // TODO save cities in France and their characteristics (name, has more than 5000 inhabitants...) to temporaryFile
+  val cities:RDD[String] = ??? // TODO generate cities in France and their characteristics (name, has more than 5000 inhabitants...) JSON Strings
 
+  cities.saveAsTextFile(temporaryFile)
   merge(temporaryFile, outputFile)
+
+  println("Some lines of data/cities : ")
+  cities.take(10).foreach(println)
+
 
 }

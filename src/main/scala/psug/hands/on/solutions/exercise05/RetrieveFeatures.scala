@@ -5,16 +5,16 @@ import psug.hands.on.exercise05.{DataSaver, City}
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
- * Save the following information in a JSON and display the following information :
- * 
+ * Save the following information in a JSON file :
+ *
  * - City name
- * - City density
  * - If the city has more than 5000 inhabitants
+ * - City density
  * - Percentage of executives
  * - Percentage of employees
  * - Percentage of workers
  * - Percentage of farmers
- * 
+ *
  *
  * file : data/demographie_par_commune.json
  * output file : data/cities.json
@@ -34,20 +34,23 @@ object RetrieveFeatures extends App with SparkContextInitiator with CityDemograp
 
   val rawData = sqlContext.jsonFile(inputFile)
 
+  import sqlContext.implicits._
+
   val cities = rawData
-    .select("Commune","Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
+    .select("Commune", "Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
     .where(rawData("Superficie") > 0 && rawData("Population") > 2000)
     .na
     .drop()
     .map(extractDemographicData)
-
-  import sqlContext.implicits._
-  cities
     .toDF()
     .toJSON
-    .saveAsTextFile(temporaryFile)
+    .cache()
 
+  cities.saveAsTextFile(temporaryFile)
   merge(temporaryFile, outputFile)
+
+  println("Some lines of data/cities.json : ")
+  cities.take(10).foreach(println)
 
   sparkContext.stop()
 
