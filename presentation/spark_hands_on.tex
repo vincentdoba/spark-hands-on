@@ -885,7 +885,7 @@ Once the cities have their features normalized and rounded to two decimal digits
 
   \begin{block}{What you will learn}
     \begin{itemize}
-      \item Aggregation on RDD
+      \item new action on RDD : aggregation
     \end{itemize}
   \end{block}
 
@@ -904,24 +904,71 @@ Once the cities have their features normalized and rounded to two decimal digits
   
   \begin{block}{Input : data/cities.json}
     \begin{verbatim}
-  [...]
-  {"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
-  {"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
-  {"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
-  {"name":"City4","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
-  [...]
+[...]
+{"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
+{"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
+{"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
+{"name":"City4","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
+[...]
     \end{verbatim}
   \end{block}
 
   \begin{block}{Output : data/cities\_normalized.json}
     \begin{verbatim}
-  [...]
-  {"name":"City1","category":1.0,"features":[1.97,16.0,34.09,31.03,0.0]}
-  {"name":"City2","category":1.0,"features":[0.47,0.0,29.55,37.93,25.0]}
-  {"name":"City3","category":0.0,"features":[0.51,0.0,29.55,51.72,0.0]}
-  {"name":"City4","category":1.0,"features":[0.84,8.0,29.55,31.03,0.0]}
-  [...]
+[...]
+{"name":"City1","category":1.0,"features":[1.97,16.0,34.09,31.03,0.0]}
+{"name":"City2","category":1.0,"features":[0.47,0.0,29.55,37.93,25.0]}
+{"name":"City3","category":0.0,"features":[0.51,0.0,29.55,51.72,0.0]}
+{"name":"City4","category":1.0,"features":[0.84,8.0,29.55,31.03,0.0]}
+[...]
     \end{verbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions : Aggregation Action}
+
+
+  \begin{lstlisting}[label=Aggregate, caption=Aggregation over an RDD, language=scala, style=code]
+val result = rdd.aggregate(initialValue)(reduceFunction, mergeFunction)
+  \end{lstlisting}
+
+
+  \begin{lstlisting}[label=AggregateType, caption=Types over aggregate, language=scala, style=code]
+val result:U
+val rdd:RDD[T]
+val initialValue:U
+def reduceFunction(value:U, rddElement:T):U
+def mergeFunction(value1:U, value2:U):U
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Command}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise06.Normalization"  
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] Some lines of data/normalized_cities.json : 
+[info] {"name":"Amberieu-en-Bugey","category":1.0,"features":[0.02,0.16,0.27,0.48,0.0]}
+[info] {"name":"Ambronay","category":0.0,"features":[0.0,0.28,0.2,0.45,0.0]}
+[info] {"name":"Arbent","category":0.0,"features":[0.0,0.16,0.18,0.72,0.0]}
+[info] {"name":"Attignat","category":0.0,"features":[0.0,0.16,0.32,0.48,0.0]}
+[info] {"name":"Bage-la-Ville","category":0.0,"features":[0.0,0.16,0.32,0.52,0.25]}
+[info] {"name":"Balan","category":0.0,"features":[0.0,0.2,0.89,0.38,0.0]}
+[info] {"name":"Bellignat","category":0.0,"features":[0.01,0.16,0.3,0.62,0.0]}
+[info] {"name":"Beligneux","category":0.0,"features":[0.01,0.2,0.43,0.31,0.0]}
+[info] {"name":"Bellegarde-sur-Valserine","category":1.0,"features":[0.02,0.12,0.25,0.62,0.0]}
+[info] {"name":"Belley","category":1.0,"features":[0.01,0.12,0.27,0.45,0.0]}
+[success] Total time: 8 s, completed 9 mai 2015 15:45:16
+    \end{lstlisting}
   \end{block}
 
 \end{frame}
