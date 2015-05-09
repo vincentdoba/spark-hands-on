@@ -80,10 +80,11 @@ What are the ten densest departments in France ?
 
 #### Description
 
-What are the characteristics of the densest city in France ? Preparation of features for Machine Learning Algorithms
+Save the demographic characteristics of cities of France in a JSON file ? Preparation of features for Machine Learning Algorithms
 
 #### Notions
 
+* Save to a JSON file
 * Some transformations on DataFrames
 
 ### Exercise 6
@@ -94,10 +95,20 @@ Normalize data for a Machine Learning algorithm
 
 #### Notions
 
-* Aggregate function
-* Save to a JSON file
+* Aggregation transformation
 
 ### Exercise 7
+
+#### Description
+
+Split a data set into two data sets randomly
+
+#### Notions
+
+* Sampling
+* Temporary Tables and SQL requests on them
+
+### Exercise 8
 
 #### Description
 
@@ -108,7 +119,7 @@ in total population, percentage of workers, percentage of employees and percenta
 
 * Spark Machine Learning Library (MLLib)
 
-### TODO : Exercise 8
+### TODO : Exercise 9
 
 #### Description
 
