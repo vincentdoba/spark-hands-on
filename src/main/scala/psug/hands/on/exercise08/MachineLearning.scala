@@ -12,7 +12,7 @@ import psug.hands.on.exercise05.DataSaver
  * input file 2 : data/test_cities.json
  * output file : data/labeled_cities.json
  *
- * command : sbt "run-main psug.hands.on.exercise07.MachineLearning"
+ * command : sbt "run-main psug.hands.on.exercise08.MachineLearning"
  */
 object MachineLearning extends App with DataSaver {
 

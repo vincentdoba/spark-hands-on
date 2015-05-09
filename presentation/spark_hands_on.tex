@@ -832,6 +832,7 @@ rdd
     \begin{center}
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
+        \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
         \textbf{where} & \textit{df1.where( \newline  "SQLConditionStatement" \newline )} & Equivalent to filter, filter by applying SQL statement \\ \hline
         \textbf{cache} & \textit{rdd.cache()} & Cache RDD in memory, usefull if you want to reuse same RDD several times \\ \hline
       \end{tabular}
@@ -1007,24 +1008,24 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
   
   \begin{block}{Input : data/normalized\_cities.json}
     \begin{verbatim}
-{"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
-{"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
-{"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
+{"name":"City1","category":1.0,"features":[0.02,0.16,0.27,0.48,0.0]}
+{"name":"City2","category":1.0,"features":[0.02,0.12,0.25,0.62,0.0]}
+{"name":"City3","category":0.0,"features":[0.01,0.12,0.27,0.45,0.0]}
 ...
     \end{verbatim}
   \end{block}
 
   \begin{block}{Output 1 : data/training\_cities.json}
     \begin{verbatim}
-{"name":"City2","category":1.0,"features":[0.0,0.0,0.29,0.37,0.25]}
+{"name":"City2","category":1.0,"features":[0.02,0.12,0.25,0.62,0.0]}
 ...
     \end{verbatim}
   \end{block}
 
   \begin{block}{Output 2 : data/test\_cities.json}
     \begin{verbatim}
-{"name":"City1","category":1.0,"features":[0.01,0.16,0.34,0.31,0.0]}
-{"name":"City3","category":0.0,"features":[0.0,0.0,0.29,0.51,0.0]}
+{"name":"City1","category":1.0,"features":[0.02,0.16,0.27,0.48,0.0]}
+{"name":"City3","category":0.0,"features":[0.01,0.12,0.27,0.45,0.0]}
 ...
     \end{verbatim}
   \end{block}
@@ -1085,6 +1086,187 @@ sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
 \end{frame}
 
 \section{Exercise 8 : Machine Learning}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We want to train a Linear Regression model over training cities that given a set of features determines if a city has more than 5000 inhabitants. Then we will use the model to label test cities. 
+\\ \medskip
+Training cities are in training\_cities.json and test cities are in test\_cities.json
+\\ \medskip
+At the end of labeling, we want to save the name, the category and the prediction of each test cities in a file labeled\_cities.json
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Train and apply a Machine Learning model
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise8,caption=/src/main/scala/psug/hands/on/exercise08/MachineLearning.scala]{../src/main/scala/psug/hands/on/exercise08/MachineLearning.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Input and Output}
+  
+  \begin{block}{Input 1 : data/training\_cities.json}
+    \begin{verbatim}
+{"name":"City1","category":1.0,"features":[0.02,0.16,0.27,0.48,0.0]}
+{"name":"City2","category":1.0,"features":[0.02,0.12,0.25,0.62,0.0]}
+...
+    \end{verbatim}
+  \end{block}
+
+  \begin{block}{Input 2 : data/test\_cities.json}
+    \begin{verbatim}
+{"name":"City3","category":1.0,"features":[0.0,0.0,0.29,0.37,0.25]}
+{"name":"City4","category":1.0,"features":[0.1,0.32,0.12,0.78,0.22]}
+...
+    \end{verbatim}
+  \end{block}
+
+  \begin{block}{Output : data/labeled\_cities.json}
+    \begin{verbatim}
+{"name":"City3","category":1.0,"prediction":1.0}
+{"name":"City4","category":0.0,"prediction":1.0}
+...
+    \end{verbatim}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (1) : Prepare your training Data}
+
+  \begin{block}{Context}
+    Before training your model, you first need to transform training cities into LabeledPoint
+  \end{block}
+
+  \begin{lstlisting}[label=TransformDataToLinearRegression, caption=Transform row into LabeledPoint, language=scala, style=code]
+import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.linalg.Vector
+import org.apache.spark.mllib.regression.LabeledPoint
+
+val label:Double = row.getDouble(0)
+val rawFeatures = row.getSeq[Double](1)
+val features:Vector[Double] = Vectors.dense(rawFeatures.toArray)
+val labeledPoint = LabeledPoint(label, features)
+  \end{lstlisting}
+
+\begin{alertblock}{Vector}
+  You have to use \textit{org.apache.spark.mllib.linalg.Vector} and not \textit{scala.Vector} which is loaded by default
+\end{alertblock}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (2) : Train model with your training data}
+
+  \begin{block}{Train your model}
+    To train your model, you pass an RDD[LabeledPoint] to a LogisticRegressionWithSGB.train method
+  \end{block}
+
+  \begin{lstlisting}[label=TrainModel, caption=Train your model, language=scala, style=code]
+val training:RDD[LabeledPoint]
+val numberOfIteration:Int = 500
+val stepSize:Double = 1000
+val model:LogisticRegressionModel = LogisticRegressionWithSGD.train(training, 500, 1000)
+  \end{lstlisting}
+
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (3) : Label test data with your model}
+
+  \begin{block}{Remark}
+    Contrary to training, you don't need to transform input data except Vector of features
+  \end{block}
+
+  \begin{lstlisting}[label=TransformDataToLinearRegression, caption=Transform row into LabeledPoint, language=scala, style=code]
+val predictions:RDD[Double] = testDataRDD
+  .map(row => model.predict(Vectors.dense(row.getSeq[Double](2).toArray)))
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{New Transformations}
+
+  \begin{block}{Transformations}
+    \begin{center}
+      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+        \hline 
+        \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{toDF} & \textit{rdd.toDF("column1", "column2", "column3")} & create a Data Frame with columns column1, column2, column3 given a RDD \\ \hline
+      \end{tabular}
+    \end{center}
+  \end{block}
+
+  \begin{block}{Remark}
+    \begin{itemize}
+      \item In order to use \textit{rdd.toDF()}, you need to import SQL implicits : \textit{import sqlContext.implicits.\_}. These implicits maps specific RDDs (for instance RDD[Int]) to Data Frame
+      \item You can create data frame from tuple RDDs, basic types RDDs...
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{LogisticRegression Configuration}
+
+  \begin{block}{Parameters value}
+    \begin{itemize}
+      \item Number of interations : $1000$
+      \item Step Size : $1000$
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Commands}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise08.MachineLearning"
+sbt "run-main psug.hands.on.exercise08.DisplayResult"    
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] --------------------------
+[info] ====== General Stats =====
+[info] --------------------------
+[info] - accuracy          : 75 %
+[info] --------------------------
+[info] ===== For Category 0 =====
+[info] --------------------------
+[info] - Precision         : 73 %
+[info] - Recall            : 92 %
+[info] - F1-Score          : 81
+[info] --------------------------
+[info] ===== For Category 1 =====
+[info] --------------------------
+[info] - Precision         : 80 %
+[info] - Recall            : 49 %
+[info] - F1-Score          : 60
+[info] --------------------------
+[success] Total time: 10 s, completed 9 mai 2015 20:38:59
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
 
 
 \end{CJK}
