@@ -3,54 +3,59 @@ package psug.hands.on.solutions.exercise08.MLLib
 import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, SQLContext}
+import psug.hands.on.exercise05.DataSaver
 import psug.hands.on.solutions.SparkContextInitiator
 import psug.hands.on.solutions.exercise08.{MLHelpers, MachineLearningStats}
 
 /**
- * Apply a Linear Regression model trained using 500 cities picked randomly among the list of cities having more than
- * 2000 inhabitants in France on the rest of the cities having more than 2000 inhabitants in order to determine which
- * cities have more than 5000 inhabitants.
+ * - Train a Linear Regression model using training_cities.json
+ * - Predict for each city in test_cities.json if it has more than 5000 inhabitants
+ * - Save result in a labeled_cities.json file
  *
- * Display the precision of the algorithm (number of good guess over total number of cities) and ten cities that
- * were mislabeled
- *
- * input file : normalized_cities.json
+ * input file 1 : data/training_cities.json
+ * input file 2 : data/test_cities.json
+ * output file : data/labeled_cities.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise08.MLLib.MachineLearning"
  */
-object MachineLearning extends App with SparkContextInitiator with MLHelpers {
+object MachineLearning extends App with SparkContextInitiator with MLHelpers with DataSaver {
 
-  val inputFile = "data/normalized_cities.json"
+  val trainingInputFile = "data/training_cities.json"
+  val testInputFile = "data/test_cities.json"
+  val outputFile = "data/labeled_cities.json"
+
+  init()
 
   val sparkContext = initContext("machineLearningMLLib")
   val sqlContext = new SQLContext(sparkContext)
 
-  val normalizedFeatures = sqlContext.jsonFile(inputFile)
-  normalizedFeatures.registerTempTable("dataset")
+  val training = sqlContext
+    .jsonFile(trainingInputFile)
+    .select("category", "features")
+    .map(row => LabeledPoint(row.getDouble(0), Vectors.dense(row.getSeq[Double](1).toArray)))
+    .cache()
 
-  val trainingData: DataFrame = normalizedFeatures.sample(false, 0.1).select("name", "category", "features")
-  trainingData.registerTempTable("training")
+  val test = sqlContext
+    .jsonFile(testInputFile)
+    .select("name", "category", "features")
+    .cache()
 
-  val testData = sqlContext.sql("SELECT name, category, features FROM dataset EXCEPT SELECT name, category, features FROM training")
+  val model = LogisticRegressionWithSGD.train(training, 500, 0.01)
 
-  val model = LogisticRegressionWithSGD.train(trainingData.map(row => LabeledPoint(row.getDouble(1), Vectors.dense(row.getSeq[Double](2).toArray))), 500, 0.01)
+  import sqlContext.implicits._
 
-  val results = testData.map(row => {
+  val labeledCities:RDD[String] = test
+    .map(row => {
     val prediction = model.predict(Vectors.dense(row.getSeq[Double](2).toArray))
     (row.getString(0), row.getDouble(1), prediction)
-  }).cache()
+  })
+    .toDF("name", "category", "prediction")
+    .toJSON
 
-  val resultStats: MachineLearningStats = results
-    .map(extractStats)
-    .reduce((a, b) => a.aggregate(b))
-
-  val misLabeledCitiesExamples = results
-    .filter(a => a._2 != a._3)
-    .map(stringifyResultRow)
-    .take(10)
-
-  displayResults(resultStats, misLabeledCitiesExamples)
+  labeledCities.saveAsTextFile(temporaryFile + "/1")
+  merge(temporaryFile + "/1", outputFile)
 
   sparkContext.stop()
 

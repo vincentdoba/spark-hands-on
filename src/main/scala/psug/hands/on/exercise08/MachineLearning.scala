@@ -1,32 +1,31 @@
 package psug.hands.on.exercise08
 
-import org.apache.spark.sql.DataFrame
+import org.apache.spark.rdd.RDD
+import psug.hands.on.exercise05.DataSaver
 
 /**
- * Apply a Linear Regression model trained using 500 cities picked randomly among the list of cities having more than
- * 2000 inhabitants in France on the rest of the cities having more than 2000 inhabitants in order to determine which
- * cities have more than 5000 inhabitants.
+ * - Train a Linear Regression model using training_cities.json
+ * - Predict for each city in test_cities.json if it has more than 5000 inhabitants
+ * - Save result in a labeled_cities.json file
  *
- * Display the precision of the algorithm (number of good guess over total number of cities) and ten cities that
- * were mislabeled
- *
- * file : normalized_cities.json
+ * input file 1 : data/training_cities.json
+ * input file 2 : data/test_cities.json
+ * output file : data/labeled_cities.json
  *
  * command : sbt "run-main psug.hands.on.exercise07.MachineLearning"
  */
-object MachineLearning extends App {
+object MachineLearning extends App with DataSaver {
 
-  val inputFile = "data/normalized_cities.json"
+  val trainingInputFile = "data/training_cities.json"
+  val testInputFile = "data/test_cities.json"
+  val outputFile = "data/labeled_cities.json"
 
-  val trainingData:DataFrame = ??? // TODO create training data (randomly choose 500 cities in inputFile)
-  val testData:DataFrame = ??? // TODO create test data (cities in inputFile that are not in training data)
-  // TODO initialize Linear Regression algorithm
-  // TODO train linear regression model with training data
-  // TODO classify test data using linear regression model
-  val accuracy:Long = ??? // TODO retrieve accuracy percentage a two digit long
-  val misLabeledCitiesExamples:Iterable[String] = ??? // TODO retrieve ten mislabeled cities
+  init()
 
-  println("Accuracy is " + accuracy + "%")
-  println("Examples of cities mislabeled : " + misLabeledCitiesExamples.mkString(", "))
+  val labeledCities:RDD[String] = ???
+
+  labeledCities.saveAsTextFile(temporaryFile + "/1")
+  merge(temporaryFile + "/1", outputFile)
+
 
 }

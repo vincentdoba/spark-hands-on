@@ -27,6 +27,7 @@ data/cities.json
 data/normalized_cities.json
 data/training_cities.json
 data/test_cities.json
+data/labeled_cities.json
 
 /presentation/*.log
 /presentation/*.aux

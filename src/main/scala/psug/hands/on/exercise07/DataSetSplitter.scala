@@ -23,6 +23,8 @@ object DataSetSplitter extends App with DataSaver {
   val trainingCitiesFile = "data/training_cities.json"
   val testCitiesFile = "data/test_cities.json"
 
+  init()
+
   val trainingCities:RDD[String] = ???
   val testCities:RDD[String] = ???
 
