@@ -15,9 +15,9 @@ import psug.hands.on.solutions.exercise08.{MLHelpers, MachineLearningStats}
  * Display the precision of the algorithm (number of good guess over total number of cities) and ten cities that
  * were mislabeled
  *
- * file : normalized_cities.json
+ * input file : normalized_cities.json
  *
- * command : sbt "run-main psug.hands.on.solutions.exercise07.sparkML.MachineLearning"
+ * command : sbt "run-main psug.hands.on.solutions.exercise08.sparkML.MachineLearning"
  */
 object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 

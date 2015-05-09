@@ -6,13 +6,9 @@ import psug.hands.on.solutions.SparkContextInitiator
 /**
  * Determine the total population in France
  *
- * Déterminer la population totale de la France
- *
- * file : data/demographie_par_commune.json
- * fichier : data/demographie_par_commune.json
+ * input file : data/demographie_par_commune.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise03.TotalPopulation"
- * commande : sbt "run-main psug.hands.on.solutions.exercise03.TotalPopulation"
  *
  */
 object TotalPopulation extends App with SparkContextInitiator {

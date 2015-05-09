@@ -16,7 +16,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  * - Percentage of farmers
  *
  *
- * file : data/demographie_par_commune.json
+ * input file : data/demographie_par_commune.json
  * output file : data/cities.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise05.RetrieveFeatures"

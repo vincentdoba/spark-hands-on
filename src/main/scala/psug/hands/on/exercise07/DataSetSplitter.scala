@@ -3,6 +3,20 @@ package psug.hands.on.exercise07
 import org.apache.spark.rdd.RDD
 import psug.hands.on.exercise05.DataSaver
 
+/**
+ * Split cities in data/normalized_cities.json in two groups :
+ * - Training Cities (around 1/10 of normalized cities, randomly chosen)
+ * - Test Cities (the rest of the cities)
+ *
+ * those two sets will be saved in respectively data/training_cities.json and data/test_cities.json
+ *
+ * input file : data/normalized_cities.json
+ * output file 1 : data/training_cities.json
+ * output file 2 : data/test_cities.json
+ *
+ * command : sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
+ *
+ */
 object DataSetSplitter extends App with DataSaver {
 
   val inputFile = "data/normalized_cities.json"

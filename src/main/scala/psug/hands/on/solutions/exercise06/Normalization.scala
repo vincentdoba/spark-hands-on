@@ -10,7 +10,7 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them and save it in
  * a file
  *
- * file : data/demographie_par_commune.json
+ * input file : data/demographie_par_commune.json
  * output file : data/normalized_cities.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise06.Normalization"

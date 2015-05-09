@@ -5,13 +5,9 @@ import psug.hands.on.solutions.SparkContextInitiator
 /**
  * How are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
  *
- * Quels sont les départements dont le nom contient Seine ? Loire ? Garonne ? Rhône ?
- *
- * file : data/departements.txt
- * fichier : data/departements.txt
+ * input file : data/departements.txt
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise02.DepartmentsByRiver"
- * commande : sbt "run-main psug.hands.on.solutions.exercise02.DepartmentsByRiver"
  */
 object DepartmentsByRiver extends App with SparkContextInitiator {
 

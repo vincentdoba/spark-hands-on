@@ -7,13 +7,9 @@ import psug.hands.on.solutions.SparkContextInitiator
 /**
  * How are the densest department ?
  *
- * Quels sont les départements les plus peuplés ?
- *
- * file : data/departements.txt, data/demographie_par_commune.json
- * fichier : data/departements.txt, data/demographie_par_commune.json
+ * input file : data/departements.txt, data/demographie_par_commune.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise04.DensestDepartments"
- * commande : sbt "run-main psug.hands.on.solutions.exercise04.DensestDepartments"
  */
 object DensestDepartments extends App with SparkContextInitiator {
 

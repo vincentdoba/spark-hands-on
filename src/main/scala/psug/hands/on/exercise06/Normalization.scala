@@ -6,7 +6,7 @@ import psug.hands.on.exercise05.DataSaver
 /**
  * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them
  *
- * file : data/cities.json
+ * input file : data/cities.json
  *
  * command : sbt "run-main psug.hands.on.exercise06.Normalization"
  *
