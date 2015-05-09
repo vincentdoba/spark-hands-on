@@ -86,6 +86,7 @@
 
 \defbeamertemplate{section page}{mine}[1][]{%
   \begin{centering}
+    {\usebeamerfont{section name}\usebeamercolor[fg]{section name}#1}
     \begin{beamercolorbox}[sep=12pt,center]{part title}
       \usebeamerfont{section title}\insertsection\par
     \end{beamercolorbox}
@@ -95,10 +96,10 @@
 \setbeamertemplate{section page}[mine]
 
 %--- Page de titre ---
-\title{Spark Hands On}
-%\subtitle{Creation of a multi-features Named Entity Disambiguation System}
+\title[Spark Hands On (PSUG)]{Spark Hands On}
+\subtitle{Paris Scala User Group}
 \author{Olivier GIRARDOT, Vincent DOBA}
-\institute{Paris Scala User Group}
+\institute[LT]{Lateral-Thoughts}
 \date{May 13, 2015}
 
 \frame{\titlepage}
@@ -493,7 +494,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
   \begin{block}{Data Frame}
     \begin{itemize}
       \item Equivalent of RDD for structured data, DataFrame class extends RDD Api
-      \item Can be see as a SQL Table (columns and set of rows)
+      \item Can be seen as a SQL Table (columns and set of rows)
       \item Has specific Transformations/Actions
     \end{itemize}
   \end{block}
