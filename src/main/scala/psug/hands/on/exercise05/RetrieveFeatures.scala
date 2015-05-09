@@ -32,7 +32,7 @@ object RetrieveFeatures extends App  with DataSaver {
   cities.saveAsTextFile(temporaryFile)
   merge(temporaryFile, outputFile)
 
-  println("Some lines of data/cities : ")
+  println("Some lines of data/cities.json : ")
   cities.take(10).foreach(println)
 
 

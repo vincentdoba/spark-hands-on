@@ -798,10 +798,10 @@ case class City(name:String, category:Double, features: List[Double]) extends Se
   \begin{block}{data/cities.json}
     \begin{verbatim}
 [...]
-{"name":"LeLamentin","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
-{"name":"LeLorrain","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
-{"name":"LeMarigot","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
-{"name":"LeMarin","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
+{"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
+{"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
+{"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
+{"name":"City4","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
 [...]
     \end{verbatim}
   \end{block}
@@ -870,25 +870,58 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
 \end{frame}
 
 
-\section{Exercise 6 : Saving JSON file}
+\section{Exercise 6 : Perform an aggregation}
 
 \begin{frame}
   \frametitle{Presentation of Exercise}
 
   \begin{block}{Statement}
-    We continue the previous exercise (Exercise 5). We have an RDD[City] as defined at the end of exercise 5 (copy/paste code from exercise 5 to start this exercise). We want to normalize the features of each city, meaning applying the following formula for each feature :
+    We want to normalize the features of each city contained in cities.json file generated in exercise 5. Normalize a feature with index $i$ for a city $city$ means to apply the following formula :
 \begin{center} 
     $normalizedCity.features(i) = \frac{city.features(i) - min(allCities.map(\_.features(i)))}{max(allCities.map(\_.features(i))) - min(allCities.map(\_.features(i)))}$
 \end{center}
-And save these normalized cities in a JSON file normalized\_cities.json
+Once the cities have their features normalized and rounded to two decimal digits, save them in a JSON file normalized\_cities.json
   \end{block}
 
   \begin{block}{What you will learn}
     \begin{itemize}
-      \item Cache RDD computation to reuse it several times
       \item Aggregation on RDD
-      \item Save JSON file
     \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise Code}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise6,caption=/src/main/scala/psug/hands/on/exercise06/Normalization.scala]{../src/main/scala/psug/hands/on/exercise06/Normalization.scala}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Input and Output}
+  
+  \begin{block}{Input : data/cities.json}
+    \begin{verbatim}
+  [...]
+  {"name":"City1","category":1.0,"features":[634.0,4.0,16.0,9.0,0.0]}
+  {"name":"City2","category":1.0,"features":[150.0,0.0,14.0,11.0,2.0]}
+  {"name":"City3","category":0.0,"features":[163.0,0.0,14.0,15.0,0.0]}
+  {"name":"City4","category":1.0,"features":[271.0,2.0,14.0,9.0,0.0]}
+  [...]
+    \end{verbatim}
+  \end{block}
+
+  \begin{block}{Output : data/cities\_normalized.json}
+    \begin{verbatim}
+  [...]
+  {"name":"City1","category":1.0,"features":[1.97,16.0,34.09,31.03,0.0]}
+  {"name":"City2","category":1.0,"features":[0.47,0.0,29.55,37.93,25.0]}
+  {"name":"City3","category":0.0,"features":[0.51,0.0,29.55,51.72,0.0]}
+  {"name":"City4","category":1.0,"features":[0.84,8.0,29.55,31.03,0.0]}
+  [...]
+    \end{verbatim}
   \end{block}
 
 \end{frame}

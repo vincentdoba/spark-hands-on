@@ -1,5 +1,6 @@
 package psug.hands.on.solutions.exercise06
 
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SQLContext
 import psug.hands.on.exercise05.{City, DataSaver}
 import psug.hands.on.solutions.SparkContextInitiator
@@ -39,11 +40,18 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
     .aggregate(List.fill[Extremes](featuresSize)(None))(aggregationReducer, aggregationMerger)
 
   import sqlContext.implicits._
-  val normalizedData = cities.map(normalize(minMaxList)).toDF()
 
-  normalizedData.toJSON.saveAsTextFile(temporaryFile)
+  val normalizedCities:RDD[String] = cities
+    .map(normalize(minMaxList))
+    .toDF()
+    .toJSON
+    .cache()
 
+  normalizedCities.saveAsTextFile(temporaryFile)
   merge(temporaryFile, outputFile)
+
+  println("Some lines of data/normalized_cities.json : ")
+  normalizedCities.take(10).foreach(println)
 
   sparkContext.stop()
 
@@ -66,8 +74,10 @@ trait Normalizer {
 
   private def normalizeFeature(feature:Double, extreme:Extremes):Double = extreme match {
     case None => feature
-    case Some(min, max) => (feature - min)*100/(max - min)
+    case Some(min, max) => round((feature - min)/(max - min))
   }
+
+  private def round(value:Double):Double = (math rint (value*100))/100
 
   def aggregationReducer(previousExtremes:List[Extremes], features:List[Double]):List[Extremes] = {
     def reduce(values:List[Double], extremes:List[Extremes], result:List[Extremes]):List[Extremes] = (values,extremes) match {
