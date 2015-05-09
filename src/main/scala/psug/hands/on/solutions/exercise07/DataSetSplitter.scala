@@ -27,7 +27,7 @@ object DataSetSplitter extends App with DataSaver with SparkContextInitiator {
 
   init()
 
-  val sparkContext = initContext("machineLearningMLLib")
+  val sparkContext = initContext("dataSetSplitter")
   val sqlContext = new SQLContext(sparkContext)
 
   val normalizedCities = sqlContext.jsonFile(inputFile)
