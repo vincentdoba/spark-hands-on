@@ -13,7 +13,7 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  * a file
  *
  * file : data/demographie_par_commune.json
- * output file : data/normalized_features.json
+ * output file : data/normalized_cities.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise06.Normalization"
  *
@@ -21,7 +21,7 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
 object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with Normalizer with DataSaver {
 
   val inputFile = "data/demographie_par_commune.json"
-  val outputFile = "data/normalized_features.json"
+  val outputFile = "data/normalized_cities.json"
 
   val sparkContext = initContext("normalizer")
   val sqlContext = new SQLContext(sparkContext)

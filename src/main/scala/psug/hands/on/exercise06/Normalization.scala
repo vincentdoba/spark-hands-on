@@ -17,7 +17,9 @@ import psug.hands.on.solutions.exercise06.Normalization._
 object Normalization extends App with DataSaver {
 
   val inputFile = "data/demographie_par_commune.json"
-  val outputFile = "data/normalized_features.json"
+  val outputFile = "data/normalized_cities.json"
+
+  init(outputFile)
 
   // TODO populate temporary file with rows such as a row is a json representing a City object whose features have been normalized
 

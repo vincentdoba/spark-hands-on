@@ -23,8 +23,8 @@ dist
 /node_modules
 play.data
 
-data/.normalized_features.json.crc
-data/normalized_features.json
+data/.normalized_cities.json.crc
+data/normalized_cities.json
 
 /presentation/*.log
 /presentation/*.aux

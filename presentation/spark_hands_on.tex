@@ -833,6 +833,28 @@ sbt "run-main psug.hands.on.exercise05.DensestCityDemography"
 
 
 \section{Exercise 6 : Saving JSON file}
+
+\begin{frame}
+  \frametitle{Presentation of Exercise}
+
+  \begin{block}{Statement}
+    We continue the previous exercise (Exercise 5). We have an RDD[City] as defined at the end of exercise 5 (copy/paste code from exercise 5 to start this exercise). We want to normalize the features of each city, meaning applying the following formula for each feature :
+\begin{center} 
+    $normalizedCity.features(i) = \frac{city.features(i) - min(allCities.map(\_.features(i)))}{max(allCities.map(\_.features(i))) - min(allCities.map(\_.features(i)))}$
+\end{center}
+And save these normalized cities in a JSON file normalized\_cities.json
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Cache RDD computation to reuse it several times
+      \item Aggregation on RDD
+      \item Save JSON file
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
 \section{Exercise 7 : Machine Learning}
 
 

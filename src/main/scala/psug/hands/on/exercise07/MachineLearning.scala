@@ -10,13 +10,13 @@ import org.apache.spark.sql.DataFrame
  * Display the precision of the algorithm (number of good guess over total number of cities) and ten cities that
  * were mislabeled
  *
- * file : normalized_features.json
+ * file : normalized_cities.json
  *
  * command : sbt "run-main psug.hands.on.exercise07.MachineLearning"
  */
 object MachineLearning extends App {
 
-  val inputFile = "data/normalized_features.json"
+  val inputFile = "data/normalized_cities.json"
 
   val trainingData:DataFrame = ??? // TODO create training data (randomly choose 500 cities in inputFile)
   val testData:DataFrame = ??? // TODO create test data (cities in inputFile that are not in training data)
