@@ -1,11 +1,11 @@
 package psug.hands.on.solutions.exercise05
 
 import org.apache.spark.sql.{Row, SQLContext}
-import psug.hands.on.exercise05.{City, DensestCityDisplayer}
+import psug.hands.on.exercise05.{DataSaver, City}
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
- * Find the densest city in France, and display the following information :
+ * Save the following information in a JSON and display the following information :
  * 
  * - City name
  * - City density
@@ -17,29 +17,37 @@ import psug.hands.on.solutions.SparkContextInitiator
  * 
  *
  * file : data/demographie_par_commune.json
+ * output file : data/cities.json
  *
- * command : sbt "run-main psug.hands.on.solutions.exercise05.DensestCityDemography"
+ * command : sbt "run-main psug.hands.on.solutions.exercise05.RetrieveFeatures"
  *
  */
-object DensestCityDemography extends App with SparkContextInitiator with DensestCityDisplayer with CityDemographyExtractor {
+object RetrieveFeatures extends App with SparkContextInitiator with CityDemographyExtractor with DataSaver {
 
   val inputFile = "data/demographie_par_commune.json"
+  val outputFile = "data/cities.json"
 
-  val sparkContext = initContext("densestCityDemography")
+  init()
+
+  val sparkContext = initContext("retrieveFeatures")
   val sqlContext = new SQLContext(sparkContext)
 
   val rawData = sqlContext.jsonFile(inputFile)
 
-  val populationData = rawData
+  val cities = rawData
     .select("Commune","Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
-    .where(rawData("Superficie") > 0 && rawData("Population") > 0)
+    .where(rawData("Superficie") > 0 && rawData("Population") > 2000)
     .na
     .drop()
     .map(extractDemographicData)
 
-  val densestCity = populationData.sortBy(a => a.features.head, false).first()
+  import sqlContext.implicits._
+  cities
+    .toDF()
+    .toJSON
+    .saveAsTextFile(temporaryFile)
 
-  displayDensestCity(densestCity)
+  merge(temporaryFile, outputFile)
 
   sparkContext.stop()
 

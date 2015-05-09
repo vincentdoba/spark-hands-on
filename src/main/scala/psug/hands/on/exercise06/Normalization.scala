@@ -4,6 +4,7 @@ import java.io.File
 
 import org.apache.hadoop.conf.Configuration
 import org.apache.hadoop.fs._
+import psug.hands.on.exercise05.DataSaver
 import psug.hands.on.solutions.exercise06.Normalization._
 
 /**
@@ -19,28 +20,10 @@ object Normalization extends App with DataSaver {
   val inputFile = "data/demographie_par_commune.json"
   val outputFile = "data/normalized_cities.json"
 
-  init(outputFile)
+  init()
 
   // TODO populate temporary file with rows such as a row is a json representing a City object whose features have been normalized
 
   merge(temporaryFile, outputFile)
-
-}
-
-trait DataSaver {
-
-  val temporaryFile = "/tmp/spark_temp_files"
-
-  def init(destinationFile:String) {
-    FileUtil.fullyDelete(new File(temporaryFile))
-    FileUtil.fullyDelete(new File(destinationFile))
-
-  }
-
-  def merge(srcPath: String, dstPath: String) {
-    val hadoopConfig = new Configuration()
-    val hdfs = FileSystem.get(hadoopConfig)
-    FileUtil.copyMerge(hdfs, new Path(srcPath), hdfs, new Path(dstPath), false, hadoopConfig, null)
-  }
 
 }

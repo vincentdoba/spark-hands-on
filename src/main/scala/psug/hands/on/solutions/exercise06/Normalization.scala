@@ -1,10 +1,7 @@
 package psug.hands.on.solutions.exercise06
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.spark.sql.SQLContext
-import psug.hands.on.exercise05.City
-import psug.hands.on.exercise06.DataSaver
+import psug.hands.on.exercise05.{City, DataSaver}
 import psug.hands.on.solutions.SparkContextInitiator
 import psug.hands.on.solutions.exercise05.CityDemographyExtractor
 
@@ -20,32 +17,29 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  */
 object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with Normalizer with DataSaver {
 
-  val inputFile = "data/demographie_par_commune.json"
+  val inputFile = "data/cities.json"
   val outputFile = "data/normalized_cities.json"
 
-  val sparkContext = initContext("normalizer")
+  val sparkContext = initContext("normalization")
   val sqlContext = new SQLContext(sparkContext)
 
-  init(outputFile)
+  init()
 
   val rawData = sqlContext.jsonFile(inputFile)
 
-  val populationData = rawData
-    .select("Commune","Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
-    .where(rawData("Superficie") > 0 && rawData("Population") > 2000)
-    .na
-    .drop()
-    .map(extractDemographicData)
+  val cities = rawData
+    .select("name","category","features")
+    .map(row => City(row.getString(0), row.getDouble(1), row.getSeq(2).toList))
     .cache()
 
-  val featuresSize = populationData.first().features.length
+  val featuresSize = cities.first().features.length
 
-  val minMaxList = populationData
+  val minMaxList = cities
     .map(_.features)
     .aggregate(List.fill[Extremes](featuresSize)(None))(aggregationReducer, aggregationMerger)
 
   import sqlContext.implicits._
-  val normalizedData = populationData.map(normalize(minMaxList)).toDF()
+  val normalizedData = cities.map(normalize(minMaxList)).toDF()
 
   normalizedData.toJSON.saveAsTextFile(temporaryFile)
 
