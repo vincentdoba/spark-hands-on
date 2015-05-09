@@ -46,8 +46,8 @@ object RetrieveFeatures extends App with SparkContextInitiator with CityDemograp
     .toJSON
     .cache()
 
-  cities.saveAsTextFile(temporaryFile)
-  merge(temporaryFile, outputFile)
+  cities.saveAsTextFile(temporaryFile + "/1")
+  merge(temporaryFile + "/1", outputFile)
 
   println("Some lines of data/cities.json : ")
   cities.take(10).foreach(println)

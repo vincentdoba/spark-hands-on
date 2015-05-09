@@ -29,8 +29,8 @@ object RetrieveFeatures extends App  with DataSaver {
 
   val cities:RDD[String] = ??? // TODO generate cities in France and their characteristics (name, has more than 5000 inhabitants...) JSON Strings
 
-  cities.saveAsTextFile(temporaryFile)
-  merge(temporaryFile, outputFile)
+  cities.saveAsTextFile(temporaryFile + "/1")
+  merge(temporaryFile + "/1", outputFile)
 
   println("Some lines of data/cities.json : ")
   cities.take(10).foreach(println)

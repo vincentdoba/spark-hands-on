@@ -1,11 +1,11 @@
-package psug.hands.on.solutions.exercise07.MLLib
+package psug.hands.on.solutions.exercise08.MLLib
 
 import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
-import psug.hands.on.solutions.exercise07.{MLHelpers, MachineLearningStats}
+import psug.hands.on.solutions.exercise08.{MLHelpers, MachineLearningStats}
 
 /**
  * Apply a Linear Regression model trained using 500 cities picked randomly among the list of cities having more than
@@ -25,10 +25,6 @@ object MachineLearning extends App with SparkContextInitiator with MLHelpers {
 
   val sparkContext = initContext("machineLearningMLLib")
   val sqlContext = new SQLContext(sparkContext)
-
-  import org.apache.spark.sql.functions._
-
-  val toVector = udf[org.apache.spark.mllib.linalg.Vector, Seq[Double]](seq => Vectors.dense(seq.toArray))
 
   val normalizedFeatures = sqlContext.jsonFile(inputFile)
   normalizedFeatures.registerTempTable("dataset")

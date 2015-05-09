@@ -47,8 +47,8 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
     .toJSON
     .cache()
 
-  normalizedCities.saveAsTextFile(temporaryFile)
-  merge(temporaryFile, outputFile)
+  cities.saveAsTextFile(temporaryFile + "/1")
+  merge(temporaryFile + "/1", outputFile)
 
   println("Some lines of data/normalized_cities.json : ")
   normalizedCities.take(10).foreach(println)

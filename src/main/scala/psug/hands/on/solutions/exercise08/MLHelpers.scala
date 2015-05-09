@@ -1,4 +1,4 @@
-package psug.hands.on.solutions.exercise07
+package psug.hands.on.solutions.exercise08
 
 import org.apache.spark.sql.Row
 

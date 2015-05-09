@@ -20,8 +20,8 @@ object Normalization extends App with DataSaver {
 
   val normalizedCities:RDD[String] = ??? // TODO generate JSON strings, each representing a City object whose features have been normalized
 
-  normalizedCities.saveAsTextFile(temporaryFile)
-  merge(temporaryFile, outputFile)
+  normalizedCities.saveAsTextFile(temporaryFile + "/1")
+  merge(temporaryFile + "/1", outputFile)
 
   println("Some lines of data/normalized_cities.json : ")
   normalizedCities.take(10).foreach(println)

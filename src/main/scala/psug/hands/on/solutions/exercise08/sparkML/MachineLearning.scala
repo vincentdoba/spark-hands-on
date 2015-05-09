@@ -1,11 +1,11 @@
-package psug.hands.on.solutions.exercise07.sparkML
+package psug.hands.on.solutions.exercise08.sparkML
 
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.classification.LogisticRegression
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import psug.hands.on.solutions.SparkContextInitiator
-import psug.hands.on.solutions.exercise07.{MLHelpers, MachineLearningStats}
+import psug.hands.on.solutions.exercise08.{MLHelpers, MachineLearningStats}
 
 /**
  * Apply a Linear Regression model trained using 500 cities picked randomly among the list of cities having more than

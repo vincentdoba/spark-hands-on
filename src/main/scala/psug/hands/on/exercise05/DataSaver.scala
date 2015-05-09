@@ -7,10 +7,10 @@ import org.apache.hadoop.fs.{FileSystem, FileUtil, Path}
 
 trait DataSaver {
 
-  val temporaryFile = "tmp/spark_temp_files"
+  val temporaryFile = "tmp"
 
   def init() {
-    FileUtil.fullyDelete(new File(temporaryFile))
+    FileUtil.fullyDeleteContents(new File(temporaryFile))
   }
 
   def merge(srcPath: String, dstPath: String) {
