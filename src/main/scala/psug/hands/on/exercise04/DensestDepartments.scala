@@ -1,9 +1,10 @@
 package psug.hands.on.exercise04
 
 /**
- * How are the ten densest department ?
+ * Which are the densest departments ?
  *
- * input file : data/departements.txt, data/demographie_par_commune.json
+ * input file 1 : data/departements.txt
+ * input file 2 : data/demographie_par_commune.json
  *
  * command : sbt "run-main psug.hands.on.exercise04.DensestDepartments"
  */

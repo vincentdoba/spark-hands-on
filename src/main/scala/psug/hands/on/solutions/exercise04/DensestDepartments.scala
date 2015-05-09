@@ -5,9 +5,10 @@ import org.apache.spark.sql.types.DoubleType
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
- * How are the densest department ?
+ * Which are the densest departments ?
  *
- * input file : data/departements.txt, data/demographie_par_commune.json
+ * input file 1 : data/departements.txt
+ * input file 2 : data/demographie_par_commune.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise04.DensestDepartments"
  */
