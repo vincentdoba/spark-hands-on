@@ -10,7 +10,7 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them and save it in
  * a file
  *
- * input file : data/demographie_par_commune.json
+ * input file : data/cities.json
  * output file : data/normalized_cities.json
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise06.Normalization"
@@ -21,10 +21,10 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
   val inputFile = "data/cities.json"
   val outputFile = "data/normalized_cities.json"
 
+  init()
+
   val sparkContext = initContext("normalization")
   val sqlContext = new SQLContext(sparkContext)
-
-  init()
 
   val rawData = sqlContext.jsonFile(inputFile)
 
@@ -47,7 +47,7 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
     .toJSON
     .cache()
 
-  cities.saveAsTextFile(temporaryFile + "/1")
+  normalizedCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)
 
   println("Some lines of data/normalized_cities.json : ")

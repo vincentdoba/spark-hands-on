@@ -1031,6 +1031,59 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{New Notions (1)}
+
+  \begin{lstlisting}[label=Sampling, caption=Sampling, language=scala, style=code]
+val withReplacement = true
+val fraction = 0.1
+val newDataFrame = oldDataFrame.sample(withReplacement, fraction)
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=SQLRequestOnTemporaryTables, caption=SQL Requests on Temporary Tables, language=scala, style=code]
+dataFrame1.registerTempTable("table1")
+dataFrame2.registerTempTable("table2")
+val resultDataFrame = sqlContext.sql("SELECT table1.column1, table2.column1 FROM table1, table2")
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{New Notions (2)}
+
+  \begin{block}{Supported SQL Syntax}
+    \begin{itemize}
+      \item Available at \tiny\href{http://docs.datastax.com/en/datastax\_enterprise/4.6/datastax\_enterprise/spark/sparkSqlSupportedSyntax.html}{https://docs.datastax.com/en/datastax\_enterprise/4.6/datastax\_enterprise/spark/sparkSqlSupportedSyntax.html}\normalsize
+      \item SELECT, WHERE, GROUP BY, HAVING, ORDER BY, JOIN, UNION, INSERT, SUM, LIKE...
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Helper: SQL request to select elements in table1 but not in table2}
+    \begin{lstlisting}[language=sql]
+SELECT column1 FROM table1 EXCEPT SELECT column1 FROM table2
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Command and Result}
+
+  \begin{block}{Command}
+    \begin{lstlisting}[language=bash, style=terminal]
+sbt "run-main psug.hands.on.exercise07.DataSetSplitter"  
+    \end{lstlisting}
+  \end{block}
+
+  \begin{block}{Result}
+    \begin{lstlisting}[language=bash, style=terminal]
+[info] There are 4577 test cities and 519 training cities
+[success] Total time: 7 s, completed 9 mai 2015 17:55:41
+    \end{lstlisting}
+  \end{block}
+
+\end{frame}
+
 \section{Exercise 8 : Machine Learning}
 
 
