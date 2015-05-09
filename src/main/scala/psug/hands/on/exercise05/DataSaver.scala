@@ -7,7 +7,7 @@ import org.apache.hadoop.fs.{Path, FileSystem, FileUtil}
 
 trait DataSaver {
 
-  val temporaryFile = "/tmp/spark_temp_files"
+  val temporaryFile = "tmp/spark_temp_files"
 
   def init() {
     FileUtil.fullyDelete(new File(temporaryFile))
