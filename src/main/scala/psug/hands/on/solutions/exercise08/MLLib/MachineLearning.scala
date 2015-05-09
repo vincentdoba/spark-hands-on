@@ -4,10 +4,9 @@ import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.sql.SQLContext
 import psug.hands.on.exercise05.DataSaver
 import psug.hands.on.solutions.SparkContextInitiator
-import psug.hands.on.solutions.exercise08.{MLHelpers, MachineLearningStats}
 
 /**
  * - Train a Linear Regression model using training_cities.json
@@ -20,7 +19,7 @@ import psug.hands.on.solutions.exercise08.{MLHelpers, MachineLearningStats}
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise08.MLLib.MachineLearning"
  */
-object MachineLearning extends App with SparkContextInitiator with MLHelpers with DataSaver {
+object MachineLearning extends App with SparkContextInitiator with DataSaver {
 
   val trainingInputFile = "data/training_cities.json"
   val testInputFile = "data/test_cities.json"
