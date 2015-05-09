@@ -27,7 +27,7 @@ object SumOfSquaresOfNonPrimeNumbers extends App with SparkContextInitiator {
     .distinct()
     .subtract(primeNumbers)
     .map(x => x*x)
-    .sum()
+    .reduce((a, b) => a + b)
 
   println(s"The sum of square of numbers that are not prime and are under 100 is $sumOfSquareOfNonPrimeNumbers")
 

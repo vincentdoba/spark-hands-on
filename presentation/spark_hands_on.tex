@@ -239,7 +239,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
       \item Initialization of Spark Context
       \item Transform Scala lists to Spark RDDs
       \item Discover some transformations on RDDs
-      \item Discover first action : sum
+      \item Discover first action : reduce
     \end{itemize}
   \end{block}
 
@@ -277,7 +277,7 @@ val newRdd:RDD[T] = oldRdd.map(x => x)
   \end{lstlisting}
 
   \begin{lstlisting}[label=RDDAction, caption=Apply action to RDD, language=scala, style=code]
-val result:Int = rdd[Int].sum()
+val result:T = rdd[T].reduce((a,b) => f(a,b))
   \end{lstlisting}
 
   \begin{lstlisting}[label=StopSparkContext, caption=Stop Spark Context, language=scala, style=code]
@@ -308,7 +308,7 @@ sparkContext.stop()
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{sum} & \textit{rdd1.sum()} & sum the elements of RDD \\ \hline
+        \textbf{reduce} & \textit{rdd1[T].reduce(f(T,T) =\textgreater\xspace T)} & merge 2 by 2 the elements of RDD using function f to one element \\ \hline
       \end{tabular}
     \end{center}
   \end{block}
@@ -1349,10 +1349,11 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
       substract & groupByKey & & join \\
       map & sortByKey & & sortBy \\ 
        & & & value \\ \hline
-      \rowcolor{lightgray} sum & collect & first & take \\ \hline
+      \rowcolor{lightgray} reduce & collect & first & take \\ \hline
       \rowcolor{gray} exercise 5 & exercise 6 & exercise 7 & exercise 8 \\ \hline
-      \textbf{where} & aggregate & sample & toDF \\
+      \textbf{where} & & sample & toDF \\
       cache & & & \\ \hline
+      \rowcolor{lightgray}   & aggregate & & \\ \hline
     \end{tabular}
   \end{center}
   \normalsize
@@ -1360,11 +1361,11 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
 
 \begin{frame}
 
-  \frametitle{Et c'est fini !}
+  \frametitle{That's All Folks !}
   
   
   \begin{center}
-    \Huge Des questions ?\normalsize
+    \Huge Any Questions ?\normalsize
   \end{center}
 \end{frame}
 
