@@ -41,7 +41,7 @@ object MachineLearning extends App with SparkContextInitiator with DataSaver {
     .select("name", "category", "features")
     .cache()
 
-  val model = LogisticRegressionWithSGD.train(training, 500, 0.01)
+  val model = LogisticRegressionWithSGD.train(training, 1000, 1000)
 
   import sqlContext.implicits._
 

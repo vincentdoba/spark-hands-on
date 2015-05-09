@@ -38,8 +38,8 @@ object MachineLearning extends App with SparkContextInitiator with DataSaver {
   val test = sqlContext.jsonFile(testInputFile).select("name", "category", "features")
 
   val logisticRegression = new LogisticRegression()
-    .setMaxIter(10)
-    .setRegParam(0.01)
+    .setMaxIter(100)
+    .setRegParam(0.001)
     .setFeaturesCol("features")
     .setLabelCol("category")
 
