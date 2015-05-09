@@ -26,6 +26,4 @@ object MachineLearning extends App with DataSaver {
 
   labeledCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)
-
-
 }

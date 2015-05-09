@@ -30,10 +30,8 @@ object DataSetSplitter extends App with DataSaver {
 
   trainingCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", trainingCitiesFile)
-
   testCities.saveAsTextFile(temporaryFile + "/2")
   merge(temporaryFile + "/2", testCitiesFile)
 
   println("There are " + testCities.count() + " test cities and " + trainingCities.count() + " training cities")
-
 }

@@ -105,7 +105,7 @@
 \frame{\titlepage}
 
 %--- Sommaire ---
-\begin{frame}
+\begin{frame}[allowframebreaks]
   \frametitle{Content}
   \tableofcontents[hideallsubsections]
 \end{frame}
@@ -116,7 +116,7 @@
 \begin{frame}
   \frametitle{Machine Prerequisite}
 
-  \begin{block}{You should have a machine with}
+  \begin{block}{You should have}
     \begin{itemize}
       \item JDK 6+ (this hands on was developed using Oracle JDK 8) with Scala 2.10+
       \item SBT 13+
@@ -126,11 +126,11 @@
     \end{itemize}
   \end{block}
 
-  \begin{block}{You should}
+  \begin{block}{You should know}
     \begin{itemize}
-      \item Know Scala basis
-      \item Be at ease with Scala iterables transformations (map, flatmap, fold)
-      \item Be at ease with higher order functions
+      \item Scala basis (functions, val, pattern matching)
+      \item Scala iterables transformations (map, flatmap, fold)
+      \item Anonymous functions
     \end{itemize}
   \end{block}
 
@@ -183,7 +183,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
       \item \textbf{Spark Context} Main entry point, represents the connection to a Spark Cluster, used to create RDDs/Load file
       \item \textbf{Resilient Distribued Dataset (RDD)} Spark Dataset on which we can apply actions and transformations
       \item \textbf{Transformations} functions that transform RDD to another RDD
-      \item \textbf{Actions} functions that transform an RDD to output data
+      \item \textbf{Actions} functions that transform a RDD to output data
     \end{itemize}
   \end{block}
 
@@ -208,17 +208,30 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 \begin{frame}
   \frametitle{SBT Configuration}
 
-  \lstinputlisting[language=scala, style=code, label=WordCount,caption=/build.sbt]{../build.sbt}
+  \lstinputlisting[language=scala, style=code, label=SbtBuild,caption=/build.sbt]{../build.sbt}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Ressources}
+
+  \lstinputlisting[language=java, style=code, label=log4j,caption=/src/main/resources/log4j.properties]{../src/main/resources/log4j.properties}
 
 \end{frame}
 
 \section{Exercise 1 : Spark basis (SparkContext, RDD, Transformation, Action)}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 1}
 
   \begin{block}{Statement}
-    We have three lists : first list contains the integers from 1 to 75, second list contains the integers from 25 to 100, and the third list contains primes under 100. We want to obtain the sum of square of integers that are under 100 and are not prime.
+    We have three lists : 
+    \begin{itemize}
+      \item First list contains the integers from 1 to 75
+      \item Second list contains the integers from 25 to 100
+      \item Third list contains primes under 100. 
+    \end{itemize}
+    We want to obtain the sum of square of integers that are under 100 and are not prime.
   \end{block}
 
   \begin{block}{What you will learn}
@@ -323,7 +336,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 \section{Exercise 2 : Key/Values RDD, File Loading}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 2}
 
   \begin{block}{Statement}
     We have a text file containing the list of French departments. Which are the departments whose name contains Seine ? And Loire ? And Garonne ? And Rhône ?
@@ -379,7 +392,7 @@ Charente-Maritime,17
 val rdd:RDD[String] = sparkContext.textFile("filePath")
   \end{lstlisting}
 
-  \begin{lstlisting}[label=TransformToKeyValue, caption=Transform RDD to a Key/Value RDD, language=scala, style=code]
+  \begin{lstlisting}[label=TransformToKeyValue, caption=Transform RDD to a Key/Value RDD (Also called PairRDD), language=scala, style=code]
 val keyValueRdd1:RDD[(K,V)] = oldRdd[T].map(f: (T) => (K,V))
 val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
   .flatMap(f: (T) => TraversableOnce[(K,V)])
@@ -440,7 +453,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 \section{Exercise 3 : Spark SQL Context, JSON Loading, DataFrames}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 3}
 
   \begin{block}{Statement}
     We have a JSON file containing the list of French cities with population. What is the total population of France ?
@@ -585,7 +598,7 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 4}
 
   \begin{block}{Statement}
     We have a JSON file containing the list of French cities with population, surface and department code and a text file containing departement code and name. We want the name of the ten densest French department, ordered by density.
@@ -644,7 +657,7 @@ def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.get
   \end{lstlisting}
 
   \begin{lstlisting}[label=DataFrameToRDD, caption=Transform a Data Frame to RDD, language=scala, style=code]
-val rdd = dataFrame.map(row => f(row))
+val rdd = dataFrame.map(row => extractor(row))
   \end{lstlisting}
 
   \begin{lstlisting}[label=changeNameSelectedColumn, caption=Change name of a column, language=scala, style=code]
@@ -710,7 +723,25 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 \section{Exercise 5 : Save JSON, Filter transformations}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{A Word about the following exercises}
+
+  \begin{block}{Aim of these exercises}
+    The following exercises (from 5 to 7) are about preparing a set of data for training and testing a Machine Learning model (done at exercise 8)
+  \end{block}
+
+  \begin{block}{Exercises Overview}
+    \begin{itemize}
+      \item \textbf{Exercise 5:} Extract meaningful features and categorie from a dataset
+      \item \textbf{Exercise 6:} Normalize features extracted in exercise 5
+      \item \textbf{Exercise 7:} Split dataset of exercise 6 into test dataset and training dataset
+      \item \textbf{Exercise 8:} Label the test dataset using a Machine Learning model trained with the training dataset
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Exercise 5}
 
   \begin{block}{Statement}
     We have a JSON file containing the list of French cities with city name, population, surface, number of executives, number of farmers, number of workers, number of employees. 
@@ -873,7 +904,7 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
 \section{Exercise 6 : Perform an aggregation}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 6}
 
   \begin{block}{Statement}
     We want to normalize the features of each city contained in cities.json file generated in exercise 5. Normalize a feature with index $i$ for a city $city$ means to apply the following formula :
@@ -974,7 +1005,7 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 \section{Exercise 7 : SQL requests on temporary tables, sampling}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 7}
 
   \begin{block}{Statement}
     We want to split our normalized cities (in normalized\_cities.json file generated during previous exercise) into two data sets : 
@@ -1088,7 +1119,7 @@ sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
 \section{Exercise 8 : Machine Learning}
 
 \begin{frame}
-  \frametitle{Presentation of Exercise}
+  \frametitle{Exercise 8}
 
   \begin{block}{Statement}
     We want to train a Linear Regression model over training cities that given a set of features determines if a city has more than 5000 inhabitants. Then we will use the model to label test cities. 
@@ -1266,6 +1297,31 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
     \end{lstlisting}
   \end{block}
 
+\end{frame}
+
+\section{Conclusion}
+
+\begin{frame}
+
+  \frametitle{What did we saw : Transformation and Action}
+  
+  \LARGE
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|}
+      \hline
+      \rowcolor{gray} exercise 1 & exercise 2 & exercise 3 & exercise 4 \\ \hline
+      union & filter & \textbf{agg} & \textbf{select} \\
+      distinct & flatmap & & \textbf{groupBy} \\
+      substract & groupByKey & & join \\
+      map & sortByKey & & sortBy \\ 
+       & & & value \\ \hline
+      \rowcolor{lightgray} sum & collect & first & take \\ \hline
+      \rowcolor{gray} exercise 5 & exercise 6 & exercise 7 & exercise 8 \\ \hline
+      \textbf{where} & aggregate & sample & toDF \\
+      cache & & & \\ \hline
+    \end{tabular}
+  \end{center}
+  \normalsize
 \end{frame}
 
 
