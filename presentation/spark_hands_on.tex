@@ -334,6 +334,19 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 
 \end{frame}
 
+\begin{frame}
+  \frametitle{Notes}
+
+  \begin{exampleblock}{Transformation/Action}
+    \begin{itemize}
+      \item A RDD doesn't contain the data, it is a representation of the data (Abstraction of a data set)
+      \item When you declare transformations on a RDD, these transformation are not resolved yet
+      \item It is when you call an action that the data are loaded and transformations are resolved
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
 \section{Exercise 2 : Key/Values RDD, File Loading}
 
 \begin{frame}
@@ -448,6 +461,27 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 [success] Total time: 8 s, completed 8 mai 2015 22:03:26
     \end{lstlisting}
   \end{block}
+
+\end{frame}
+
+\begin{frame}
+  \frametitle{Notes}
+
+  \begin{exampleblock}{Collect/Foreach}
+    \begin{itemize}
+      \item In this Exercise, we used \textit{collect} action to retrieve all elements of RDD and then print them using \textit{foreach} scala iterable's method
+      \item Except if there are few elements at the end of RDD transformations, it is not a good idea to call \textit{collect}
+      \item Here, we could have directly used \textit{foreach} action that is more efficient
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{exampleblock}{GroupByKey}
+    \begin{itemize}
+      \item \textit{GroupByKey} transformation transform a RDD[K,V] to a RDD[K, Iterable[V]], iterable containing all the values under that key
+      \item Meaning when you use it on large data set, there is lot of data transferred
+      \item It should be avoided and replaced by \textit{reduceByKey} action
+    \end{itemize}
+  \end{exampleblock}
 
 \end{frame}
 
@@ -596,6 +630,19 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 
 \end{frame}
 
+\begin{frame}
+  \frametitle{Notes}
+
+  \begin{exampleblock}{JSON File}
+    \begin{itemize}
+      \item If you look at \textit{demographie\_par\_commune.json}, you will see that there is one JSON record by line
+      \item Indeed, Spark must know where to split data, which is impossible with classic indented JSON file (number of line of a JSON object is not constant)
+      \item It exists methods to treat indented JSON file, but it is simplier to pretreat data in order to have one line by record
+    \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
 
 \begin{frame}
@@ -726,6 +773,56 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 
 \end{frame}
 
+\begin{frame}[fragile]
+  \frametitle{Notes}
+
+  \begin{exampleblock}{Retrieve column from column name : Problem}
+    \begin{itemize}
+      \item In Data Frame, you sometimes need to retrieve column from column name
+      \item it forces you to use the name of the data frame containing the column
+    \end{itemize}
+  \end{exampleblock}
+
+  \begin{lstlisting}[label=columnNameProblem, caption=Use the name of the data frame containing the column to retrieve column, language=scala, style=code]
+val newDataFrame = oldDataFrame.groupBy("column1")
+  .agg(oldDataFrame("column1"), sum("column2"))
+  \end{lstlisting}
+
+  \begin{exampleblock}{Retrieve column from column name : Solution}
+    It exists a syntaxic sugar "\$" that allow you to avoid using data frame name
+  \end{exampleblock}
+
+  \begin{lstlisting}[label=changeNameSelectedColumn, caption=Use "\$" and retrieve directly column from column name, language=scala, style=code]
+import sqlContext.implicits._
+val newDataFrame = oldDataFrame.groupBy("column1")
+  .agg($"column1", sum("column2"))
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Notes : Not Serializable Exception (1)}
+
+  \begin{exampleblock}{Not Serializable Exception : Problem}
+    In Spark, be careful to not send objects throught network by accident
+  \end{exampleblock}
+
+  \lstinputlisting[language=scala, style=code, label=NotSerializableFail,caption=/src/main/scala/psug/hands/on/examples/notSerializableException/ThrowException.scala]{../src/main/scala/psug/hands/on/examples/notSerializableException/ThrowException.scala}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \frametitle{Notes : Not Serializable Exception (2)}
+
+  \begin{exampleblock}{Not Serializable Exception : Solution}
+    Extract fields before using them in a RDD
+  \end{exampleblock}
+
+  \lstinputlisting[language=scala, style=code, label=NotSerializableWork,caption=/src/main/scala/psug/hands/on/examples/notSerializableException/Working.scala]{../src/main/scala/psug/hands/on/examples/notSerializableException/Working.scala}
+
+\end{frame}
+
 \section{Exercise 5 : Save JSON, Filter transformations}
 
 \begin{frame}
@@ -800,7 +897,7 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
   \frametitle{City class structure}
 
   \begin{lstlisting}[label=CityClassOverview, caption=psug.hands.on.exercise05.City class overview, language=scala, style=code]
-case class City(name:String, category:Double, features: List[Double]) extends Serializable
+case class City(name:String, category:Double, features: List[Double])
   \end{lstlisting}
 
   \begin{block}{Category}
@@ -855,7 +952,7 @@ val newDataFrame = oldDataFrame.na.drop()
 import sqlContext.implicits._
 rdd
   .toDF()
-  .toJSON
+  .toJSON()
   .saveAsTextFile(filePath)
   \end{lstlisting}
 
@@ -903,6 +1000,57 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
 [success] Total time: 13 s, completed 9 mai 2015 12:52:29
     \end{lstlisting}
   \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Notes}
+
+  \begin{exampleblock}{Use a clean context}
+    When using \textit{import sqlContext.implicits.\_} you need to setup \textbf{fork := true} in your \textit{build.sbt}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Display the data frame}
+    To display the structure and first rows of a data frame, you can use action \textit{show}
+  \end{exampleblock}
+
+  \begin{lstlisting}[label=ResultOfShowMethod, caption=Result of Show Method, language=bash, style=terminal]
+[info] Departement Commune              Population Superficie
+[info] 01          L'Abergement-Clem... 784        16        
+[info] 01          L'Abergement-de-V... 221        9         
+[info] 01          Amberieu-en-Bugey    13835      25        
+[info] 01          Amberieux-en-Dombes  1616       16        
+[info] 01          Ambleon              116        6         
+[info] 01          Ambronay             2362       34        
+[info] 01          Ambutrix             729        5         
+[info] 01          Andert-et-Condon     340        7         
+[info] 01          Anglefort            994        29        
+[info] 01          Apremont             363        15             
+...
+  \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Notes}
+
+  \begin{exampleblock}{Why do we save JSON in a temporary file and then use merge ?}
+    In fact when saving file Spark doesn't create a simple .json file but json chunks that can be swallowed by Hadoop
+  \end{exampleblock}
+
+  \begin{lstlisting}[label=contentOfTemporaryFile, caption=Content of Temporary File, language=bash, style=terminal]
+-rw-r--r-- 1 vincent users 252767 2015-05-10 01:24 part-00000
+-rw-r--r-- 1 vincent users   1984 2015-05-10 01:24 .part-00000.crc
+-rw-r--r-- 1 vincent users      0 2015-05-10 01:24 _SUCCESS
+-rw-r--r-- 1 vincent users      8 2015-05-10 01:24 ._SUCCESS.crc
+  \end{lstlisting}
+
+  \begin{exampleblock}{Solution}
+    \begin{itemize}
+      \item Apply transformation \textit{coalesce(1)} : it will reduce RDD to one partition, thus one file, but you will still have \textit{part-00000} file name
+      \item Post treatment of generated files using Hadoop librairies (see \textit{psug.hands.on.exercise05.DataSaver} trait for more details)
+    \end{itemize}
+  \end{exampleblock}
 
 \end{frame}
 
