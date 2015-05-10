@@ -50,41 +50,43 @@ object DisplayResult extends App with SparkContextInitiator {
     .take(10)
 
   val maxSize = List(30, nameMaxSize(wellLabeledExamples), nameMaxSize(mislabeledExamples)).max
+  val lineSize = maxSize + 40
 
   displayGeneralStats(accuracy)
-  displayCategoryStats(maxSize)("0", negativePrecision, negativeRecall)
-  displayCategoryStats(maxSize)("1", positivePrecision, positiveRecall)
-  displayWellLabeledExamples(maxSize)(wellLabeledExamples)
-  displayMislabeledExamples(maxSize)(mislabeledExamples)
+  displayCategoryStats("0", negativePrecision, negativeRecall)
+  displayCategoryStats("1", positivePrecision, positiveRecall)
+  displayWellLabeledExamples(wellLabeledExamples)
+  displayMislabeledExamples(mislabeledExamples)
 
 
-  def displayCategoryStats(maxSize:Int)(name: String, precision: Long, recall: Long) {
+  def displayCategoryStats(name: String, precision: Long, recall: Long) {
 
     val fScore = 2*recall*precision / (recall + precision)
     def fixedAlignLabel = alignLabel(maxSize)_
 
-    println(s"======= For Category $name =======")
-    println(line(maxSize))
+    println(titleBox(s"For Category $name"))
+    println(line(lineSize))
     val precisionLabel = fixedAlignLabel("Precision")
     println(s"- $precisionLabel : $precision %")
     val recallLabel = fixedAlignLabel("Recall")
     println(s"- $recallLabel : $recall %")
     val F1ScoreLabel = fixedAlignLabel("F1-Score")
     println(s"- $F1ScoreLabel : $fScore")
-    println(line(maxSize))
+    println(line(lineSize))
   }
 
   def displayGeneralStats(accuracy:Long) {
-    println(line(maxSize))
-    println("======== General Stats =======")
-    println(line(maxSize))
-    println(s"- accuracy              : $accuracy %")
-    println(line(maxSize))
+    println(line(lineSize))
+    println(titleBox("General Stats"))
+    println(line(lineSize))
+    val label = alignLabel(maxSize)("Accuracy")
+    println(s"- $label : $accuracy %")
+    println(line(lineSize))
   }
 
-  def displayWellLabeledExamples(maxSize:Int)(cities: Array[(String, Boolean)]) {
-    println("===== Well Labeled Cities ====")
-    println(line(maxSize))
+  def displayWellLabeledExamples(cities: Array[(String, Boolean)]) {
+    println(titleBox("Well Labeled Cities"))
+    println(line(lineSize))
     cities.foreach{
       case(name,true) =>
         val label = alignLabel(maxSize)(name)
@@ -93,12 +95,12 @@ object DisplayResult extends App with SparkContextInitiator {
         val label = alignLabel(maxSize)(name)
         println(s"- $label : less than 5000 inhabitants")
     }
-    println(line(maxSize))
+    println(line(lineSize))
   }
 
-  def displayMislabeledExamples(maxSize:Int)(cities: Array[(String, Boolean)]) {
-    println("====== Mislabeled Cities =====")
-    println(line(maxSize))
+  def displayMislabeledExamples(cities: Array[(String, Boolean)]) {
+    println(titleBox("Mislabeled Cities"))
+    println(line(lineSize))
     cities.foreach{
       case(name,true) =>
         val label = alignLabel(maxSize)(name)
@@ -107,7 +109,14 @@ object DisplayResult extends App with SparkContextInitiator {
         val label = alignLabel(maxSize)(name)
         println(s"- $label : actually less than 5000 inhabitants")
     }
-    println(line(maxSize))
+    println(line(lineSize))
+  }
+
+  def titleBox(title:String) = {
+    val remainingCharacters: Int = lineSize - title.length - 2
+    val rightFill = List.fill(remainingCharacters/2)("=").mkString("")
+    val leftFill = List.fill(remainingCharacters/2 + (remainingCharacters % 2))("=").mkString("")
+    s"$leftFill $title $rightFill"
   }
   
   def line(maxSize:Int) = List.fill(maxSize)("-").mkString("")
