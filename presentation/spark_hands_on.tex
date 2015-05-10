@@ -265,7 +265,7 @@ val sparkContext = new SparkContext(conf)
   \begin{lstlisting}[label=ListToRdd, caption=Load List as RDD, language=scala, style=code]
 val scalaList:List[T] = List(...)
 val rdd1:RDD[T] = sparkContext.makeRDD(scalaList)
-val rdd2:RDD[T] = sparkContext.parallelize(scalaList)
+val rdd2:RDD[T] = sparkContext.parallelize(scalaList) // exactly same thing
   \end{lstlisting}
 
 \end{frame}
