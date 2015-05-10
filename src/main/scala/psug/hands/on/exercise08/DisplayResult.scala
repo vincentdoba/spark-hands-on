@@ -30,39 +30,73 @@ object DisplayResult extends App with SparkContextInitiator {
 
   val positiveWellLabeled = total.where(total("category") === 1 && total("prediction") === 1).first().getLong(2)
   val negativeWellLabeled = total.where(total("category") === 0 && total("prediction") === 0).first().getLong(2)
-  val positiveBadlyLabeled = total.where(total("category") === 1 && total("prediction") === 0).first().getLong(2)
-  val negativeBadlyLabeled = total.where(total("category") === 0 && total("prediction") === 1).first().getLong(2)
+  val positiveMislabeled = total.where(total("category") === 1 && total("prediction") === 0).first().getLong(2)
+  val negativeMislabeled = total.where(total("category") === 0 && total("prediction") === 1).first().getLong(2)
 
-  val positiveRecall = positiveWellLabeled*100/(positiveWellLabeled + positiveBadlyLabeled)
-  val positivePrecision = positiveWellLabeled*100/(positiveWellLabeled + negativeBadlyLabeled)
+  val positiveRecall = positiveWellLabeled*100/(positiveWellLabeled + positiveMislabeled)
+  val positivePrecision = positiveWellLabeled*100/(positiveWellLabeled + negativeMislabeled)
 
-  val negativeRecall = negativeWellLabeled*100/(negativeWellLabeled + negativeBadlyLabeled)
-  val negativePrecision = negativeWellLabeled*100/(negativeWellLabeled + positiveBadlyLabeled)
+  val negativeRecall = negativeWellLabeled*100/(negativeWellLabeled + negativeMislabeled)
+  val negativePrecision = negativeWellLabeled*100/(negativeWellLabeled + positiveMislabeled)
 
-  val accuracy = (positiveWellLabeled + negativeWellLabeled)*100/(positiveBadlyLabeled + positiveWellLabeled + negativeBadlyLabeled + negativeWellLabeled)
+  val accuracy = (positiveWellLabeled + negativeWellLabeled)*100/(positiveMislabeled + positiveWellLabeled + negativeMislabeled + negativeWellLabeled)
+  
+  val mislabeledExamples = result.where(result("category") !== result("prediction"))
+    .map(row => (row.getString(0), row.getDouble(1) == 1))
+    .take(10)
+
+  val wellLabeledExamples = result.where(result("category") === result("prediction"))
+    .map(row => (row.getString(0), row.getDouble(1) == 1))
+    .take(10)
 
   displayGeneralStats(accuracy)
   displayCategoryStats("0", negativePrecision, negativeRecall)
   displayCategoryStats("1", positivePrecision, positiveRecall)
+  displayWellLabeledExamples(wellLabeledExamples)
+  displayMislabeledExamples(mislabeledExamples)
 
 
   def displayCategoryStats(name: String, precision: Long, recall: Long) {
 
     val fScore = 2*recall*precision / (recall + precision)
 
-    println(s"===== For Category $name =====")
-    println("--------------------------")
-    println(s"- Precision         : $precision %")
-    println(s"- Recall            : $recall %")
-    println(s"- F1-Score          : $fScore")
-    println("--------------------------")
+    println(s"======= For Category $name =======")
+    displayLine()
+    println(s"- Precision             : $precision %")
+    println(s"- Recall                : $recall %")
+    println(s"- F1-Score              : $fScore")
+    displayLine()
   }
 
   def displayGeneralStats(accuracy:Long) {
-    println("--------------------------")
-    println("====== General Stats =====")
-    println("--------------------------")
-    println(s"- accuracy          : $accuracy %")
-    println("--------------------------")
+    displayLine()
+    println("======== General Stats =======")
+    displayLine()
+    println(s"- accuracy              : $accuracy %")
+    displayLine()
   }
+
+  def displayWellLabeledExamples(cities: Array[(String, Boolean)]) {
+    println("===== Well Labeled Cities ====")
+    displayLine()
+    cities.foreach{
+      case(name,true) => println(s"- $name (more than 5000 inhabitants)")
+      case(name,false) => println(s"- $name (less than 5000 inhabitants)")
+    }
+    displayLine()
+  }
+
+  def displayMislabeledExamples(cities: Array[(String, Boolean)]) {
+    println("====== Mislabeled Cities =====")
+    displayLine()
+    cities.foreach{
+      case(name,true) => println(s"- $name (actually more than 5000 inhabitants)")
+      case(name,false) => println(s"- $name (actually less than 5000 inhabitants)")
+    }
+    displayLine()
+  }
+  
+  def displayLine() {
+    println("------------------------------")
+  } 
 }
