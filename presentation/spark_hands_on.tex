@@ -54,6 +54,18 @@
   basicstyle=\scriptsize\color{white}\ttfamily
 }
 
+\lstdefinestyle{terminal-large}
+{
+  backgroundcolor=\color{black},
+  basicstyle=\LARGE\color{white}\ttfamily
+}
+
+\lstdefinestyle{terminal-medium}
+{
+  backgroundcolor=\color{black},
+  basicstyle=\small\color{white}\ttfamily
+}
+
 \lstdefinestyle{code}
 {
   frame=b,
@@ -122,7 +134,7 @@
       \item SBT 13+
       \item Git
       \item An IDE with SBT/Scala support (for instance IDEA IntelliJ with SBT and Scala plugins)
-      \item Downloaded Spark 1.3.1 prebuilt for Hadoop 2.6 from \href{http://www.apache.org/dyn/closer.cgi/spark/spark-1.3.1/spark-1.3.1-bin-hadoop2.6.tgz}{official Apache Spark site}
+      \item \textbf{For Exercise 9} Downloaded Spark 1.3.1 prebuilt for Hadoop 2.6 from \href{http://www.apache.org/dyn/closer.cgi/spark/spark-1.3.1/spark-1.3.1-bin-hadoop2.6.tgz}{official Apache Spark site}
     \end{itemize}
   \end{block}
 
@@ -140,7 +152,7 @@
   \frametitle{First Spark Run}
 
   \begin{block}{Perform following commands}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 git clone https://github.com/vincentdoba/spark-hands-on.git
 cd spark-hands-on
 sbt "run-main psug.hands.on.prerequisite.WordCount README.md" 
@@ -320,7 +332,7 @@ sparkContext.stop()
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
     \end{lstlisting}
   \end{block}
@@ -340,7 +352,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
   \begin{exampleblock}{Transformation/Action}
     \begin{itemize}
       \item A RDD doesn't contain the data, it is a representation of the data (Abstraction of a data set)
-      \item When you declare transformations on a RDD, these transformation are not resolved yet
+      \item When you declare transformations on a RDD, these transformations are not resolved yet (Lazyness)
       \item It is when you call an action that the data are loaded and transformations are resolved
     \end{itemize}
   \end{exampleblock}
@@ -447,7 +459,7 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
     \end{lstlisting}
   \end{block}
@@ -479,7 +491,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
     \begin{itemize}
       \item \textit{GroupByKey} transformation transform a RDD[K,V] to a RDD[K, Iterable[V]], iterable containing all the values under that key
       \item Meaning when you use it on large data set, there is lot of data transferred
-      \item It should be avoided and replaced by \textit{reduceByKey} action
+      \item It should be avoided and replaced by \textit{reduceByKey} transformation
     \end{itemize}
   \end{exampleblock}
 
@@ -616,7 +628,7 @@ val newDataFrame:DataFrame = oldDataFrame.agg(sum("ColumnName"))
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise03.TotalPopulation"
     \end{lstlisting}
   \end{block}
@@ -636,8 +648,8 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
   \begin{exampleblock}{JSON File}
     \begin{itemize}
       \item If you look at \textit{demographie\_par\_commune.json}, you will see that there is one JSON record by line
-      \item Indeed, Spark must know where to split data, which is impossible with classic indented JSON file (number of line of a JSON object is not constant)
-      \item It exists methods to treat indented JSON file, but it is simplier to pretreat data in order to have one line by record
+      \item Indeed, to distribute chunks of data, Spark must know where to split data, which is impossible with classic indented JSON file (number of lines of a JSON object is not constant)
+      \item It exists methods to treat indented JSON file, but it is simplier to pre-treat data in order to have one record by line
     \end{itemize}
   \end{exampleblock}
 
@@ -759,7 +771,7 @@ val newDataFrame = groupedData
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise04.DensestDepartments"
     \end{lstlisting}
   \end{block}
@@ -979,7 +991,7 @@ rdd
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
     \end{lstlisting}
   \end{block}
@@ -1132,7 +1144,7 @@ def mergeFunction(value1:U, value2:U):U
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise06.Normalization"  
     \end{lstlisting}
   \end{block}
@@ -1256,7 +1268,7 @@ SELECT column1 FROM table1 EXCEPT SELECT column1 FROM table2
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise07.DataSetSplitter"  
     \end{lstlisting}
   \end{block}
@@ -1422,7 +1434,7 @@ val predictions:RDD[Double] = testDataRDD
 
   \frametitle{Commands and Result}
      
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise08.MachineLearning"
 sbt "run-main psug.hands.on.exercise08.DisplayResult"    
     \end{lstlisting}
@@ -1460,6 +1472,154 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
 
 \end{frame}
 
+\section{Exercise 9 : Launch a Spark Cluster and run tasks on it}
+
+\begin{frame}
+  \frametitle{Exercise 9}
+
+  \begin{block}{Statement}
+    We want to run the script created in the first exercise (psug.hands.on.exercise01.SumOfSquareOfNonPrimeNumbers) on a 
+Spark cluster
+  \end{block}
+
+  \begin{block}{What you will learn}
+    \begin{itemize}
+      \item Launch a Spark Cluster
+      \item Submit a Task to a Spark Cluster
+    \end{itemize}
+  \end{block}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Install Spark}
+
+  \begin{block}{How To}
+    \begin{itemize}
+      \item Uncompress spark-1.3.1-bin-hadoop2.6.tgz
+      \item Go to created directory
+      \item Setup SPARK\_HOME environnment variable
+    \end{itemize}
+  \end{block}
+
+  \begin{lstlisting}[language=bash, style=terminal-large]
+tar -xvf spark-1.3.1-bin-hadoop2.6.tgz
+cd spark-1.3.1-bin-hadoop2.6
+SPARK_HOME="$(pwd)" 
+  \end{lstlisting} 
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Launch Master}
+
+  \begin{block}{How To}
+    \begin{itemize}
+      \item Launch start-master.sh script
+      \item Go to localhost:8080
+    \end{itemize}
+  \end{block}
+
+  \begin{lstlisting}[language=bash, style=terminal-large]
+$SPARK_HOME/sbin/start-master.sh
+  \end{lstlisting} 
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Spark Webapp}
+
+  \includegraphics[width=345px]{images/spark_webapp.png}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Launch Worker}
+
+  \begin{block}{How To}
+    \begin{itemize}
+      \item Launch class \textit{org.apache.spark.deploy.worker.Worker} with \textit{spark-class}
+      \item With one core : \textit{-c 1}
+      \item With 512 Mo of memory : \textit{-m 512M}
+      \item Link it to your master : \textit{spark://blue:7077}
+      \item Go to localhost:8080
+    \end{itemize}
+  \end{block}
+
+  \begin{lstlisting}[language=bash, style=terminal-large]
+$SPARK_HOME/bin/spark-class \
+org.apache.spark.deploy.worker.Worker \
+-c 1 \
+-m 512M \
+spark://blue:7077
+  \end{lstlisting} 
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Spark Webapp with Worker}
+
+  \includegraphics[width=345px]{images/spark_webapp_with_worker.png}
+
+\end{frame}
+
+\begin{frame}[fragile]
+
+  \frametitle{Run Exercise 1 on your cluster}
+
+  \begin{block}{How To}
+    \begin{itemize}
+      \item Build project package
+      \item Send task to your cluster
+      \begin{itemize}
+        \item set your master : \textit{--master spark://blue:7077}
+        \item set the class you will run : \textit{--class psug.hands.on.solutions.exercise01.SumOfSquaresOfNonPrimeNumbers}
+        \item set the deploy mode : \textit{--deploy-mode cluster}
+        \item set the package : \textit{target/scala-2.10/psug-hands-on-spark\_2.10-0.0.1.jar}
+      \end{itemize}
+    \end{itemize}
+  \end{block}
+
+  \begin{lstlisting}[language=bash, style=terminal-large]
+sbt clean package
+$SPARK_HOME/bin/spark-submit \ 
+--master spark://blue:7077 \ 
+--class psug.hands.on.solutions.exercise01.SumOfSquaresOfNonPrimeNumbers \ 
+--deploy-mode cluster \ 
+target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
+  \end{lstlisting} 
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Spark Webapp with a Successful Job}
+
+  \includegraphics[width=345px]{images/spark_webapp_driver_success.png}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Worker Overview}
+
+  \includegraphics[width=345px]{images/spark_webapp_worker_overview.png}
+
+\end{frame}
+
+\begin{frame}
+
+  \frametitle{Worker Logs}
+
+  \includegraphics[width=345px]{images/spark_webapp_worker_logs.png}
+
+\end{frame}
+
 \section{Conclusion}
 
 \begin{frame}
@@ -1477,19 +1637,21 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
         \item Load File as RDD
         \item Key/Value RDD
         \item SqlContext and Data Frame
+        \item Load JSON as Data Frame
+        \item Transform Data Frame to RDD
       \end{itemize}
     \end{column}%
 
     \hfill%
     \begin{column}{.48\textwidth}
       \begin{itemize}
-        \item Load JSON as Data Frame
-        \item Transform Data Frame to RDD
         \item Drop null value in a Data Frame
         \item Save RDD to JSON File
         \item Perform Sampling
         \item SQL Request on Temporary Tables
         \item Train and use a Machine Learning Model
+        \item Launch a Spark Cluster
+        \item Submit a task to a Cluster
       \end{itemize}
     \end{column}%
   \end{columns}
@@ -1525,7 +1687,7 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
 
   \begin{block}{In your repository}
 
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[language=bash, style=terminal-large]
 git checkout teacher
 git pull
 ls src/main/scala/psug/hands/on/solutions 
