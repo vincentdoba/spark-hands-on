@@ -1,7 +1,7 @@
 package psug.hands.on.exercise08
 
 import org.apache.spark.sql.{DataFrame, SQLContext}
-import psug.hands.on.solutions.SparkContextInitiator
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Compute statistics on result of labeling test_cities.json
@@ -9,11 +9,12 @@ import psug.hands.on.solutions.SparkContextInitiator
  * command : sbt "run-main psug.hands.on.exercise08.DisplayResult"
  *
  */
-object DisplayResult extends App with SparkContextInitiator {
+object DisplayResult extends App {
 
   val inputFile = "data/labeled_cities.json"
 
-  val sparkContext = initContext("machineLearningResultDisplayer")
+  val conf = new SparkConf().setMaster("local").setAppName("machineLearningResultDisplayer")
+  val sparkContext = new SparkContext(conf)
   val sqlContext = new SQLContext(sparkContext)
 
   val result: DataFrame = sqlContext
