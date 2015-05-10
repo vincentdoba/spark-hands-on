@@ -1265,37 +1265,44 @@ val predictions:RDD[Double] = testDataRDD
 \end{frame}
 
 \begin{frame}[fragile]
-  \frametitle{Command and Result}
 
-  \begin{block}{Commands}
+  \frametitle{Commands and Result}
+     
     \begin{lstlisting}[language=bash, style=terminal]
 sbt "run-main psug.hands.on.exercise08.MachineLearning"
 sbt "run-main psug.hands.on.exercise08.DisplayResult"    
     \end{lstlisting}
-  \end{block}
 
-  \begin{block}{Result}
     \begin{lstlisting}[language=bash, style=terminal]
-[info] --------------------------
-[info] ====== General Stats =====
-[info] --------------------------
-[info] - accuracy          : 75 %
-[info] --------------------------
-[info] ===== For Category 0 =====
-[info] --------------------------
-[info] - Precision         : 73 %
-[info] - Recall            : 92 %
-[info] - F1-Score          : 81
-[info] --------------------------
-[info] ===== For Category 1 =====
-[info] --------------------------
-[info] - Precision         : 80 %
-[info] - Recall            : 49 %
-[info] - F1-Score          : 60
-[info] --------------------------
-[success] Total time: 10 s, completed 9 mai 2015 20:38:59
+[info] ----------------------------------------------------------------------
+[info] ============================ General Stats ===========================
+[info] ----------------------------------------------------------------------
+[info] - Accuracy                       : 75 %
+[info] ----------------------------------------------------------------------
+[info] =========================== For Category 0 ===========================
+[info] ----------------------------------------------------------------------
+[info] - Precision                      : 74 %
+[info] - Recall                         : 91 %
+[info] - F1-Score                       : 81
+[info] ----------------------------------------------------------------------
+[info] =========================== For Category 1 ===========================
+[info] ----------------------------------------------------------------------
+[info] - Precision                      : 79 %
+[info] - Recall                         : 52 %
+[info] - F1-Score                       : 62
+[info] ----------------------------------------------------------------------
+[info] ========================= Well Labeled Cities ========================
+[info] ----------------------------------------------------------------------
+[info] - Schoelcher                     : more than 5000 inhabitants
+[info] [...]
+[info] ----------------------------------------------------------------------
+[info] ========================== Mislabeled Cities =========================
+[info] ----------------------------------------------------------------------
+[info] - Montluel                       : actually more than 5000 inhabitants
+[info] [...]
+[info] ----------------------------------------------------------------------
+[success] Total time: 14 s, completed 10 mai 2015 12:39:31
     \end{lstlisting}
-  \end{block}
 
 \end{frame}
 
