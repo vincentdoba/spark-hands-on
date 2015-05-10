@@ -52,9 +52,10 @@ $SPARK_HOME/sbin/start-master.sh
 ```bash
 sbt clean package
 ```
-* Launch the exercise 01 on Spark Cluster (don't forget to replace spark://blue:7077 by the URL of your master
+* Launch the exercise 01 on Spark Cluster (don't forget to replace spark://blue:7077 by the URL of your master)
 ```bash
 $SPARK_HOME/bin/spark-submit --master spark://blue:7077 --class psug.hands.on.solutions.exercise01.SumOfSquaresOfNonPrimeNumbers --deploy-mode cluster target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
 ```
+* You can go on page http://localhost:8080, click on the worker and then click on its logs (stdout) to see the result of your job
 
 
