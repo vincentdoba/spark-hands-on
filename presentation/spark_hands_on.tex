@@ -118,7 +118,7 @@
 
   \begin{block}{You should have}
     \begin{itemize}
-      \item JDK 6+ (this hands on was developed using Oracle JDK 8) with Scala 2.10+
+      \item JDK 7+ (this hands on was developed using Oracle JDK 8) with Scala 2.10+
       \item SBT 13+
       \item Git
       \item An IDE with SBT/Scala support (for instance IDEA IntelliJ with SBT and Scala plugins)
@@ -181,7 +181,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
     \begin{itemize}
       \item \textbf{Spark Conf} Configuration of the Spark Context, here contains application name and master to call
       \item \textbf{Spark Context} Main entry point, represents the connection to a Spark Cluster, used to create RDDs/Load file
-      \item \textbf{Resilient Distribued Dataset (RDD)} Spark Dataset on which we can apply actions and transformations
+      \item \textbf{Resilient Distribued Dataset (RDD)} Main Dataset abstraction on which we can apply actions and transformations
       \item \textbf{Transformations} functions that transform RDD to another RDD
       \item \textbf{Actions} functions that transform a RDD to output data
     \end{itemize}
@@ -264,7 +264,8 @@ val sparkContext = new SparkContext(conf)
 
   \begin{lstlisting}[label=ListToRdd, caption=Load List as RDD, language=scala, style=code]
 val scalaList:List[T] = List(...)
-val rdd:RDD[T] = sparkContext.makeRDD(scalaList)
+val rdd1:RDD[T] = sparkContext.makeRDD(scalaList)
+val rdd2:RDD[T] = sparkContext.parallelize(scalaList)
   \end{lstlisting}
 
 \end{frame}
@@ -406,12 +407,12 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
 
   \begin{block}{Transformations}
     \begin{center}
-      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+      \begin{tabular}{|m{2.0cm}|m{4.0cm}|m{4.9cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{filter} & \textit{rdd1.filter(f: (T) =\textgreater\xspace boolean)} & filter by function f \\ \hline
-        \textbf{flatMap} & \textit{rdd1.flatMap(f: (T) =\textgreater\xspace TraversableOnce[U])} & apply function f and flatten \\ \hline
-        \textbf{groupByKey} & \textit{rdd1[(K,V)].groupByKey()} & create an RDD containing tuples (K, Seq(V)) \\ \hline
+        \textbf{filter} & \textit{rdd1[T]\newline.filter(f: (T) =\textgreater\xspace boolean)} & filter by function f \\ \hline
+        \textbf{flatMap} & \textit{rdd1[T].flatMap(f: (T) =\textgreater\xspace TraversableOnce[U])} & apply function f and flatten \\ \hline
+        \textbf{reduceByKey} & \textit{rdd1[(K,V)]\newline.reduceByKey(f:(V,V) =\textgreater\xspace V)} & create an RDD containing tuples (K, V), unique by key \\ \hline
         \textbf{sortByKey} & \textit{rdd1[(K,V)].sortByKey()} & sort rdd1 by key \\ \hline
       \end{tabular}
     \end{center}
@@ -419,7 +420,7 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
 
   \begin{block}{Actions}
     \begin{center}
-      \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
+      \begin{tabular}{|m{2.0cm}|m{4.0cm}|m{4.9cm}|}
         \hline 
         \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
         \textbf{collect} & \textit{rdd1.collect()} & retrieve all elements of RDD as Array \\ \hline
@@ -601,7 +602,7 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
   \frametitle{Exercise 4}
 
   \begin{block}{Statement}
-    We have a JSON file containing the list of French cities with population, surface and department code and a text file containing departement code and name. We want the name of the ten densest French department, ordered by density.
+    We have a JSON file containing the list of French cities with population, surface and department code and a text file containing departement code and name. We want the name of the ten densest French departments, ordered by density.
   \end{block}
 
   \begin{block}{What you will learn}
@@ -664,6 +665,12 @@ val rdd = dataFrame.map(row => extractor(row))
 val newDataFrame = oldDataFrame.select(oldDataFrame("columnName").as("newColumnName"))
   \end{lstlisting}
 
+  \begin{lstlisting}[label=GroupByColumn, caption=Group By Column, language=scala, style=code]
+val groupedData:GroupedData = oldDataFrame.groupBy("columnName")
+val newDataFrame = groupedData
+  .agg(oldDataFrame("columnName"), avg("anotherColumn"))
+  \end{lstlisting}
+
 \end{frame}
 
 \begin{frame}
@@ -676,7 +683,6 @@ val newDataFrame = oldDataFrame.select(oldDataFrame("columnName").as("newColumnN
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
         \textbf{select} & \textit{df1.select("column1", "column2", "column3")} & Transform data frame to a new data frame with columns specified as argument \\ \hline
-        \textbf{groupBy} & \textit{df1.groupBy(\newline"columnName"\newline)} & Similar to GroupByKey, group by elements of column columnName \\ \hline
         \textbf{join} & \textit{rdd1[(K,V1)]\newline  .join(rdd2[(K,V2)])} & Join the two RDD to one RDD, new value is the tuple of the two old values \\ \hline
         \textbf{sortBy} & \textit{rdd1[T]\newline  .sortBy(f: (T) =\textgreater\xspace K )} & Sort by the function f \\ \hline
         \textbf{values} & \textit{rdd1.values()} & Transform a Key/Value RDD to a RDD containing only values \\ \hline
@@ -1353,7 +1359,7 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
       \rowcolor{gray} exercise 1 & exercise 2 & exercise 3 & exercise 4 \\ \hline
       union & filter & \textbf{agg} & \textbf{select} \\
       distinct & flatmap & & \textbf{groupBy} \\
-      substract & groupByKey & & join \\
+      substract & reduceByKey & & join \\
       map & sortByKey & & sortBy \\ 
        & & & value \\ \hline
       \rowcolor{lightgray} reduce & collect & first & take \\ \hline

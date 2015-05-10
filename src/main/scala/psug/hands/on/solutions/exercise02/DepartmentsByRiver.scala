@@ -19,7 +19,7 @@ object DepartmentsByRiver extends App with SparkContextInitiator {
   val input = sparkContext.textFile(inputFile)
 
 
-  val departmentsByRiver:Iterable[(String, Iterable[String])] = input
+  val departmentsByRiver:Iterable[(String, String)] = input
     .flatMap {
     case a if a.split(",")(0).contains("Seine") => List(("Seine", a.split(",")(0)))
     case a if a.split(",")(0).contains("Rhône") => List(("Rhône", a.split(",")(0)))
@@ -27,12 +27,11 @@ object DepartmentsByRiver extends App with SparkContextInitiator {
     case a if a.split(",")(0).contains("Garonne") => List(("Garonne", a.split(",")(0)))
     case _ => List()
   }
-    .groupByKey()
-    .map(a => (a._1, a._2))
+    .reduceByKey((a, b) => a + ", " + b)
     .sortByKey()
     .collect()
 
-  departmentsByRiver.foreach(row => println("Les départements dont le nom contient " + row._1 + " sont " + row._2.mkString(", ")))
+  departmentsByRiver.foreach(row => println("Les départements dont le nom contient " + row._1 + " sont " + row._2))
 
   sparkContext.stop()
 

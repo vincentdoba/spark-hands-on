@@ -12,8 +12,8 @@ object DepartmentsByRiver extends App {
   val inputFile = "data/departements.txt"
   val rivers = List("Seine", "Garonne", "Rhône", "Loire")
 
-  val departmentsByRiver:Iterable[(String, Iterable[String])] = ??? // TODO create an iterable ("River", Iterable("department1","department2"...)), ordered by river's name
+  val departmentsByRiver:Iterable[(String, String)] = ??? // TODO create an iterable ("River", Iterable("department1","department2"...)), ordered by river's name
 
-  departmentsByRiver.foreach(row => println("Les départements dont le nom contient " + row._1 + " sont " + row._2.mkString(", ")))
+  departmentsByRiver.foreach(row => println("Les départements dont le nom contient " + row._1 + " sont " + row._2))
 
 }
