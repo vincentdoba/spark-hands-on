@@ -119,12 +119,14 @@ in total population, percentage of workers, percentage of employees and percenta
 
 * Spark Machine Learning Library (MLLib)
 
-### TODO : Exercise 9
+### Exercise 9
 
 #### Description
 
-Run spark script on a spark cluster
+Run the script created in the first exercise (psug.hands.on.exercise01.SumOfSquareOfNonPrimeNumbers) on a 
+Spark cluster
 
 #### Notions
 
-* Spark deployment and usage
+* Spark cluster deployment
+* Submit a task to a spark cluster
