@@ -20,7 +20,7 @@ trait AggregationFunctions {
    * @param features the features you want to reduce with the list of extremes
    * @return a list of extremes for each features
    */
-  def aggregationReducer(previousExtremes:List[Extremes], features:List[Double]):List[Extremes] = {
+  def reduce(previousExtremes:List[Extremes], features:List[Double]):List[Extremes] = {
     def reduce(values:List[Double], extremes:List[Extremes], result:List[Extremes]):List[Extremes] = (values,extremes) match {
       case (Nil, Nil) => result.reverse
       case (x1::xs1, x2::xs2) => reduce(xs1, xs2, computeExtremes(x1, x2)::result)
@@ -37,7 +37,7 @@ trait AggregationFunctions {
    * @param value2 the second extremes list
    * @return the merge of the two extremes lists
    */
-  def aggregationMerger(value1:List[Extremes], value2:List[Extremes]):List[Extremes] = {
+  def merge(value1:List[Extremes], value2:List[Extremes]):List[Extremes] = {
     def reduce(extremes1:List[Extremes], extremes2:List[Extremes], result:List[Extremes]):List[Extremes] = (extremes1,extremes2) match {
       case (Nil, Nil) => result.reverse
       case (x1::xs1, x2::xs2) => reduce(xs1, xs2, mergeExtremes(x1, x2)::result)

@@ -38,7 +38,7 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
 
   val minMaxList = cities
     .map(_.features)
-    .aggregate(initValue(featuresSize))(aggregationReducer, aggregationMerger)
+    .aggregate(initValue(featuresSize))(reduce, merge)
 
   import sqlContext.implicits._
 

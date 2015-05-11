@@ -1272,9 +1272,9 @@ trait AggregationFunctions {
 
   def initValue(featuresSize:Int):List[Extremes]
 
-  def aggregationReducer(previousExtremes:List[Extremes], features:List[Double]):List[Extremes]
+  def reduce(previousExtremes:List[Extremes], features:List[Double]):List[Extremes]
 
-  def aggregationMerger(value1:List[Extremes], value2:List[Extremes]):List[Extremes]
+  def merge(value1:List[Extremes], value2:List[Extremes]):List[Extremes]
 }
 \end{lstlisting}
 
