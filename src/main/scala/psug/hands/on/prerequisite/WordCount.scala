@@ -3,6 +3,11 @@ package psug.hands.on.prerequisite
 import org.apache.spark.rdd.RDD
 import org.apache.spark.{SparkConf, SparkContext}
 
+/**
+ * Classic word count
+ *
+ * command : sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
+ */
 object WordCount extends App {
 
   val inputFile = args(0)
