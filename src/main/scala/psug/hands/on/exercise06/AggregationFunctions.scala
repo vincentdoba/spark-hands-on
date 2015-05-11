@@ -11,7 +11,7 @@ trait AggregationFunctions {
    * @param featuresSize the size of the features list
    * @return the init value for the aggregation action
    */
-  def initValue(featuresSize:Int) = List.fill[Extremes](featuresSize)(None)
+  def initValue(featuresSize:Int):List[Extremes] = List.fill[Extremes](featuresSize)(None)
 
   /**
    * The reducer function of aggregation action
@@ -57,22 +57,4 @@ trait AggregationFunctions {
     case (None, b) => b
     case (Some(min1, max1), Some(min2, max2)) => Some(Math.min(min1, min2), Math.max(max1, max2))
   }
-}
-
-/**
- * Extremes object : contains the min and the max of a sequence of features
- */
-sealed trait Extremes {
-  def min:Double
-  def max:Double
-}
-
-object None extends Extremes with Serializable {
-  override def min: Double = sys.error("not defined")
-  override def max: Double = sys.error("not defined")
-  override def toString = "No Extremes"
-}
-
-case class Some(min:Double, max:Double) extends Extremes {
-  override def toString = s"(min : $min, max : $max)"
 }
