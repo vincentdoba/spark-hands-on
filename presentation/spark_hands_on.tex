@@ -19,6 +19,12 @@
 \usepackage{caption}
 \usepackage{xspace}
 
+%
+%
+%  HEADER
+%
+%
+
 \usetheme{JuanLesPins}
 \useoutertheme{infolines}
 %\usecolortheme{default}
@@ -107,7 +113,14 @@
 
 \setbeamertemplate{section page}[mine]
 
-%--- Page de titre ---
+%
+%
+%  INTRODUCTION
+%
+%
+
+
+%--- title page ---
 \title[Spark Hands On (PSUG)]{Spark Hands On}
 \subtitle{Paris Scala User Group}
 \author{Olivier GIRARDOT, Vincent DOBA}
@@ -116,7 +129,7 @@
 
 \frame{\titlepage}
 
-%--- Sommaire ---
+%--- Summary ---
 \begin{frame}[allowframebreaks]
   \frametitle{Content}
   \tableofcontents[hideallsubsections]
@@ -148,6 +161,7 @@
 
 \end{frame}
 
+%--- First Spark Run
 \begin{frame}[fragile]
   \frametitle{First Spark Run}
 
@@ -177,6 +191,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
     \end{lstlisting}
   \end{block}
 
+%--- World Count Script ---
 \end{frame}
 
 \begin{frame}[fragile]
@@ -186,8 +201,9 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- Important Notions (1) ---
 \begin{frame}
-  \frametitle{Important Notions}
+  \frametitle{Important Notions (1)}
 
   \begin{block}{Vocabulary}
     \begin{itemize}
@@ -201,8 +217,9 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- Important Notions (2) ---
 \begin{frame}
-  \frametitle{Important Notions}
+  \frametitle{Important Notions (2)}
 
   \begin{block}{Spark Scripting How To}
     \begin{itemize}
@@ -217,6 +234,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- SBT Configuration ---
 \begin{frame}
   \frametitle{SBT Configuration}
 
@@ -224,15 +242,24 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- Log4J Configuration ---
 \begin{frame}
-  \frametitle{Ressources}
+  \frametitle{Log4J Configuration}
 
   \lstinputlisting[language=java, style=code, label=log4j,caption=/src/main/resources/log4j.properties]{../src/main/resources/log4j.properties}
 
 \end{frame}
 
+%
+%
+%  EXERCISE 1
+%
+%
+
 \section{Exercise 1 : Spark basis (SparkContext, RDD, Transformation, Action)}
 
+
+%--- Exercise 1 ---
 \begin{frame}
   \frametitle{Exercise 1}
 
@@ -257,6 +284,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- EX1 : Exercise code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -264,6 +292,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- EX1 : New Notions (1) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (1)}
 
@@ -282,6 +311,7 @@ val rdd2:RDD[T] = sparkContext.parallelize(scalaList) // exactly same thing
 
 \end{frame}
 
+%--- EX1 : New Notions (2) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (2)}
 
@@ -299,6 +329,7 @@ sparkContext.stop()
 
 \end{frame}
 
+%--- EX1 : New Transformations and Actions
 \begin{frame}
 
   \frametitle{New Transformations and Actions}
@@ -328,6 +359,7 @@ sparkContext.stop()
 
 \end{frame}
 
+%--- EX1 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -346,6 +378,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 
 \end{frame}
 
+%--- EX1 : Notes
 \begin{frame}
   \frametitle{Notes}
 
@@ -359,8 +392,16 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 
 \end{frame}
 
+%
+%
+%  EXERCISE 2
+%
+%
+
 \section{Exercise 2 : Key/Values RDD, File Loading}
 
+
+%--- Exercise 2 ---
 \begin{frame}
   \frametitle{Exercise 2}
 
@@ -378,6 +419,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 
 \end{frame}
 
+%--- EX2 : Exercise Code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -385,6 +427,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 
 \end{frame}
 
+%--- EX2 : Input Description ---
 \begin{frame}[fragile]
   \frametitle{departements.txt File}
 
@@ -411,6 +454,7 @@ Charente-Maritime,17
 
 \end{frame}
 
+%--- EX2 : New Notions ---
 \begin{frame}[fragile]
   \frametitle{New Notions}
 
@@ -426,6 +470,7 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
 
 \end{frame}
 
+%--- EX2 : New Transformations and Actions ---
 \begin{frame}
 
   \frametitle{New Transformations and Actions}
@@ -455,6 +500,7 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
 
 \end{frame}
 
+%--- EX2 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -476,6 +522,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
 \end{frame}
 
+%--- EX2 : Notes ---
 \begin{frame}
   \frametitle{Notes}
 
@@ -497,8 +544,15 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
 \end{frame}
 
+%
+%
+% EXERCISE 3
+%
+%
+
 \section{Exercise 3 : Spark SQL Context, JSON Loading, DataFrames}
 
+%--- Exercise 3 ---
 \begin{frame}
   \frametitle{Exercise 3}
 
@@ -516,6 +570,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
 \end{frame}
 
+%--- EX3 : Exercise Code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -523,6 +578,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
 \end{frame}
 
+%--- EX3 : Input ---
 \begin{frame}[fragile]
   \frametitle{demographie\_par\_commune.json File}
 
@@ -548,6 +604,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
   \end{verbatim}
 \end{frame}
 
+%--- EX3 : New Notions (1) ---
 \begin{frame}
   \frametitle{New Notions (1)}
 
@@ -579,6 +636,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
 \end{frame}
 
+%--- EX3 : New Notions (2)---
 \begin{frame}[fragile]
   \frametitle{New Notions (2)}
 
@@ -597,6 +655,7 @@ val newDataFrame:DataFrame = oldDataFrame.agg(sum("ColumnName"))
 
 \end{frame}
 
+%--- EX3 : Transformations and Actions ---
 \begin{frame}
 
   \frametitle{Data Frame Transformations and Actions}
@@ -624,6 +683,7 @@ val newDataFrame:DataFrame = oldDataFrame.agg(sum("ColumnName"))
 
 \end{frame}
 
+%--- EX3 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -642,6 +702,7 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 
 \end{frame}
 
+%--- EX3 : Notes ---
 \begin{frame}
   \frametitle{Notes}
 
@@ -655,8 +716,15 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 
 \end{frame}
 
+%
+%
+% EXERCISE 4
+%
+%
+
 \section{Exercise 4 : Transformations/Actions on DataFrames, Join}
 
+%--- Exercise 4 ---
 \begin{frame}
   \frametitle{Exercise 4}
 
@@ -674,6 +742,7 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 
 \end{frame}
 
+%--- EX4 : Exercise code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -681,6 +750,7 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
 
 \end{frame}
 
+%--- EX4 : Inputs ---
 \begin{frame}[fragile]
   \frametitle{Data files}
 
@@ -706,7 +776,7 @@ Hautes-Alpes,05
     \end{verbatim}
   \end{block}
 
-
+%--- EX4 : New Notions ---
 \end{frame}
 
 \begin{frame}[fragile]
@@ -732,6 +802,7 @@ val newDataFrame = groupedData
 
 \end{frame}
 
+%--- EX4 : New Data Frame Transformations ---
 \begin{frame}
 
   \frametitle{New Data Frame Transformations}
@@ -751,6 +822,7 @@ val newDataFrame = groupedData
 
 \end{frame}
 
+%--- EX4 : New RDD Action ---
 \begin{frame}
 
   \frametitle{New RDD Action}
@@ -767,6 +839,7 @@ val newDataFrame = groupedData
 
 \end{frame}
 
+%--- EX4 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -785,6 +858,7 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 
 \end{frame}
 
+%--- EX4 : Notes ---
 \begin{frame}[fragile]
   \frametitle{Notes}
 
@@ -812,6 +886,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
+%--- EX4 : Not Serializable Exception (1) ---
 \begin{frame}[fragile]
   \frametitle{Notes : Not Serializable Exception (1)}
 
@@ -823,7 +898,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
-
+%--- EX4 : Not Serializable Exception (2) ---
 \begin{frame}[fragile]
   \frametitle{Notes : Not Serializable Exception (2)}
 
@@ -835,8 +910,15 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
+%
+%
+% EXERCISE 5
+%
+%
+
 \section{Exercise 5 : Save JSON, Filter transformations}
 
+%--- EX5 : Presentation of Machine Learning ---
 \begin{frame}
   \frametitle{A Word about the following exercises}
 
@@ -855,6 +937,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
+%--- Exercise 5 ---
 \begin{frame}
   \frametitle{Exercise 5}
 
@@ -873,6 +956,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
+%--- EX5 : Exercise Code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -880,6 +964,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
+%--- EX5 : Input ---
 \begin{frame}
 
   \frametitle{demographie\_par\_commune.json File Data Structure}
@@ -904,6 +989,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 \end{frame}
 
+%--- EX5 : Output ---
 \begin{frame}[fragile]
 
   \frametitle{City class structure}
@@ -932,6 +1018,7 @@ case class City(name:String, category:Double, features: List[Double])
 
 \end{frame}
 
+%--- EX5 : Output ---
 \begin{frame}[fragile]
 
   \frametitle{Output Description}
@@ -953,6 +1040,7 @@ case class City(name:String, category:Double, features: List[Double])
 
 \end{frame}
 
+%--- EX5 : New Notions ---
 \begin{frame}[fragile]
   \frametitle{New Notions}
 
@@ -970,6 +1058,7 @@ rdd
 
 \end{frame}
 
+%--- EX5 : New Transformations ---
 \begin{frame}
 
   \frametitle{New Transformations}
@@ -987,6 +1076,7 @@ rdd
 
 \end{frame}
 
+%--- EX5 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -1015,6 +1105,7 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
 
 \end{frame}
 
+%--- EX5 : Notes ---
 \begin{frame}[fragile]
   \frametitle{Notes}
 
@@ -1043,6 +1134,7 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
 
 \end{frame}
 
+%--- EX5 : Notes ---
 \begin{frame}[fragile]
   \frametitle{Notes}
 
@@ -1066,9 +1158,15 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
 
 \end{frame}
 
+%
+%
+% EXERCISE 6
+%
+%
 
 \section{Exercise 6 : Perform an aggregation}
 
+%--- Exercise 6 ---
 \begin{frame}
   \frametitle{Exercise 6}
 
@@ -1088,6 +1186,7 @@ Once the cities have their features normalized and rounded to two decimal digits
 
 \end{frame}
 
+%--- EX6 : Code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -1095,6 +1194,7 @@ Once the cities have their features normalized and rounded to two decimal digits
 
 \end{frame}
 
+%--- EX6 : Input and Output ---
 \begin{frame}[fragile]
 
   \frametitle{Input and Output}
@@ -1121,6 +1221,7 @@ Once the cities have their features normalized and rounded to two decimal digits
 
 \end{frame}
 
+%--- EX6 : Aggregation Action ---
 \begin{frame}[fragile]
   \frametitle{New Notions : Aggregation Action}
 
@@ -1140,6 +1241,7 @@ def mergeFunction(value1:U, value2:U):U
 
 \end{frame}
 
+%--- EX6 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -1168,8 +1270,15 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 
 \end{frame}
 
+%
+%
+% EXERCISE 7
+%
+%
+
 \section{Exercise 7 : SQL requests on temporary tables, sampling}
 
+%--- Exercise 7 ---
 \begin{frame}
   \frametitle{Exercise 7}
 
@@ -1192,6 +1301,7 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 
 \end{frame}
 
+%--- EX7 : Code ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -1199,6 +1309,7 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 
 \end{frame}
 
+%--- EX7 : Input and Output ---
 \begin{frame}[fragile]
 
   \frametitle{Input and Output}
@@ -1229,6 +1340,7 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
 
 \end{frame}
 
+%--- EX7 : New Notions (1) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (1)}
 
@@ -1246,6 +1358,7 @@ val resultDataFrame = sqlContext.sql("SELECT table1.column1, table2.column1 FROM
 
 \end{frame}
 
+%--- EX7 : New Notions (2) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (2)}
 
@@ -1264,6 +1377,7 @@ SELECT column1 FROM table1 EXCEPT SELECT column1 FROM table2
 
 \end{frame}
 
+%--- EX7 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
 
@@ -1282,8 +1396,15 @@ sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
 
 \end{frame}
 
+%
+%
+% EXERCISE 8
+%
+%
+
 \section{Exercise 8 : Machine Learning}
 
+%--- Exercise 8 ---
 \begin{frame}
   \frametitle{Exercise 8}
 
@@ -1303,6 +1424,7 @@ At the end of labeling, we want to save the name, the category and the predictio
 
 \end{frame}
 
+%--- EX8 : Run ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -1310,6 +1432,7 @@ At the end of labeling, we want to save the name, the category and the predictio
 
 \end{frame}
 
+%--- EX8 : Input and Output ---
 \begin{frame}[fragile]
 
   \frametitle{Input and Output}
@@ -1340,6 +1463,7 @@ At the end of labeling, we want to save the name, the category and the predictio
 
 \end{frame}
 
+%--- EX8 : New Notions (1) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (1) : Prepare your training Data}
 
@@ -1364,6 +1488,7 @@ val labeledPoint = LabeledPoint(label, features)
 
 \end{frame}
 
+%--- EX8 : New Notions (2) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (2) : Train model with your training data}
 
@@ -1378,9 +1503,9 @@ val stepSize:Double = 1000
 val model:LogisticRegressionModel = LogisticRegressionWithSGD.train(training, 500, 1000)
   \end{lstlisting}
 
-
 \end{frame}
 
+%--- EX8 : New Notions (3) ---
 \begin{frame}[fragile]
   \frametitle{New Notions (3) : Label test data with your model}
 
@@ -1395,6 +1520,7 @@ val predictions:RDD[Double] = testDataRDD
 
 \end{frame}
 
+%--- EX8 : New Transformations ---
 \begin{frame}
 
   \frametitle{New Transformations}
@@ -1418,8 +1544,9 @@ val predictions:RDD[Double] = testDataRDD
 
 \end{frame}
 
+%--- EX8 : Logistic Regression Configuration ---
 \begin{frame}
-  \frametitle{LogisticRegression Configuration}
+  \frametitle{Logistic Regression Configuration}
 
   \begin{block}{Parameters value}
     \begin{itemize}
@@ -1430,6 +1557,7 @@ val predictions:RDD[Double] = testDataRDD
 
 \end{frame}
 
+%--- EX8 : Run ---
 \begin{frame}[fragile]
 
   \frametitle{Commands and Result}
@@ -1472,8 +1600,15 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
 
 \end{frame}
 
+%
+%
+% EXERCISE 9
+%
+%
+
 \section{Exercise 9 : Launch a Spark Cluster and run tasks on it}
 
+%--- Exercise 9 ---
 \begin{frame}
   \frametitle{Exercise 9}
 
@@ -1491,6 +1626,7 @@ Spark cluster
 
 \end{frame}
 
+%--- EX9 : Install Spark ---
 \begin{frame}[fragile]
 
   \frametitle{Install Spark}
@@ -1511,6 +1647,7 @@ SPARK_HOME="$(pwd)"
 
 \end{frame}
 
+%--- EX9 : Launch Master ---
 \begin{frame}[fragile]
 
   \frametitle{Launch Master}
@@ -1528,6 +1665,7 @@ $SPARK_HOME/sbin/start-master.sh
 
 \end{frame}
 
+%--- EX9 : Spark Webapp ---
 \begin{frame}
 
   \frametitle{Spark Webapp}
@@ -1536,6 +1674,7 @@ $SPARK_HOME/sbin/start-master.sh
 
 \end{frame}
 
+%--- EX9 : Launch Worker ---
 \begin{frame}[fragile]
 
   \frametitle{Launch Worker}
@@ -1560,6 +1699,7 @@ spark://blue:7077
 
 \end{frame}
 
+%--- EX9 : Spark Webapp with Worker ---
 \begin{frame}
 
   \frametitle{Spark Webapp with Worker}
@@ -1568,6 +1708,7 @@ spark://blue:7077
 
 \end{frame}
 
+%--- EX9 : Run Exercise 1 on your cluster ---
 \begin{frame}[fragile]
 
   \frametitle{Run Exercise 1 on your cluster}
@@ -1596,6 +1737,7 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
 
 \end{frame}
 
+%--- EX9 : Spark Webapp with a Successful Job ---
 \begin{frame}
 
   \frametitle{Spark Webapp with a Successful Job}
@@ -1604,6 +1746,7 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
 
 \end{frame}
 
+%--- EX9 : Worker Overview ---
 \begin{frame}
 
   \frametitle{Worker Overview}
@@ -1612,6 +1755,7 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
 
 \end{frame}
 
+%--- EX9 : Worker Logs ---
 \begin{frame}
 
   \frametitle{Worker Logs}
@@ -1620,8 +1764,15 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
 
 \end{frame}
 
+%
+%
+% CONCLUSION
+%
+%
+
 \section{Conclusion}
 
+%--- What did we do ---
 \begin{frame}
   \frametitle{What did we do}
 
@@ -1658,6 +1809,7 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
   \normalsize
 \end{frame}
 
+%--- Transformations and Actions ---
 \begin{frame}
 
   \frametitle{Transformations and Actions}
@@ -1682,6 +1834,7 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
   \normalsize
 \end{frame}
 
+%--- Solutions ---
 \begin{frame}[fragile]
   \frametitle{Solutions}
 
@@ -1701,6 +1854,7 @@ ls src/main/scala/psug/hands/on/solutions
 
 \end{frame}
 
+%--- End ---
 \begin{frame}
 
   \frametitle{That's All Folks !}
