@@ -1244,6 +1244,42 @@ def mergeFunction(value1:U, value2:U):U
 
 \end{frame}
 
+%--- EX6 : Helper (1)
+\begin{frame}[fragile]
+  \frametitle{Helper : Normalize Function}
+
+\begin{lstlisting}[label=NormalizerTrait, caption=Normalizer Trait, language=scala, style=code]
+trait Normalizer {
+  def normalize(base: List[Extremes])(city:City):City
+}
+  \end{lstlisting}
+
+  \begin{lstlisting}[label=ExtremesTrait, caption=Extremes Trait, language=scala, style=code]
+sealed trait Extremes {
+  def min:Double
+  def max:Double
+}
+  \end{lstlisting}
+
+\end{frame}
+
+%--- EX6 : Helper (2)
+\begin{frame}[fragile]
+  \frametitle{Helper : Aggregation Functions}
+
+\begin{lstlisting}[label=AggregationFunctionsTrait, caption=Aggregation Functions Trait, language=scala, style=code]
+trait AggregationFunctions {
+
+  def initValue(featuresSize:Int):List[Extremes]
+
+  def aggregationReducer(previousExtremes:List[Extremes], features:List[Double]):List[Extremes]
+
+  def aggregationMerger(value1:List[Extremes], value2:List[Extremes]):List[Extremes]
+}
+\end{lstlisting}
+
+\end{frame}
+
 %--- EX6 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
