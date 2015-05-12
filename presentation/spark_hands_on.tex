@@ -1448,7 +1448,7 @@ sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
   \frametitle{Exercise 8}
 
   \begin{block}{Statement}
-    We want to train a Linear Regression model over training cities that given a set of features determines if a city has more than 5000 inhabitants. Then we will use the model to label test cities. 
+    We want to train a Logistic Regression model over training cities that given a set of features determines if a city has more than 5000 inhabitants. Then we will use the model to label test cities. 
 \\ \medskip
 Training cities are in training\_cities.json and test cities are in test\_cities.json
 \\ \medskip
@@ -1510,7 +1510,7 @@ At the end of labeling, we want to save the name, the category and the predictio
     Before training your model, you first need to transform training cities into LabeledPoint
   \end{block}
 
-  \begin{lstlisting}[label=TransformDataToLinearRegression, caption=Transform row into LabeledPoint, language=scala, style=code]
+  \begin{lstlisting}[label=TransformDataToLogisticRegression, caption=Transform row into LabeledPoint, language=scala, style=code]
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.linalg.Vector
 import org.apache.spark.mllib.regression.LabeledPoint
@@ -1552,7 +1552,7 @@ val model:LogisticRegressionModel = LogisticRegressionWithSGD.train(training, 50
     Contrary to training, you don't need to transform input data except Vector of features
   \end{block}
 
-  \begin{lstlisting}[label=TransformDataToLinearRegression, caption=Transform row into LabeledPoint, language=scala, style=code]
+  \begin{lstlisting}[label=LabelTestData, caption=Label Data with your model, language=scala, style=code]
 val predictions:RDD[Double] = testDataRDD
   .map(row => model.predict(Vectors.dense(row.getSeq[Double](2).toArray)))
   \end{lstlisting}
