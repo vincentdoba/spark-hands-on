@@ -27,35 +27,35 @@ object MachineLearning extends App with SparkContextInitiator with DataSaver {
 
   init()
 
-  val sparkContext = initContext("machineLearningSparkML")
-  val sqlContext = new SQLContext(sparkContext)
+  val sparkContext = initContext("machineLearningSparkML") // Create Spark Context
+  val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  import org.apache.spark.sql.functions._
+  import org.apache.spark.sql.functions._ // import function to get udf function
 
-  val toVector = udf[Vector, Seq[Double]](seq => Vectors.dense(seq.toArray))
+  val toVector = udf[Vector, Seq[Double]](seq => Vectors.dense(seq.toArray)) // function to transform Sequence of Double to Vector
 
-  val training = sqlContext.jsonFile(trainingInputFile).select("category", "features")
-  val test = sqlContext.jsonFile(testInputFile).select("name", "category", "features")
+  val training = sqlContext.jsonFile(trainingInputFile).select("category", "features") // Load training data from JSON File
+  val test = sqlContext.jsonFile(testInputFile).select("name", "category", "features") // Load test data from JSON File
 
   val logisticRegression = new LogisticRegression()
-    .setMaxIter(100)
-    .setRegParam(0.001)
-    .setFeaturesCol("features")
-    .setLabelCol("category")
+    .setMaxIter(100) // The number of iteration
+    .setRegParam(0.001) // The step size
+    .setFeaturesCol("features") // The column that contains features
+    .setLabelCol("category") // The column that contains label
 
   val pipeline = new Pipeline()
-    .setStages(Array(logisticRegression))
+    .setStages(Array(logisticRegression)) // Create Machine Learning Pipeline
 
-  val model = pipeline.fit(training.select(training("category"), toVector(training("features")).as("features")))
+  val model = pipeline.fit(training.select(training("category"), toVector(training("features")).as("features"))) // Feed the Logistic Regression algorithm with training data to create a ML model
 
-  val predictions = model.transform(test.select(test("name"), test("category"), toVector(test("features")).as("features")))
+  val predictions = model.transform(test.select(test("name"), test("category"), toVector(test("features")).as("features"))) // Label test data with model
 
-  val labeledCities: RDD[String] = predictions.select("name", "category", "prediction").toJSON
+  val labeledCities: RDD[String] = predictions.select("name", "category", "prediction").toJSON // Transform results of prediction to JSON String RDD
 
   labeledCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to Spark
 
 }
 

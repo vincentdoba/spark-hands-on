@@ -14,9 +14,9 @@ object DepartmentsByRiver extends App with SparkContextInitiator {
   val inputFile = "data/departements.txt"
   val rivers = List("Seine", "Garonne", "Rhône", "Loire")
 
-  val sparkContext = initContext("densestDepartment")
+  val sparkContext = initContext("densestDepartment") // Create the Spark Context
 
-  val input = sparkContext.textFile(inputFile)
+  val input = sparkContext.textFile(inputFile) // Load the file departments.txt in an RDD
 
 
   val departmentsByRiver:Iterable[(String, String)] = input
@@ -26,13 +26,13 @@ object DepartmentsByRiver extends App with SparkContextInitiator {
     case a if a.split(",")(0).contains("Loire") => List(("Loire", a.split(",")(0)))
     case a if a.split(",")(0).contains("Garonne") => List(("Garonne", a.split(",")(0)))
     case _ => List()
-  }
-    .reduceByKey((a, b) => a + ", " + b)
-    .sortByKey()
-    .collect()
+  } // Create a Key/Value RDD ("River","Department Name"), without null value
+    .reduceByKey((a, b) => a + ", " + b)  // Merge departement name by river name
+    .sortByKey() // Sort by river name
+    .collect() // Retrieve all elements of the RDD
 
   departmentsByRiver.foreach(row => println("Les départements dont le nom contient " + row._1 + " sont " + row._2))
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to spark
 
 }

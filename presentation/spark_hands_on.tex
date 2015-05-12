@@ -301,7 +301,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
   \begin{lstlisting}[label=InitSparkContext, caption=Init Spark Context, language=scala, style=code]
 val conf = new SparkConf()
-  .setMaster("local")
+  .setMaster("local[2]")
   .setAppName("applicationName")
 val sparkContext = new SparkContext(conf)
   \end{lstlisting}
@@ -656,6 +656,10 @@ import org.apache.spark.sql.functions._
 val newDataFrame:DataFrame = oldDataFrame.agg(sum("ColumnName"))
   \end{lstlisting}
 
+  \begin{lstlisting}[label=ExtractValueFromARow, caption=Extract value from a Row, language=scala, style=code]
+def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.getDouble(columnIndex2)))
+  \end{lstlisting}
+
 \end{frame}
 
 %--- EX3 : Transformations and Actions ---
@@ -784,10 +788,6 @@ Hautes-Alpes,05
 
 \begin{frame}[fragile]
   \frametitle{New Notions}
-
-  \begin{lstlisting}[label=ExtractValueFromARow, caption=Extract value from a Row, language=scala, style=code]
-def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.getDouble(columnIndex2)))
-  \end{lstlisting}
 
   \begin{lstlisting}[label=DataFrameToRDD, caption=Transform a Data Frame to RDD, language=scala, style=code]
 val rdd = dataFrame.map(row => extractor(row))

@@ -16,21 +16,22 @@ object SumOfSquaresOfNonPrimeNumbers extends App with SparkContextInitiator {
   val endingNumbersList = 25 to 100
   val primeNumbersList = List(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97)
 
-  val sparkContext = initContext("sumOfSquareOfNonPrimeNumbers")
-  
+  val sparkContext = initContext("sumOfSquareOfNonPrimeNumbers") // Create Spark Context
+
+  // Transform the three lists into Resilient Distributed Datasets
   val startingNumbers = sparkContext.makeRDD(startingNumbersList)
   val endingNumbers = sparkContext.makeRDD(endingNumbersList)
   val primeNumbers = sparkContext.makeRDD(primeNumbersList)
 
-  val sumOfSquareOfNonPrimeNumbers = startingNumbers
-    .union(endingNumbers)
-    .distinct()
-    .subtract(primeNumbers)
-    .map(x => x*x)
-    .reduce((a, b) => a + b)
+  val sumOfSquareOfNonPrimeNumbers = startingNumbers // We take list 1 -> 75
+    .union(endingNumbers) // TRANSFORMATION : We merge it with list 25 -> 100
+    .distinct() // TRANSFORMATION : We remove duplicate
+    .subtract(primeNumbers) // TRANSFORMATION : We remove prime numbers
+    .map(x => x*x) // TRANSFORMATION : We take the square of the remaining numbers
+    .reduce((a, b) => a + b) // ACTION : We sum the elements
 
   println(s"The sum of square of numbers that are not prime and are under 100 is $sumOfSquareOfNonPrimeNumbers")
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to spark
 
 }

@@ -24,29 +24,29 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
 
   init()
 
-  val sparkContext = initContext("normalization")
-  val sqlContext = new SQLContext(sparkContext)
+  val sparkContext = initContext("normalization") // Create Spark Context
+  val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val rawData = sqlContext.jsonFile(inputFile)
+  val rawData = sqlContext.jsonFile(inputFile) // Load JSON file
 
   val cities = rawData
-    .select("name","category","features")
-    .map(row => City(row.getString(0), row.getDouble(1), row.getSeq(2).toList))
-    .cache()
+    .select("name","category","features") // select all columns
+    .map(row => City(row.getString(0), row.getDouble(1), row.getSeq(2).toList)) // Transform Data Frame to a RDD containing 3-tuples
+    .cache() // Cache the result
 
-  val featuresSize = cities.first().features.length
+  val featuresSize = cities.first().features.length // Retrieve the size of features list
 
   val minMaxList = cities
-    .map(_.features)
-    .aggregate(initValue(featuresSize))(reduce, merge)
+    .map(_.features) // Extract features from cities
+    .aggregate(initValue(featuresSize))(reduce, merge) // aggregate to determine min/max of each feature
 
-  import sqlContext.implicits._
+  import sqlContext.implicits._ // Import SQL implicits to get toDF transformation
 
   val normalizedCities:RDD[String] = cities
-    .map(normalize(minMaxList))
-    .toDF()
-    .toJSON
-    .cache()
+    .map(normalize(minMaxList)) // Normalize data using min/max of each feature
+    .toDF() // Transform to Data Frame
+    .toJSON // Transform Data Frame to String RDD, each String is a JSON
+    .cache() // Cache the result
 
   normalizedCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)
@@ -54,6 +54,6 @@ object Normalization extends App with SparkContextInitiator with CityDemographyE
   println("Some lines of data/normalized_cities.json : ")
   normalizedCities.take(10).foreach(println)
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to Spark
 
 }

@@ -27,36 +27,34 @@ object MachineLearning extends App with SparkContextInitiator with DataSaver {
 
   init()
 
-  val sparkContext = initContext("machineLearningMLLib")
-  val sqlContext = new SQLContext(sparkContext)
+  val sparkContext = initContext("machineLearningMLLib") // Create Spark Context
+  val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
   val training = sqlContext
-    .jsonFile(trainingInputFile)
-    .select("category", "features")
-    .map(row => LabeledPoint(row.getDouble(0), Vectors.dense(row.getSeq[Double](1).toArray)))
-    .cache()
+    .jsonFile(trainingInputFile) // Load training data from JSON file
+    .select("category", "features") // Select interesting column for training
+    .map(row => LabeledPoint(row.getDouble(0), Vectors.dense(row.getSeq[Double](1).toArray))) // Transform row into somethinng that can be swallowed by ML training algorithm
 
   val test = sqlContext
-    .jsonFile(testInputFile)
-    .select("name", "category", "features")
-    .cache()
+    .jsonFile(testInputFile) // Load test data from JSON file
+    .select("name", "category", "features") // Select interesting columns
 
-  val model = LogisticRegressionWithSGD.train(training, 1000, 1000)
+  val model = LogisticRegressionWithSGD.train(training, 1000, 1000) // Feed a logistic regression algorithm with training data (iteration : 1000, step size : 1000)
 
-  import sqlContext.implicits._
+  import sqlContext.implicits._ // import SQL implicits to have toDF method
 
   val labeledCities:RDD[String] = test
     .map(row => {
     val prediction = model.predict(Vectors.dense(row.getSeq[Double](2).toArray))
     (row.getString(0), row.getDouble(1), prediction)
-  })
-    .toDF("name", "category", "prediction")
-    .toJSON
+  }) // Label cities in the test set
+    .toDF("name", "category", "prediction") // Select interesting columns
+    .toJSON // Transform to JSON String RDD
 
   labeledCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to Spark
 
 }
 

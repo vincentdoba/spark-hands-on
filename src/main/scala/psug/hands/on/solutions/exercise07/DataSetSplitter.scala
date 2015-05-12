@@ -27,19 +27,21 @@ object DataSetSplitter extends App with DataSaver with SparkContextInitiator {
 
   init()
 
-  val sparkContext = initContext("dataSetSplitter")
-  val sqlContext = new SQLContext(sparkContext)
+  val sparkContext = initContext("dataSetSplitter") // Create Spark Context
+  val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val normalizedCities = sqlContext.jsonFile(inputFile)
-  normalizedCities.registerTempTable("dataset")
+  val normalizedCities = sqlContext.jsonFile(inputFile) // Load JSON file into a Data Frame
+  normalizedCities.registerTempTable("dataset") // Save structure of the Data Frame into a temporary table in order to perform SQL Request on it
 
-  val trainingData: DataFrame = normalizedCities.sample(false, 0.1).select("name", "category", "features")
-  trainingData.registerTempTable("training")
+  val trainingData: DataFrame = normalizedCities
+    .sample(false, 0.1) // Pick 10% of the row of the data frame, without replacement
+    .select("name", "category", "features") // Select the interesting column
+  trainingData.registerTempTable("training") // Saven structure of the Data Frame intor a temporary table in order to perform SQL request on it
 
-  val testData = sqlContext.sql("SELECT name, category, features FROM dataset EXCEPT SELECT name, category, features FROM training")
+  val testData = sqlContext.sql("SELECT name, category, features FROM dataset EXCEPT SELECT name, category, features FROM training") // perform SQL request on registered temporary tables
 
-  val trainingCities:RDD[String] = trainingData.toDF().toJSON
-  val testCities:RDD[String] = testData.toDF().toJSON
+  val trainingCities:RDD[String] = trainingData.toDF().toJSON // Transform training data to JSON String RDD
+  val testCities:RDD[String] = testData.toDF().toJSON // Transform test data to JSON String RDD
 
   trainingCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", trainingCitiesFile)
@@ -49,6 +51,6 @@ object DataSetSplitter extends App with DataSaver with SparkContextInitiator {
 
   println("There are " + testCities.count() + " test cities and " + trainingCities.count() + " training cities")
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to Spark
 
 }

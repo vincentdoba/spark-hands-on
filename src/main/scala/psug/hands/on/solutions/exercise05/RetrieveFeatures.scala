@@ -29,22 +29,22 @@ object RetrieveFeatures extends App with SparkContextInitiator with CityDemograp
 
   init()
 
-  val sparkContext = initContext("retrieveFeatures")
-  val sqlContext = new SQLContext(sparkContext)
+  val sparkContext = initContext("retrieveFeatures") // Create Spark Context
+  val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val rawData = sqlContext.jsonFile(inputFile)
+  val rawData = sqlContext.jsonFile(inputFile) // Load JSON File into a Data Frame
 
-  import sqlContext.implicits._
+  import sqlContext.implicits._ // Load SQL implicites which wil  allow us to use toDF Transformation
 
   val cities = rawData
-    .select("Commune", "Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie")
-    .where(rawData("Superficie") > 0 && rawData("Population") > 2000)
-    .na
-    .drop()
-    .map(extractDemographicData)
-    .toDF()
-    .toJSON
-    .cache()
+    .select("Commune", "Agriculteurs", "Cadresetprofessionssupérieurs", "Employés", "Ouvriers", "Population", "Superficie") // Select interesting columns
+    .where(rawData("Superficie") > 0 && rawData("Population") > 2000) // Filter by surface and population
+    .na // Select rows containing null value
+    .drop() // And drop them
+    .map(extractDemographicData) // Compute demographic data and save it in a City object, transform data frame to RDD
+    .toDF() // Transform to Data Frame in order to use toJSON
+    .toJSON // Transform each row into a JSON String, transform again to a RDD
+    .cache() // Save into memory, in order to not compute all RDD again
 
   cities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)
@@ -52,7 +52,7 @@ object RetrieveFeatures extends App with SparkContextInitiator with CityDemograp
   println("Some lines of data/cities.json : ")
   cities.take(10).foreach(println)
 
-  sparkContext.stop()
+  sparkContext.stop() // Stop connection to Spark
 
 }
 
