@@ -40,6 +40,12 @@ Determine, given the list of numbers from 1 to 75, the list of numbers from 25 t
 * Discover actions
 * Discover transformation
 
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
+```
+
 ### Exercise 2
 
 #### Description
@@ -53,6 +59,13 @@ Display the departments whose name contains one of the four major rivers in Fran
 * Transformation on Key/Value 
 * Action : collect
 
+
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise02.DepartmentsCounter"
+```
+
 ### Exercise 3
 
 #### Description
@@ -65,6 +78,12 @@ How many inhabitants has France ?
 * Load a JSON file
 * First actions and transformations on DataFrames
 
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise03.TotalPopulation"
+```
+
 ### Exercise 4
 
 #### Description
@@ -75,6 +94,12 @@ What are the ten densest departments in France ?
 
 * DataFrames actions and transformations
 * Join
+
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise04.DensestDepartments"
+```
 
 ### Exercise 5
 
@@ -87,6 +112,12 @@ Save the demographic characteristics of cities of France in a JSON file ? Prepar
 * Save to a JSON file
 * Some transformations on DataFrames
 
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
+```
+
 ### Exercise 6
 
 #### Description
@@ -96,6 +127,12 @@ Normalize data for a Machine Learning algorithm
 #### Notions
 
 * Aggregation transformation
+
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise06.Normalization"
+```
 
 ### Exercise 7
 
@@ -108,6 +145,12 @@ Split a data set into two data sets randomly
 * Sampling
 * Temporary Tables and SQL requests on them
 
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
+```
+
 ### Exercise 8
 
 #### Description
@@ -118,6 +161,12 @@ in total population, percentage of workers, percentage of employees and percenta
 #### Notions
 
 * Spark Machine Learning Library (MLLib)
+
+#### Command
+
+```bash
+sbt "run-main psug.hands.on.exercise08.MachineLearning"
+```
 
 ### Exercise 9
 
