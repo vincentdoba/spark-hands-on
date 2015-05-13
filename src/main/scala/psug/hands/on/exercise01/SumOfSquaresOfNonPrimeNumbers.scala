@@ -8,14 +8,14 @@ package psug.hands.on.exercise01
  * command : sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
  *
  */
-object SumOfSquareOfNonPrimeNumbers extends App {
+object SumOfSquaresOfNonPrimeNumbers extends App {
 
   val startingNumbersList = 1 to 75
   val endingNumbersList = 25 to 100
   val primeNumbersList = List(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97)
 
-  val sumOfSquareOfNonPrimeNumbers = ??? // TODO compute the sum of squares of numbers under 100 that are not prime
+  val sumOfSquaresOfNonPrimeNumbers = ??? // TODO compute the sum of squares of numbers under 100 that are not prime
 
-  println(s"The sum of square of numbers that are not prime and are under 100 is $sumOfSquareOfNonPrimeNumbers")
+  println(s"The sum of square of numbers that are not prime and are under 100 is $sumOfSquaresOfNonPrimeNumbers")
 
 }

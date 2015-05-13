@@ -2,7 +2,7 @@
 
 ## Statement
 
-We want to run the script created in the first exercise (psug.hands.on.exercise01.SumOfSquareOfNonPrimeNumbers) on a 
+We want to run the script created in the first exercise (psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers) on a 
 Spark cluster
 
 ### Notions
