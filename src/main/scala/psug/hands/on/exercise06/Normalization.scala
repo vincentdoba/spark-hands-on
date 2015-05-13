@@ -11,7 +11,7 @@ import psug.hands.on.exercise05.DataSaver
  * command : sbt "run-main psug.hands.on.exercise06.Normalization"
  *
  */
-object Normalization extends App with DataSaver with AggregationFunctions with Normalizer {
+object Normalization extends App with DataSaver with AggregateFunctions with Normalizer {
 
   val inputFile = "data/cities.json"
   val outputFile = "data/normalized_cities.json"

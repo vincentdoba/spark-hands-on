@@ -239,7 +239,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
       \item Register Transformations on RDD
       \item Apply an Action to transformed RDD
       \item Stop Spark Context
-      \item Do whatever you want with data obtained after 
+      \item Do whatever you want with result
     \end{itemize}
   \end{block}
 
@@ -281,9 +281,9 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
       \item Second list contains the integers from 25 to 100
       \item Third list contains primes under 100. 
     \end{itemize}
-    We want to obtain the sum of square of integers that are under 100 and are not prime.
+    We want to obtain the sum of squares of integers that are under 100 and are not prime.
     \\ \medskip
-    For instance, the sum of square of intergers that are under 10 and are not prime is
+    For instance, the sum of squares of intergers that are under 10 and are not prime is
     $1^{2} + 4^{2} + 6^{2} + 8^{2} + 9^{2} + 10^{2} = 298$
   \end{block}
 
@@ -302,7 +302,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 \begin{frame}
   \frametitle{Exercise Code}
 
-  \lstinputlisting[language=scala, style=code, label=Exercise1,caption=/src/main/scala/psug/hands/on/exercise01/SumOfSquareOfNonPrimeNumbers.scala]{../src/main/scala/psug/hands/on/exercise01/SumOfSquareOfNonPrimeNumbers.scala}
+  \lstinputlisting[language=scala, style=code, label=Exercise1,caption=/src/main/scala/psug/hands/on/exercise01/SumOfSquaresOfNonPrimeNumbers.scala]{../src/main/scala/psug/hands/on/exercise01/SumOfSquaresOfNonPrimeNumbers.scala}
 
 \end{frame}
 
@@ -378,7 +378,7 @@ sparkContext.stop()
   \frametitle{Command and Result}
 
   \begin{block}{Command}
-    \begin{lstlisting}[language=bash, style=terminal-medium]
+    \begin{lstlisting}[language=bash, style=terminal-medium, basicstyle=\footnotesize\color{white}\ttfamily]
 sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
     \end{lstlisting}
   \end{block}
@@ -542,7 +542,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
   \begin{exampleblock}{Collect/Foreach}
     \begin{itemize}
-      \item In this Exercise, we used \textit{collect} action to retrieve all elements of RDD and then print them using \textit{foreach} scala iterable's method
+      \item In this Exercise, we used \textit{collect} action to retrieve all elements of RDD and then print them using \textit{foreach} scala iterable method
       \item Except if there are few elements at the end of RDD transformations, it is not a good idea to call \textit{collect}
       \item Here, we could have directly used \textit{foreach} action that is more efficient
     \end{itemize}
@@ -550,8 +550,8 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
   \begin{exampleblock}{GroupByKey}
     \begin{itemize}
-      \item \textit{GroupByKey} transformation transform a RDD[K,V] to a RDD[K, Iterable[V]], iterable containing all the values under that key
-      \item Meaning when you use it on large data set, there is lot of data transferred
+      \item \textit{GroupByKey} transformation transform a RDD[K,V] to a RDD[K, Iterable[V]], with Iterable containing all the values under that key
+      \item Meaning when you use it on large data set, there is a lot of data transferred
       \item It should be avoided and replaced by \textit{reduceByKey} transformation
     \end{itemize}
   \end{exampleblock}
@@ -622,7 +622,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 \begin{frame}
   \frametitle{New Notions (1)}
 
-  \begin{block}{Data Frame}
+  \begin{block}{DataFrame}
     \begin{itemize}
       \item Equivalent of RDD for structured data, DataFrame class extends RDD Api
       \item Can be seen as a SQL Table (columns and set of rows)
@@ -632,19 +632,19 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 
   \begin{block}{Row}
     \begin{itemize}
-      \item Element of a Data Frame.
+      \item Element of a DataFrame.
     \end{itemize}
   \end{block}
 
   \begin{block}{Column}
     \begin{itemize}
-      \item Part of the structure of a Data Frame.
+      \item Part of the structure of a DataFrame.
     \end{itemize}
   \end{block}
 
   \begin{block}{SQL Context}
     \begin{itemize}
-      \item Equivalent for Data Frame of Spark Context for RDD
+      \item Equivalent for DataFrame of Spark Context for RDD
     \end{itemize}
   \end{block}
 
@@ -658,7 +658,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
 val sqlContext = new SQLContext(sparkContext)
   \end{lstlisting}
 
-  \begin{lstlisting}[label=JsonFileLoading, caption=Load a Data Frame from JSON file, language=scala, style=code]
+  \begin{lstlisting}[label=JsonFileLoading, caption=Load a DataFrame from JSON file, language=scala, style=code]
 val input:DataFrame = sqlContext.jsonFile(filePath)
   \end{lstlisting}
 
@@ -676,7 +676,7 @@ def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.get
 %--- EX3 : Transformations and Actions ---
 \begin{frame}
 
-  \frametitle{Data Frame Transformations and Actions}
+  \frametitle{DataFrame Transformations and Actions}
 
   \begin{block}{Transformations}
     \begin{center}
@@ -694,7 +694,7 @@ def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.get
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{first} & \textit{rdd1.first()} & return the first element of RDD (in case of Data Frame, return first row) \\ \hline
+        \textbf{first} & \textit{rdd1.first()} & return the first element of RDD (in case of DataFrame, return first row) \\ \hline
       \end{tabular}
     \end{center}
   \end{block}
@@ -747,13 +747,13 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
   \frametitle{Exercise 4}
 
   \begin{block}{Statement}
-    We have a JSON file containing the list of French cities with population, surface and department code and a text file containing departement code and name. We want the name of the ten densest French departments, ordered by density.
+    We have a JSON file containing the list of French cities with population, surface and department code and a text file containing departments code and name. We want the name of the ten densest French departments, ordered by density.
   \end{block}
 
   \begin{block}{What you will learn}
     \begin{itemize}
       \item Joining two RDDs
-      \item Transform Data Frame to RDD
+      \item Transform DataFrame to RDD
       \item New Actions and Transformations on DataFrames
     \end{itemize}
   \end{block}
@@ -800,7 +800,7 @@ Hautes-Alpes,05
 \begin{frame}[fragile]
   \frametitle{New Notions}
 
-  \begin{lstlisting}[label=DataFrameToRDD, caption=Transform a Data Frame to RDD, language=scala, style=code]
+  \begin{lstlisting}[label=DataFrameToRDD, caption=Transform a DataFrame to RDD, language=scala, style=code]
 val rdd = dataFrame.map(row => extractor(row))
   \end{lstlisting}
 
@@ -816,18 +816,18 @@ val newDataFrame = groupedData
 
 \end{frame}
 
-%--- EX4 : New Data Frame Transformations ---
+%--- EX4 : New DataFrame Transformations ---
 \begin{frame}
 
-  \frametitle{New Data Frame Transformations}
+  \frametitle{New DataFrame Transformations}
 
   \begin{block}{Transformations}
     \begin{center}
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{select} & \textit{df1.select("column1", "column2", "column3")} & Transform data frame to a new data frame with columns specified as argument \\ \hline
-        \textbf{join} & \textit{rdd1[(K,V1)]\newline  .join(rdd2[(K,V2)])} & Join the two RDD to one RDD, new value is the tuple of the two old values \\ \hline
+        \textbf{select} & \textit{df1.select("column1", "column2", "column3")} & Transform dataFrame to a new dataFrame with columns specified as argument \\ \hline
+        \textbf{join} & \textit{rdd1[(K,V1)]\newline  .join(rdd2[(K,V2)])} & Join two Key/Value RDDs to one Key/Value RDD, new value is the tuple of the two old values \\ \hline
         \textbf{sortBy} & \textit{rdd1[T]\newline  .sortBy(f: (T) =\textgreater\xspace K )} & Sort by the function f \\ \hline
         \textbf{values} & \textit{rdd1.values()} & Transform a Key/Value RDD to a RDD containing only values \\ \hline
       \end{tabular}
@@ -846,7 +846,7 @@ val newDataFrame = groupedData
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Action} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{take} & \textit{rdd1.take(n:Int)} & return n elements of RDD (in case of Data Frame, return n rows) \\ \hline
+        \textbf{take} & \textit{rdd1.take(n:Int)} & return n elements of RDD (in case of DataFrame, return n rows) \\ \hline
       \end{tabular}
     \end{center}
   \end{block}
@@ -878,18 +878,18 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
 
   \begin{exampleblock}{Retrieve column from column name : Problem}
     \begin{itemize}
-      \item In Data Frame, you sometimes need to retrieve column from column name
+      \item In DataFrame, you sometimes need to retrieve column from column name
       \item it forces you to use the name of the data frame containing the column
     \end{itemize}
   \end{exampleblock}
 
-  \begin{lstlisting}[label=columnNameProblem, caption=Use the name of the data frame containing the column to retrieve column, language=scala, style=code]
+  \begin{lstlisting}[label=columnNameProblem, caption=Use the name of the dataFrame containing the column to retrieve column, language=scala, style=code]
 val newDataFrame = oldDataFrame.groupBy("column1")
   .agg(oldDataFrame("column1"), sum("column2"))
   \end{lstlisting}
 
   \begin{exampleblock}{Retrieve column from column name : Solution}
-    It exists a syntaxic sugar "\$" that allow you to avoid using data frame name
+    It exists a syntaxic sugar "\$" that allow you to avoid using dataFrame name
   \end{exampleblock}
 
   \begin{lstlisting}[label=changeNameSelectedColumn, caption=Use "\$" and retrieve directly column from column name, language=scala, style=code]
@@ -905,7 +905,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
   \frametitle{Notes : Not Serializable Exception (1)}
 
   \begin{exampleblock}{Not Serializable Exception : Problem}
-    In Spark, be careful to not send objects throught network by accident
+    In Spark, be careful to not send objects through network by accident
   \end{exampleblock}
 
   \lstinputlisting[language=scala, style=code, label=NotSerializableFail,caption=/src/main/scala/psug/hands/on/examples/notSerializableException/ThrowException.scala]{../src/main/scala/psug/hands/on/examples/notSerializableException/ThrowException.scala}
@@ -934,15 +934,18 @@ val newDataFrame = oldDataFrame.groupBy("column1")
 
 %--- EX5 : Presentation of Machine Learning ---
 \begin{frame}
-  \frametitle{A Word about the following exercises}
+  \frametitle{A word about the following exercises}
 
   \begin{block}{Aim of these exercises}
-    The following exercises (from 5 to 7) are about preparing a set of data for training and testing a Machine Learning model (done at exercise 8)
+    \begin{itemize}
+      \item The following exercises (from 5 to 7) are about preparing a set of data for training and testing a Machine Learning model (done at exercise 8)
+      \item We will try to guess if a city has more or less than 5000 inhabitants given some demographic statistics (density...)
+    \end{itemize}
   \end{block}
 
   \begin{block}{Exercises Overview}
     \begin{itemize}
-      \item \textbf{Exercise 5:} Extract meaningful features and categorie from a dataset
+      \item \textbf{Exercise 5:} Extract meaningful features and category from a dataset
       \item \textbf{Exercise 6:} Normalize features extracted in exercise 5
       \item \textbf{Exercise 7:} Split dataset of exercise 6 into test dataset and training dataset
       \item \textbf{Exercise 8:} Label the test dataset using a Machine Learning model trained with the training dataset
@@ -998,7 +1001,7 @@ val newDataFrame = oldDataFrame.groupBy("column1")
   \end{block}
 
   \begin{block}{Why Double instead of Long ?}
-    Long values (such as number of inhabitants) are treated as Double in order to be processed in a machine learning Spark integrated algorithm.
+    Long values (such as number of inhabitants) are treated as Double in order to be processed in Spark integrated machine learning algorithm.
   \end{block}
 
 \end{frame}
@@ -1124,11 +1127,11 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
   \frametitle{Notes}
 
   \begin{exampleblock}{Use a clean context}
-    When using \textit{import sqlContext.implicits.\_} you need to setup \textbf{fork := true} in your \textit{build.sbt}
+    When using \textit{import sqlContext.implicits.\_} you need to set \textbf{fork := true} in your \textit{build.sbt}
   \end{exampleblock}
 
   \begin{exampleblock}{Display the data frame}
-    To display the structure and first rows of a data frame, you can use action \textit{show}
+    To display the structure and first rows of a dataFrame, you can use action \textit{show}
   \end{exampleblock}
 
   \begin{lstlisting}[label=ResultOfShowMethod, caption=Result of Show Method, language=bash, style=terminal]
@@ -1194,7 +1197,7 @@ Once the cities have their features normalized and rounded to two decimal digits
 
   \begin{block}{What you will learn}
     \begin{itemize}
-      \item new action on RDD : aggregation
+      \item new action on RDD : aggregate
     \end{itemize}
   \end{block}
 
@@ -1237,15 +1240,15 @@ Once the cities have their features normalized and rounded to two decimal digits
 
 %--- EX6 : Aggregation Action ---
 \begin{frame}[fragile]
-  \frametitle{New Notions : Aggregation Action}
+  \frametitle{New Notions : Aggregate Action}
 
 
-  \begin{lstlisting}[label=Aggregate, caption=Aggregation over an RDD, language=scala, style=code]
+  \begin{lstlisting}[label=Aggregate, caption=Aggregate over an RDD, language=scala, style=code]
 val result = rdd.aggregate(initialValue)(reduceFunction, mergeFunction)
   \end{lstlisting}
 
 
-  \begin{lstlisting}[label=AggregateType, caption=Types over aggregate, language=scala, style=code]
+  \begin{lstlisting}[label=AggregateType, caption=aggregate's arguments types, language=scala, style=code]
 val result:U
 val rdd:RDD[T]
 val initialValue:U
@@ -1276,9 +1279,9 @@ sealed trait Extremes {
 
 %--- EX6 : Helper (2)
 \begin{frame}[fragile]
-  \frametitle{Helper : Aggregation Functions}
+  \frametitle{Helper : Aggregate Functions}
 
-\begin{lstlisting}[label=AggregationFunctionsTrait, caption=Aggregation Functions Trait, language=scala, style=code]
+\begin{lstlisting}[label=AggregateFunctionsTrait, caption=Aggregate Functions Trait, language=scala, style=code]
 trait AggregationFunctions {
 
   def initValue(featuresSize:Int):List[Extremes]
@@ -1345,7 +1348,7 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
   \begin{block}{What you will learn}
     \begin{itemize}
       \item Sampling over a data set
-      \item Register temporary tables and perform SQL statement over it
+      \item Register temporary tables and perform SQL statement on them
     \end{itemize}
   \end{block}
 
@@ -1459,7 +1462,7 @@ sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
   \frametitle{Exercise 8}
 
   \begin{block}{Statement}
-    We want to train a Logistic Regression model over training cities that given a set of features determines if a city has more than 5000 inhabitants. Then we will use the model to label test cities. 
+    We want to train a Logistic Regression model over training cities that given a set of features determines if a city has more than 5000 inhabitants. Then we will use this model to label test cities. 
 \\ \medskip
 Training cities are in training\_cities.json and test cities are in test\_cities.json
 \\ \medskip
@@ -1543,7 +1546,7 @@ val labeledPoint = LabeledPoint(label, features)
   \frametitle{New Notions (2) : Train model with your training data}
 
   \begin{block}{Train your model}
-    To train your model, you pass an RDD[LabeledPoint] to a LogisticRegressionWithSGB.train method
+    To train your model, you pass a RDD[LabeledPoint] to a LogisticRegressionWithSGB.train method
   \end{block}
 
   \begin{lstlisting}[label=TrainModel, caption=Train your model, language=scala, style=code]
@@ -1580,15 +1583,15 @@ val predictions:RDD[Double] = testDataRDD
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{toDF} & \textit{rdd.toDF("column1", "column2", "column3")} & create a Data Frame with columns column1, column2, column3 given a RDD \\ \hline
+        \textbf{toDF} & \textit{rdd.toDF("column1", "column2", "column3")} & create a DataFrame with columns column1, column2, column3 given a RDD \\ \hline
       \end{tabular}
     \end{center}
   \end{block}
 
   \begin{block}{Remark}
     \begin{itemize}
-      \item In order to use \textit{rdd.toDF()}, you need to import SQL implicits : \textit{import sqlContext.implicits.\_}. These implicits maps specific RDDs (for instance RDD[Int]) to Data Frame
-      \item You can create data frame from tuple RDDs, basic types RDDs...
+      \item In order to use \textit{rdd.toDF()}, you need to import SQL implicits : \textit{import sqlContext.implicits.\_}. These implicits maps specific RDDs (for instance RDD[Int]) to dataFrame
+      \item You can create dataFrame from tuple RDDs, basic types RDDs...
     \end{itemize}
   \end{block}
 
@@ -1663,7 +1666,7 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
   \frametitle{Exercise 9}
 
   \begin{block}{Statement}
-    We want to run the script created in the first exercise (psug.hands.on.exercise01.SumOfSquareOfNonPrimeNumbers) on a 
+    We want to run the script created in the first exercise (psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers) on a
 Spark cluster
   \end{block}
 
@@ -1685,7 +1688,7 @@ Spark cluster
     \begin{itemize}
       \item Uncompress spark-1.3.1-bin-hadoop2.6.tgz
       \item Go to created directory
-      \item Setup SPARK\_HOME environnment variable
+      \item Setup SPARK\_HOME environment variable
     \end{itemize}
   \end{block}
 
@@ -1837,16 +1840,16 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
         \item Stop Spark Context
         \item Load File as RDD
         \item Key/Value RDD
-        \item SqlContext and Data Frame
-        \item Load JSON as Data Frame
-        \item Transform Data Frame to RDD
+        \item SqlContext and DataFrame
+        \item Load JSON as DataFrame
+        \item Transform DataFrame to RDD
       \end{itemize}
     \end{column}%
 
     \hfill%
     \begin{column}{.48\textwidth}
       \begin{itemize}
-        \item Drop null value in a Data Frame
+        \item Drop null value in a DataFrame
         \item Save RDD to JSON File
         \item Perform Sampling
         \item SQL Request on Temporary Tables
@@ -1899,7 +1902,7 @@ ls src/main/scala/psug/hands/on/solutions
   \end{block}
 
   \begin{block}{On Github}
-    https://github.com/vincentdoba/spark-hands-on/tree/teacher/src/main/scala/psug/hands/on/solutions
+    \href{https://github.com/vincentdoba/spark-hands-on/tree/teacher/src/main/scala/psug/hands/on/solutions}{https://github.com/vincentdoba/spark-hands-on/tree/teacher/src/main/scala/psug/hands/on/solutions}
   \end{block}
 
 \end{frame}

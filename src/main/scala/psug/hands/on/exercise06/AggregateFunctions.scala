@@ -3,7 +3,7 @@ package psug.hands.on.exercise06
 /**
  * Contains all functions necessary to aggregate the min and the max of each features of a feature list
  */
-trait AggregationFunctions {
+trait AggregateFunctions {
 
   /**
    * Generate the initialization value of aggregation action
