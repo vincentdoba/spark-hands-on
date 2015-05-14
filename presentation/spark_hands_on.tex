@@ -1,6 +1,5 @@
 \documentclass[slidetop,9pt,utf8]{beamer}
 
-\usepackage{CJKutf8}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{ifpdf}
@@ -12,7 +11,6 @@
 \usepackage{array}
 \usepackage{graphicx}
 \usepackage{colortbl}
-\usepackage{pinyin}
 \usepackage{algorithm,algorithmic}
 \usepackage{hyperref}
 \usepackage{listingsutf8}
@@ -36,7 +34,7 @@
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
 
 \lstset{
-   basicstyle=\footnotesize\ttfamily,
+   basicstyle=\scriptsize\ttfamily,
    numberstyle=\tiny,          
    numbersep=5pt,              
    tabsize=2,                  
@@ -98,7 +96,6 @@
 }
 
 \begin{document}
-\begin{CJK}{UTF8}{gbsn}
 
 \AtBeginSection{\frame{\sectionpage}}
 
@@ -292,7 +289,6 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 %
 
 \section{Exercise 1 : Spark basis (SparkContext, RDD, Transformation, Action)}
-
 
 %--- Exercise 1 ---
 \begin{frame}
@@ -2036,5 +2032,4 @@ ls src/main/scala/psug/hands/on/solutions
 \end{frame}
 
 
-\end{CJK}
 \end{document}

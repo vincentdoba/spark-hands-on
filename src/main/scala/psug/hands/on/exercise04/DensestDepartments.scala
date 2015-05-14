@@ -1,5 +1,9 @@
 package psug.hands.on.exercise04
 
+import org.apache.spark.sql.types.DoubleType
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
+
 /**
  * Which are the densest departments ?
  *
