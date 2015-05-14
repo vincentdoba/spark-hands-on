@@ -3,9 +3,8 @@ package psug.hands.on.solutions.exercise06
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SQLContext
 import psug.hands.on.exercise05.{City, DataSaver}
-import psug.hands.on.exercise06.{Normalizer, AggregateFunctions, Extremes}
+import psug.hands.on.exercise06.{AggregateFunctions, Normalizer}
 import psug.hands.on.solutions.SparkContextInitiator
-import psug.hands.on.solutions.exercise05.CityDemographyExtractor
 
 /**
  * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them and save it in
@@ -17,7 +16,7 @@ import psug.hands.on.solutions.exercise05.CityDemographyExtractor
  * command : sbt "run-main psug.hands.on.solutions.exercise06.Normalization"
  *
  */
-object Normalization extends App with SparkContextInitiator with CityDemographyExtractor with AggregateFunctions with DataSaver with Normalizer {
+object Normalization extends App with SparkContextInitiator with AggregateFunctions with DataSaver with Normalizer {
 
   val inputFile = "data/cities.json"
   val outputFile = "data/normalized_cities.json"

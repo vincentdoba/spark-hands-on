@@ -1,7 +1,12 @@
 package psug.hands.on.exercise08
 
 import org.apache.spark.rdd.RDD
-import psug.hands.on.exercise05.DataSaver
+import psug.hands.on.exercise05.{City, DataSaver}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
+import org.apache.spark.mllib.linalg.Vectors
+import org.apache.spark.mllib.regression.LabeledPoint
 
 /**
  * - Train a Linear Regression model using training_cities.json
@@ -22,7 +27,7 @@ object MachineLearning extends App with DataSaver {
 
   init()
 
-  val labeledCities:RDD[String] = ???
+  val labeledCities: RDD[String] = ???
 
   labeledCities.saveAsTextFile(temporaryFile + "/1")
   merge(temporaryFile + "/1", outputFile)

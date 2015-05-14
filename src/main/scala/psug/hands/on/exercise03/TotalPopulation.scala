@@ -1,5 +1,8 @@
 package psug.hands.on.exercise03
 
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
+
 /**
  * Determine the total population in France
  *

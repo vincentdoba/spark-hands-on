@@ -1,7 +1,9 @@
 package psug.hands.on.exercise06
 
 import org.apache.spark.rdd.RDD
-import psug.hands.on.exercise05.DataSaver
+import psug.hands.on.exercise05.{City, DataSaver}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
 
 /**
  * Normalize features retrieved in previous exercice 05 so a Machine Learning algorithm can swallow them

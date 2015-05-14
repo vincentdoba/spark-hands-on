@@ -1,6 +1,7 @@
 package psug.hands.on.exercise05
 
 import org.apache.spark.rdd.RDD
+import org.apache.spark.{SparkConf, SparkContext}
 
 /**
  * Save the following information in a JSON file :
@@ -34,6 +35,4 @@ object RetrieveFeatures extends App  with DataSaver {
 
   println("Some lines of data/cities.json : ")
   cities.take(10).foreach(println)
-
-
 }

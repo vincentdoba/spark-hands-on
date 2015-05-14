@@ -1,7 +1,9 @@
 package psug.hands.on.exercise07
 
 import org.apache.spark.rdd.RDD
-import psug.hands.on.exercise05.DataSaver
+import psug.hands.on.exercise05.{City, DataSaver}
+import org.apache.spark.{SparkConf, SparkContext}
+import org.apache.spark.sql.{DataFrame, SQLContext}
 
 /**
  * Split cities in data/normalized_cities.json in two groups :

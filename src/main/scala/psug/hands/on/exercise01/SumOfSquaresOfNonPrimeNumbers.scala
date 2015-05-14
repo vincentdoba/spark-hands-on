@@ -1,5 +1,7 @@
 package psug.hands.on.exercise01
 
+import org.apache.spark.{SparkConf, SparkContext}
+
 /**
  * Compute the sum of squares of numbers that are under 100 and that are not prime.
  *
