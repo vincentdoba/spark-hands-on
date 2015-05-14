@@ -7,10 +7,9 @@ package psug.hands.on.exercise02
  *
  * command : sbt "run-main psug.hands.on.exercise01.DepartmentsCounter"
  */
-object DepartmentsByRiver extends App {
+object DepartmentsByRiver extends App with RiversMatcher {
 
   val inputFile = "data/departements.txt"
-  val rivers = List("Seine", "Garonne", "Rhône", "Loire")
 
   val departmentsByRiver:Iterable[(String, String)] = ??? // TODO create an iterable ("River", Iterable("department1","department2"...)), ordered by river's name
 

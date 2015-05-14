@@ -185,7 +185,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
   \end{block}
 
   \begin{block}{You should obtain}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] Running psug.hands.on.prerequisite.WordCount README.md
 [error] 15/05/08 17:37:36 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
 [info] (,48)
@@ -261,6 +261,30 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
 
 \end{frame}
 
+%--- To The Exercises ---
+\begin{frame}
+
+  \frametitle{To The Exercises}
+
+  \begin{block}{How are exercises organized ?}
+    \begin{itemize}
+      \item Statement and What you will learn in this exercise
+      \item Exercise code (empty)
+      \item Input and Output files (if needed)
+      \item Helpers (if needed)
+      \item New Notions
+      \item Actions and Transformations
+      \item Command to run and Result
+      \item Some Notes (if needed)
+    \end{itemize}
+  \end{block}
+
+  \begin{block}{Reminder}
+    Don't wait. Once you finished an exercise, you can continue, all the things necessary to do the exercises are in the presentation.
+  \end{block}
+
+\end{frame}
+
 %
 %
 %  EXERCISE 1
@@ -278,7 +302,7 @@ sbt "run-main psug.hands.on.prerequisite.WordCount README.md"
     We have three lists : 
     \begin{itemize}
       \item First list contains the integers from 1 to 75
-      \item Second list contains the integers from 25 to 100
+      \item Second list contains the integers from 25 to 125
       \item Third list contains primes under 100. 
     \end{itemize}
     We want to obtain the sum of squares of integers that are under 100 and are not prime.
@@ -319,8 +343,7 @@ val sparkContext = new SparkContext(conf)
 
   \begin{lstlisting}[label=ListToRdd, caption=Load List as RDD, language=scala, style=code]
 val scalaList:List[T] = List(...)
-val rdd1:RDD[T] = sparkContext.makeRDD(scalaList)
-val rdd2:RDD[T] = sparkContext.parallelize(scalaList) // exactly same thing
+val rdd:RDD[T] = sparkContext.makeRDD(scalaList)
   \end{lstlisting}
 
 \end{frame}
@@ -353,6 +376,7 @@ sparkContext.stop()
       \begin{tabular}{|m{2.1cm}|m{3.5cm}|m{5cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
+        \textbf{filter} & \textit{rdd1[T]\newline.filter(f: (T) =\textgreater\xspace boolean)} & filter by function f \\ \hline
         \textbf{union} & \textit{rdd1.union(rdd2)} & merge the two rdds \\ \hline
         \textbf{distinct} & \textit{rdd1.distinct()} & remove duplicates from rdd \\ \hline
         \textbf{subtract} & \textit{rdd1.substract(rdd2)} & remove values from rdd2 of rdd1 \\ \hline
@@ -384,7 +408,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] The sum of square of numbers that are not prime and are under 100 is 272554.0
 [success] Total time: 9 s, completed 8 mai 2015 21:23:22
     \end{lstlisting}
@@ -393,7 +417,7 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
 \end{frame}
 
 %--- EX1 : Notes
-\begin{frame}
+\begin{frame}[fragile]
   \frametitle{Notes}
 
   \begin{exampleblock}{Transformation/Action}
@@ -402,6 +426,14 @@ sbt "run-main psug.hands.on.exercise01.SumOfSquaresOfNonPrimeNumbers"
       \item When you declare transformations on a RDD, these transformations are not resolved yet (Lazyness)
       \item It is when you call an action that the data are loaded and transformations are resolved
     \end{itemize}
+  \end{exampleblock}
+
+  \begin{exampleblock}{Another method to load RDDs}
+    \begin{lstlisting}[language=scala, style=code]
+val scalaList:List[T] = List(...)
+val rdd:RDD[T] = sparkContext.parallelize(scalaList)
+    \end{lstlisting}
+    Exactly the same as \textit{makeRDD}
   \end{exampleblock}
 
 \end{frame}
@@ -494,7 +526,6 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
       \begin{tabular}{|m{2.0cm}|m{4.0cm}|m{4.9cm}|}
         \hline 
         \rowcolor{gray} \textbf{Transformation} & \textbf{Usage} & \textbf{Description} \\ \hline
-        \textbf{filter} & \textit{rdd1[T]\newline.filter(f: (T) =\textgreater\xspace boolean)} & filter by function f \\ \hline
         \textbf{flatMap} & \textit{rdd1[T].flatMap(f: (T) =\textgreater\xspace TraversableOnce[U])} & apply function f and flatten \\ \hline
         \textbf{reduceByKey} & \textit{rdd1[(K,V)]\newline.reduceByKey(f:(V,V) =\textgreater\xspace V)} & create an RDD containing tuples (K, V), unique by key \\ \hline
         \textbf{sortByKey} & \textit{rdd1[(K,V)].sortByKey()} & sort rdd1 by key \\ \hline
@@ -514,6 +545,14 @@ val keyValueRdd2:RDD[(K,V)] = oldRdd[T]
 
 \end{frame}
 
+%--- EX2 : Helper ---
+\begin{frame}
+  \frametitle{Helper}
+
+  \lstinputlisting[language=scala, style=code, label=Exercise2,caption=/src/main/scala/psug/hands/on/exercise02/RiversMatcher.scala]{../src/main/scala/psug/hands/on/exercise02/RiversMatcher.scala}
+
+\end{frame}
+
 %--- EX2 : Run ---
 \begin{frame}[fragile]
   \frametitle{Command and Result}
@@ -525,7 +564,7 @@ sbt "run-main psug.hands.on.exercise02.DepartmentsByRiver"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] Les departements dont le nom contient Garonne sont Haute-Garonne, Lot-et-Garonne, Tarn-et-Garonne
 [info] Les departements dont le nom contient Loire sont Indre-et-Loire, Loire, Haute-Loire, Loire-Atlantique, Loiret, Maine-et-Loire, Saone-et-Loire
 [info] Les departements dont le nom contient Rhone sont Bouches-du-Rhone, Rhone
@@ -712,24 +751,82 @@ sbt "run-main psug.hands.on.exercise03.TotalPopulation"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
-[info] La France compte 64612939 habitants
+    \begin{lstlisting}[style=terminal]
+[info] La France compte 64618746 habitants
 [success] Total time: 9 s, completed 8 mai 2015 23:27:30
     \end{lstlisting}
   \end{block}
 
 \end{frame}
 
-%--- EX3 : Notes ---
+%--- EX3 : Notes (1) ---
 \begin{frame}
-  \frametitle{Notes}
+  \frametitle{Notes : Files containing Multiline JSONs}
 
-  \begin{exampleblock}{JSON File}
+  \begin{exampleblock}{Files containing Multiline JSONs}
     \begin{itemize}
       \item If you look at \textit{demographie\_par\_commune.json}, you will see that there is one JSON record by line
       \item Indeed, to distribute chunks of data, Spark must know where to split data, which is impossible with classic indented JSON file (number of lines of a JSON object is not constant)
       \item It exists methods to treat indented JSON file, but it is simplier to pre-treat data in order to have one record by line
     \end{itemize}
+  \end{exampleblock}
+
+\end{frame}
+
+%--- EX3 : Notes (2) ---
+\begin{frame}[fragile]
+  \frametitle{Notes : Trying to load a complex JSON file (1)}
+
+  \begin{exampleblock}{If we have the following JSON file}
+    \begin{verbatim}
+{
+  "firstLayer1": {
+    "secondLayer1" : "second1", 
+    "secondLayer2" : "second2"
+  }, 
+  "firstLayer2": {
+    "secondLayer1": {
+      "thirdLayer": "third"
+    }, 
+    "secondLayer2":"second"
+  }
+}
+    \end{verbatim}
+  \end{exampleblock}
+\end{frame}
+
+%--- EX3 : Notes (3) ---
+\begin{frame}[fragile]
+
+  \frametitle{Notes : Trying to load a complex JSON file (2)}
+
+  \begin{exampleblock}{What do we get when loading it ?}
+    \begin{lstlisting}[language=bash, style=terminal-medium]
+sbt "run-main psug.hands.on.examples.deepJson.DeepJsonLoader"
+    \end{lstlisting}
+
+    \begin{lstlisting}[style=terminal]
+[info] ==== DataFrame Structure ====
+[info] 
+[info] root
+[info]  |-- firstLayer1: struct (nullable = true)
+[info]  |    |-- secondLayer1: string (nullable = true)
+[info]  |    |-- secondLayer2: string (nullable = true)
+[info]  |-- firstLayer2: struct (nullable = true)
+[info]  |    |-- secondLayer1: struct (nullable = true)
+[info]  |    |    |-- third: string (nullable = true)
+[info]  |    |-- secondLayer2: string (nullable = true)
+[info] 
+[info] ==== Data ====
+[info] 
+[info] firstLayer1       firstLayer2     
+[info] [second1,second2] [[third],second]
+[info] 
+[info] ==== Retrieve a deep element ====
+[info] 
+[info] loadedInput.select("firstLayer1.secondLayer1").first() gives : second1
+    \end{lstlisting}
+
   \end{exampleblock}
 
 \end{frame}
@@ -864,7 +961,7 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] Les departements les plus densement peuples sont Paris, Hauts-de-Seine, Seine-Saint-Denis, Val-de-Marne, Val-d'Oise, Essonne, Yvelines, Rhone, Nord, Bouches-du-Rhone
 [success] Total time: 17 s, completed 9 mai 2015 01:17:31
     \end{lstlisting}
@@ -1104,7 +1201,7 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] Some lines of data/cities.json : 
 [info] {"name":"Amberieu-en-Bugey","category":1.0,"features":[553.0,4.0,13.0,14.0,0.0]}
 [info] {"name":"Ambronay","category":0.0,"features":[69.0,7.0,10.0,13.0,0.0]}
@@ -1134,7 +1231,7 @@ sbt "run-main psug.hands.on.exercise05.RetrieveFeatures"
     To display the structure and first rows of a dataFrame, you can use action \textit{show}
   \end{exampleblock}
 
-  \begin{lstlisting}[label=ResultOfShowMethod, caption=Result of Show Method, language=bash, style=terminal]
+  \begin{lstlisting}[label=ResultOfShowMethod, caption=Result of Show Method, style=terminal]
 [info] Departement Commune              Population Superficie
 [info] 01          L'Abergement-Clem... 784        16        
 [info] 01          L'Abergement-de-V... 221        9         
@@ -1305,7 +1402,7 @@ sbt "run-main psug.hands.on.exercise06.Normalization"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] Some lines of data/normalized_cities.json : 
 [info] {"name":"Amberieu-en-Bugey","category":1.0,"features":[0.02,0.16,0.27,0.48,0.0]}
 [info] {"name":"Ambronay","category":0.0,"features":[0.0,0.28,0.2,0.45,0.0]}
@@ -1441,7 +1538,7 @@ sbt "run-main psug.hands.on.exercise07.DataSetSplitter"
   \end{block}
 
   \begin{block}{Result}
-    \begin{lstlisting}[language=bash, style=terminal]
+    \begin{lstlisting}[style=terminal]
 [info] There are 4577 test cities and 519 training cities
 [success] Total time: 7 s, completed 9 mai 2015 17:55:41
     \end{lstlisting}
@@ -1477,7 +1574,7 @@ At the end of labeling, we want to save the name, the category and the predictio
 
 \end{frame}
 
-%--- EX8 : Run ---
+%--- Exercise 8 ---
 \begin{frame}
   \frametitle{Exercise Code}
 
@@ -1615,12 +1712,12 @@ val predictions:RDD[Double] = testDataRDD
 
   \frametitle{Commands and Result}
      
-    \begin{lstlisting}[language=bash, style=terminal-medium]
+  \begin{lstlisting}[language=bash, style=terminal-medium]
 sbt "run-main psug.hands.on.exercise08.MachineLearning"
 sbt "run-main psug.hands.on.exercise08.DisplayResult"    
-    \end{lstlisting}
+  \end{lstlisting}
 
-    \begin{lstlisting}[language=bash, style=terminal]
+  \begin{lstlisting}[style=terminal]
 [info] ----------------------------------------------------------------------
 [info] ============================ General Stats ===========================
 [info] ----------------------------------------------------------------------
@@ -1649,7 +1746,7 @@ sbt "run-main psug.hands.on.exercise08.DisplayResult"
 [info] [...]
 [info] ----------------------------------------------------------------------
 [success] Total time: 14 s, completed 10 mai 2015 12:39:31
-    \end{lstlisting}
+  \end{lstlisting}
 
 \end{frame}
 
@@ -1872,11 +1969,11 @@ target/scala-2.10/psug-hands-on-spark_2.10-0.0.1.jar
     \begin{tabular}{|c|c|c|c|}
       \hline
       \rowcolor{gray} exercise 1 & exercise 2 & exercise 3 & exercise 4 \\ \hline
-      union & filter & \textbf{agg} & \textbf{select} \\
-      distinct & flatmap & & \textbf{groupBy} \\
-      substract & reduceByKey & & join \\
-      map & sortByKey & & sortBy \\ 
-       & & & value \\ \hline
+      union & flatmap & \textbf{agg} & \textbf{select} \\
+      distinct & reduceByKey & & \textbf{groupBy} \\
+      substract & sortByKey & & join \\
+      map & & & sortBy \\ 
+      filter & & & value \\ \hline
       \rowcolor{lightgray} reduce & collect & first & take \\ \hline
       \rowcolor{gray} exercise 5 & exercise 6 & exercise 7 & exercise 8 \\ \hline
       \textbf{where} & & sample & toDF \\

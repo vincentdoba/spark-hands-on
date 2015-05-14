@@ -1,5 +1,6 @@
 package psug.hands.on.solutions.exercise02
 
+import psug.hands.on.exercise02.RiversMatcher
 import psug.hands.on.solutions.SparkContextInitiator
 
 /**
@@ -9,7 +10,7 @@ import psug.hands.on.solutions.SparkContextInitiator
  *
  * command : sbt "run-main psug.hands.on.solutions.exercise02.DepartmentsByRiver"
  */
-object DepartmentsByRiver extends App with SparkContextInitiator {
+object DepartmentsByRiver extends App with SparkContextInitiator with RiversMatcher {
 
   val inputFile = "data/departements.txt"
   val rivers = List("Seine", "Garonne", "Rhône", "Loire")
@@ -20,13 +21,8 @@ object DepartmentsByRiver extends App with SparkContextInitiator {
 
 
   val departmentsByRiver:Iterable[(String, String)] = input
-    .flatMap {
-    case a if a.split(",")(0).contains("Seine") => List(("Seine", a.split(",")(0)))
-    case a if a.split(",")(0).contains("Rhône") => List(("Rhône", a.split(",")(0)))
-    case a if a.split(",")(0).contains("Loire") => List(("Loire", a.split(",")(0)))
-    case a if a.split(",")(0).contains("Garonne") => List(("Garonne", a.split(",")(0)))
-    case _ => List()
-  } // Create a Key/Value RDD ("River","Department Name"), without null value
+    .map(x => x.split(",")(0)) // Retrieve only the name of the departments
+    .flatMap(label) // Create a Key/Value RDD ("River","Department Name"), without null value
     .reduceByKey((a, b) => a + ", " + b)  // Merge departement name by river name
     .sortByKey() // Sort by river name
     .collect() // Retrieve all elements of the RDD
