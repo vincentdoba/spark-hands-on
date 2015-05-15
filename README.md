@@ -37,8 +37,8 @@ Determine, given the list of numbers from 1 to 75, the list of numbers from 25 t
 
 * Create a SparkContext
 * Create RDD from List
-* Discover actions
-* Discover transformation
+* Discover first action
+* Discover transformations
 
 #### Command
 
@@ -56,7 +56,7 @@ Display the departments whose name contains one of the four major rivers in Fran
 
 * Load a simple text file
 * Create a Key/Value RDD
-* Transformation on Key/Value 
+* Transformations on Key/Value 
 * Action : collect
 
 
