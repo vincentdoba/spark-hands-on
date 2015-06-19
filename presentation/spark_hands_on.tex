@@ -155,7 +155,7 @@ sbt clean package
       \item SBT 13+
       \item Git
       \item An IDE with SBT/Scala support (for instance IDEA IntelliJ with SBT and Scala plugins)
-      \item \textbf{For Exercise 9} Downloaded Spark 1.3.1 prebuilt for Hadoop 2.6 from \href{http://www.apache.org/dyn/closer.cgi/spark/spark-1.3.1/spark-1.3.1-bin-hadoop2.6.tgz}{official Apache Spark site}
+      \item \textbf{For Exercise 9} Downloaded Spark 1.4.0 prebuilt for Hadoop 2.6 from \href{http://www.apache.org/dyn/closer.cgi/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz}{official Apache Spark site}
     \end{itemize}
   \end{block}
 
@@ -694,7 +694,7 @@ val sqlContext = new SQLContext(sparkContext)
   \end{lstlisting}
 
   \begin{lstlisting}[label=JsonFileLoading, caption=Load a DataFrame from JSON file, language=scala, style=code]
-val input:DataFrame = sqlContext.jsonFile(filePath)
+val input:DataFrame = sqlContext.read.json(filePath)
   \end{lstlisting}
 
   \begin{lstlisting}[label=AggregationByFunction, caption=Aggregation by a SQL Function, language=scala, style=code]
@@ -703,7 +703,7 @@ val newDataFrame:DataFrame = oldDataFrame.agg(sum("ColumnName"))
   \end{lstlisting}
 
   \begin{lstlisting}[label=ExtractValueFromARow, caption=Extract value from a Row, language=scala, style=code]
-def extractor(row:Row):(String, Double) => (row.getString(columnIndex1), row.getDouble(columnIndex2)))
+def extractor(row:Row):(String, Double) => (row.getAs[String]("columnName1"), row.getAs[Double]("columnName2")))
   \end{lstlisting}
 
 \end{frame}
@@ -972,7 +972,7 @@ sbt "run-main psug.hands.on.exercise04.DensestDepartments"
   \begin{exampleblock}{Retrieve column from column name : Problem}
     \begin{itemize}
       \item In DataFrame, you sometimes need to retrieve column from column name
-      \item it forces you to use the name of the data frame containing the column
+      \item It forces you to use the name of the data frame containing the column
     \end{itemize}
   \end{exampleblock}
 
@@ -1779,15 +1779,15 @@ Spark cluster
 
   \begin{block}{How To}
     \begin{itemize}
-      \item Uncompress spark-1.3.1-bin-hadoop2.6.tgz
+      \item Uncompress spark-1.4.0-bin-hadoop2.6.tgz
       \item Go to created directory
       \item Setup SPARK\_HOME environment variable
     \end{itemize}
   \end{block}
 
   \begin{lstlisting}[language=bash, style=terminal-large]
-tar -xvf spark-1.3.1-bin-hadoop2.6.tgz
-cd spark-1.3.1-bin-hadoop2.6
+tar -xvf spark-1.4.0-bin-hadoop2.6.tgz
+cd spark-1.4.0-bin-hadoop2.6
 SPARK_HOME="$(pwd)" 
   \end{lstlisting} 
 
