@@ -34,8 +34,8 @@ object MachineLearning extends App with SparkContextInitiator with DataSaver {
 
   val toVector = udf[Vector, Seq[Double]](seq => Vectors.dense(seq.toArray)) // function to transform Sequence of Double to Vector
 
-  val training = sqlContext.jsonFile(trainingInputFile).select("category", "features") // Load training data from JSON File
-  val test = sqlContext.jsonFile(testInputFile).select("name", "category", "features") // Load test data from JSON File
+  val training = sqlContext.read.json(trainingInputFile).select("category", "features") // Load training data from JSON File
+  val test = sqlContext.read.json(testInputFile).select("name", "category", "features") // Load test data from JSON File
 
   val logisticRegression = new LogisticRegression()
     .setMaxIter(100) // The number of iteration

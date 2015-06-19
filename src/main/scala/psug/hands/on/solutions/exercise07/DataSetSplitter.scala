@@ -30,7 +30,7 @@ object DataSetSplitter extends App with DataSaver with SparkContextInitiator {
   val sparkContext = initContext("dataSetSplitter") // Create Spark Context
   val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val normalizedCities = sqlContext.jsonFile(inputFile) // Load JSON file into a Data Frame
+  val normalizedCities = sqlContext.read.json(inputFile) // Load JSON file into a Data Frame
   normalizedCities.registerTempTable("dataset") // Save structure of the Data Frame into a temporary table in order to perform SQL Request on it
 
   val trainingData: DataFrame = normalizedCities

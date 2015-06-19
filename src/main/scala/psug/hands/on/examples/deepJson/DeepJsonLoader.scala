@@ -16,7 +16,7 @@ object DeepJsonLoader extends App {
   val sparkContext = new SparkContext(sparkConf)
   val sqlContext = new SQLContext(sparkContext)
 
-  val loadedInput = sqlContext.jsonFile(inputFile)
+  val loadedInput = sqlContext.read.json(inputFile)
 
   println("==== DataFrame Structure ====")
   println()

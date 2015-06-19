@@ -32,7 +32,7 @@ object RetrieveFeatures extends App with SparkContextInitiator with CityDemograp
   val sparkContext = initContext("retrieveFeatures") // Create Spark Context
   val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val rawData = sqlContext.jsonFile(inputFile) // Load JSON File into a Data Frame
+  val rawData = sqlContext.read.json(inputFile) // Load JSON File into a Data Frame
 
   import sqlContext.implicits._ // Load SQL implicites which wil  allow us to use toDF Transformation
 
@@ -59,13 +59,13 @@ object RetrieveFeatures extends App with SparkContextInitiator with CityDemograp
 trait CityDemographyExtractor {
 
   def extractDemographicData(row: Row) = {
-    val name = row.getString(0)
-    val population = row.getLong(5)
-    val farmerPercentage = row.getLong(1)*100/population
-    val executivePercentage = row.getLong(2)*100/population
-    val employeePercentage = row.getLong(3)*100/population
-    val workerPercentage = row.getLong(4)*100/population
-    val density = population / row.getLong(6)
+    val name = row.getAs[String]("Commune")
+    val population = row.getAs[Long]("Population")
+    val farmerPercentage = row.getAs[Long]("Agriculteurs")*100/population
+    val executivePercentage = row.getAs[Long]("Cadresetprofessionssupérieurs")*100/population
+    val employeePercentage = row.getAs[Long]("Employés")*100/population
+    val workerPercentage = row.getAs[Long]("Ouvriers")*100/population
+    val density = population / row.getAs[Long]("Superficie")
     val hasMoreThanFiveThousandInhabitants = if (population > 5000) 1 else 0
     City(name, hasMoreThanFiveThousandInhabitants, List(density, executivePercentage, employeePercentage, workerPercentage, farmerPercentage))
   }

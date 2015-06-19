@@ -18,7 +18,7 @@ object DisplayResult extends App {
   val sqlContext = new SQLContext(sparkContext)
 
   val result: DataFrame = sqlContext
-    .jsonFile(inputFile)
+    .read.json(inputFile)
     .select("name", "category", "prediction")
     .cache()
 
@@ -29,10 +29,10 @@ object DisplayResult extends App {
     .agg(result("category"), result("prediction"), count("name").as("number"))
     .cache()
 
-  val positiveWellLabeled = total.where(total("category") === 1 && total("prediction") === 1).first().getLong(2)
-  val negativeWellLabeled = total.where(total("category") === 0 && total("prediction") === 0).first().getLong(2)
-  val positiveMislabeled = total.where(total("category") === 1 && total("prediction") === 0).first().getLong(2)
-  val negativeMislabeled = total.where(total("category") === 0 && total("prediction") === 1).first().getLong(2)
+  val positiveWellLabeled = total.where(total("category") === 1 && total("prediction") === 1).first().getAs[Long]("number")
+  val negativeWellLabeled = total.where(total("category") === 0 && total("prediction") === 0).first().getAs[Long]("number")
+  val positiveMislabeled = total.where(total("category") === 1 && total("prediction") === 0).first().getAs[Long]("number")
+  val negativeMislabeled = total.where(total("category") === 0 && total("prediction") === 1).first().getAs[Long]("number")
 
   val positiveRecall = positiveWellLabeled*100/(positiveWellLabeled + positiveMislabeled)
   val positivePrecision = positiveWellLabeled*100/(positiveWellLabeled + negativeMislabeled)
@@ -43,11 +43,11 @@ object DisplayResult extends App {
   val accuracy = (positiveWellLabeled + negativeWellLabeled)*100/(positiveMislabeled + positiveWellLabeled + negativeMislabeled + negativeWellLabeled)
   
   val mislabeledExamples = result.where(result("category") !== result("prediction"))
-    .map(row => (row.getString(0), row.getDouble(1) == 1))
+    .map(row => (row.getAs[String]("name"), row.getAs[Double]("category") == 1))
     .take(10)
 
   val wellLabeledExamples = result.where(result("category") === result("prediction"))
-    .map(row => (row.getString(0), row.getDouble(1) == 1))
+    .map(row => (row.getAs[String]("name"), row.getAs[Double]("category") == 1))
     .take(10)
 
   val maxSize = List(30, nameMaxSize(wellLabeledExamples), nameMaxSize(mislabeledExamples)).max
@@ -60,9 +60,9 @@ object DisplayResult extends App {
   displayMislabeledExamples(mislabeledExamples)
 
 
-  def displayCategoryStats(name: String, precision: Long, recall: Long) {
+  def displayCategoryStats(name: String, precision: Double, recall: Double) {
 
-    val fScore = 2*recall*precision / (recall + precision)
+    val fScore = Math.round(2*recall*precision / (recall + precision))
     def fixedAlignLabel = alignLabel(maxSize)_
 
     println(titleBox(s"For Category $name"))
@@ -76,7 +76,7 @@ object DisplayResult extends App {
     println(line(lineSize))
   }
 
-  def displayGeneralStats(accuracy:Long) {
+  def displayGeneralStats(accuracy:Double) {
     println(line(lineSize))
     println(titleBox("General Stats"))
     println(line(lineSize))

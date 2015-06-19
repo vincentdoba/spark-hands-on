@@ -20,7 +20,7 @@ object DensestDepartments extends App with SparkContextInitiator {
   val sparkContext = initContext("densestDepartment") // Create Spark Context
   val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val data = sqlContext.jsonFile(inputFile) // Load JSON File into a Data Frame
+  val data = sqlContext.read.json(inputFile) // Load JSON File into a Data Frame
 
   import org.apache.spark.sql.functions._
   import sqlContext.implicits._
@@ -31,8 +31,8 @@ object DensestDepartments extends App with SparkContextInitiator {
     .select("Departement", "Population", "Superficie") // Select the three interesting columns : Department, Population and Surface
     .groupBy("Departement") // Group by departments, agg function below will define how we merge other columns values
     .agg($"Departement", sum("Population").as("Population"), sum("Superficie").as("Superficie")) // Define how to merge values/ what we want to retrieve as columns
-    .select($"Departement", ($"Population" / $"Superficie").cast(DoubleType)) // Compute density by dividing the two columns Population and Surface
-    .map(row => (row.getString(0), row.getDouble(1))) // Transform Data Frame to RDD with the information of the two remaining columns
+    .select($"Departement", ($"Population" / $"Superficie").cast(DoubleType).as("Density")) // Compute density by dividing the two columns Population and Surface
+    .map(row => (row.getAs[String]("Departement"), row.getAs[Double]("Density"))) // Transform Data Frame to RDD with the information of the two remaining columns
   
   val departments = sparkContext.textFile(departmentsFile) // Load departement.txt into a RDD
 

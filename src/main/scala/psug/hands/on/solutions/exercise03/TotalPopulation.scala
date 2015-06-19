@@ -18,7 +18,7 @@ object TotalPopulation extends App with SparkContextInitiator {
   val sparkContext = initContext("totalPopulation") // Create Spark Context
   val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val input:DataFrame = sqlContext.jsonFile(inputFile) // Load a Json File into a Data Frame
+  val input:DataFrame = sqlContext.read.json(inputFile) // Load a Json File into a Data Frame
 
   import org.apache.spark.sql.functions._ // Import functions such as "sum"
   val population = input

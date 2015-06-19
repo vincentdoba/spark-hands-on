@@ -26,11 +26,11 @@ object Normalization extends App with SparkContextInitiator with AggregateFuncti
   val sparkContext = initContext("normalization") // Create Spark Context
   val sqlContext = new SQLContext(sparkContext) // Create SQL Context from Spark Context
 
-  val rawData = sqlContext.jsonFile(inputFile) // Load JSON file
+  val rawData = sqlContext.read.json(inputFile) // Load JSON file
 
   val cities = rawData
     .select("name","category","features") // select all columns
-    .map(row => City(row.getString(0), row.getDouble(1), row.getSeq(2).toList)) // Transform Data Frame to a RDD containing 3-tuples
+    .map(row => City(row.getAs[String]("name"), row.getAs[Double]("category"), row.getAs[Seq[Double]]("features").toList)) // Transform Data Frame to a RDD containing 3-tuples
     .cache() // Cache the result
 
   val featuresSize = cities.first().features.length // Retrieve the size of features list

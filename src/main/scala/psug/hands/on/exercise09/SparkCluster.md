@@ -16,12 +16,12 @@ Spark cluster
 
 * Download Spark archive : 
 ```bash
-wget http://apache.crihan.fr/dist/spark/spark-1.3.1/spark-1.3.1-bin-hadoop2.6.tgz
+wget http://apache.crihan.fr/dist/spark/spark-1.4.0/spark-1.4.0-bin-hadoop2.6.tgz
 ```
 * Uncompress it and go to the uncompressed directory
 ```bash
-tar -xvf spark-1.3.1-bin-hadoop2.6.tgz
-cd spark-1.3.1-bin-hadoop2.6
+tar -xvf spark-1.4.0-bin-hadoop2.6.tgz
+cd spark-1.4.0-bin-hadoop2.6
 ```
 * save spark path as variable SPARK_HOME
 ```bash
